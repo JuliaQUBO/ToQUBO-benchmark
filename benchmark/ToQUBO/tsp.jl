@@ -39,7 +39,8 @@ function measure(initial_size::Int, max_size::Int, step::Int)
         println("Total elapsed time: $(t₀ + t₁)")
         println("----------")
     end
-    CSV.write("tsp_ToQUBO.csv", sort(collect(results)), header = ["n_var","time"])
+    csv_path = joinpath(@__DIR__, "tsp_ToQUBO.csv")
+    CSV.write(csv_path, sort(collect(results)), header = ["n_var","time"])
 end
 
 measure(5,100,5)

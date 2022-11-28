@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 from pandas import read_csv
 import scienceplots
 
-toqubo_data = read_csv("ToQUBO/tsp_ToQUBO.csv")
-pyqubo_current_data = read_csv("pyqubo/tsp_pyqubo.csv")
-pyqubo_040_data = read_csv("pyqubo/tsp_pyqubo_0_4_0.csv")
+toqubo_data = read_csv("./benchmark/ToQUBO/tsp_ToQUBO.csv")
+pyqubo_current_data = read_csv("./benchmark/pyqubo/tsp_pyqubo.csv")
+pyqubo_040_data = read_csv("./benchmark/pyqubo/tsp_pyqubo_0_4_0.csv")
 
 plt.figure(figsize = (10,10))
 

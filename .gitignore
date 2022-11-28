@@ -26,4 +26,8 @@ Manifest.toml
 
 */__pycache__
 sysimage.*
-
+Include
+Lib
+Scripts
+share
+pyvenv.cfg

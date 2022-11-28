@@ -70,6 +70,6 @@ def measure(init_size, max_size, step):
         results["n_var"] += [n*n]
         results["time"] += [express_time+compile_time+to_qubo_time]
     df = pd.DataFrame(results)
-    df.to_csv("./pyqubo/tsp_pyqubo.csv", index = False)
+    df.to_csv("./pyqubo_040/tsp_pyqubo_040.csv", index = False)
 
-measure(5,100,5)
+measure(5,35,3)
