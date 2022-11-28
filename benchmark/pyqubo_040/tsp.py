@@ -40,8 +40,6 @@ def tsp(n_city):
                     d_ij = 10
                     distance.append(d_ij * x[k, i] * x[(k + 1) % n_city, j])
         distance = sum(distance)
-
-    print("express done")
     
     # Construct hamiltonian
     A = Placeholder("A")
@@ -65,11 +63,14 @@ def measure(init_size, max_size, step):
     results = {"n_var":[], "time":[]}
     for n in range(init_size, max_size+step, step):
         express_time, compile_time, to_qubo_time = tsp(n)
-        print("Elapsed time is {} sec (expression: {} sec, compile: {} sec, to_qubo {} sec), for n={}".format(
-            express_time+compile_time+to_qubo_time, express_time, compile_time, to_qubo_time, n))
+        print("Variables: ", n*n)
+        print("Model: ", express_time+compile_time)
+        print("Convert to QUBO: ", to_qubo_time)
+        print("Total elapsed time: ", express_time+compile_time+to_qubo_time)
+        print("----------")
         results["n_var"] += [n*n]
         results["time"] += [express_time+compile_time+to_qubo_time]
     df = pd.DataFrame(results)
-    df.to_csv("./pyqubo_040/tsp_pyqubo_040.csv", index = False)
+    df.to_csv("./benchmark/pyqubo_040/tsp_pyqubo_040.csv", index = False)
 
 measure(5,35,3)

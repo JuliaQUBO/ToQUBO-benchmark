@@ -4,9 +4,9 @@ import scienceplots
 
 toqubo_data = read_csv("./benchmark/ToQUBO/tsp_ToQUBO.csv")
 pyqubo_current_data = read_csv("./benchmark/pyqubo/tsp_pyqubo.csv")
-pyqubo_040_data = read_csv("./benchmark/pyqubo/tsp_pyqubo_0_4_0.csv")
+pyqubo_040_data = read_csv("./benchmark/pyqubo_040/tsp_pyqubo_040.csv")
 
-plt.figure(figsize = (10,10))
+plt.figure(figsize = (5,4))
 
 plt.style.use(['science','no-latex'])
 
