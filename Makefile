@@ -1,31 +1,36 @@
+SHELL         := /bin/bash
+TOQUBO_BRANCH := master
+PYTHON        := python3
+
 .PHONY: run
 
 all: install run
 
 install: 
-	julia --project=. -e "import Pkg; Pkg.instantiate()" 
+	julia --project=. -e "import Pkg; Pkg.add(PackageSpec(name="ToQUBO", rev="$(TOQUBO_BRANCH)")); Pkg.instantiate()" 
 	julia --project=. ./benchmark/ToQUBO/create_sysimage.jl
 
 	pip install virtualenv
 
 run:
-	julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./benchmark/ToQUBO/tsp.jl --run
+	# ToQUBO.jl
+	# julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./benchmark/ToQUBO/tsp.jl --run
 
 	# PyQUBO 
 	virtualenv ./benchmark/pyqubo
-	./benchmark/pyqubo/Scripts/activate                 
-	pip install pyqubo==1.3.1
-	pip install pandas
-	python ./benchmark/pyqubo/tsp.py
-	deactivate
+	source ./benchmark/pyqubo/bin/activate
+	pip install -r ./benchmark/pyqubo/requirements.txt
+	$(PYTHON) ./benchmark/pyqubo/tsp.py
 
 	# PyQUBO 0.4.0
-	virtualenv benchmark/pyqubo_040
-	./benchmark/pyqubo_040/Scripts/activate                 
-	pip install pyqubo==0.4.0
-	pip install pandas
-	python ./benchmark/pyqubo_040/tsp.py
-	deactivate
+	virtualenv ./benchmark/pyqubo_040
+	source ./benchmark/pyqubo_040/bin/activate
+	pip install -r ./benchmark/pyqubo_040/requirements.txt
+	$(PYTHON) ./benchmark/pyqubo_040/tsp.py
 
 plot:
-	python ./benchmark/plot.py
+	# Plots
+	virtualenv ./benchmark/plots
+	source ./benchmark/plots/bin/activate
+	pip install -r ./benchmark/plots/requirements.txt
+	$(PYTHON) ./benchmark/plots/plot.py
