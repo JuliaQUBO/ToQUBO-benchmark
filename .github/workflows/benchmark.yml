@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: '3.10' 
     - name: Install ToQUBO.jl, PyQUBO, PyQUBO 0.4
-      run: make install
+      run: make install TOQUBO_BRANCH=px/refactor
     - name: Run benchmarks
       run: make run
     - name: Make Plots
