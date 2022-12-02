@@ -7,7 +7,7 @@ PYTHON        := python3
 all: install run
 
 install: 
-	julia --project=. -e "import Pkg; Pkg.add(PackageSpec(url=raw"https://github.com/psrenergy/ToQUBO.jl", rev="$(TOQUBO_BRANCH)")); Pkg.instantiate()" 
+	julia --project=. -e "import Pkg; Pkg.add(PackageSpec(url=raw"github.com/psrenergy/ToQUBO.jl", rev="$(TOQUBO_BRANCH)")); Pkg.instantiate()" 
 	julia --project=. ./benchmark/ToQUBO/create_sysimage.jl
 
 	pip install virtualenv
