@@ -34,8 +34,9 @@ jobs:
     - name: Save Results
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
-      run: git add ./benchmark/ToQUBO/tsp_ToQUBO.csv ./benchmark/pyqubo/tsp_pyqubo.csv ./benchmark/pyqubo_040/tsp_pyqubo_040.csv ./benchmark.png
-      run: git commit -m "Save Benchmark Results [actions]"
-      run: git push
+      run: |
+       git add ./benchmark/ToQUBO/tsp_ToQUBO.csv ./benchmark/pyqubo/tsp_pyqubo.csv ./benchmark/pyqubo_040/tsp_pyqubo_040.csv ./benchmark.png
+       git commit -m "Save Benchmark Results [actions]"
+       git push
         
 
