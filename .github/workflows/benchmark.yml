@@ -7,17 +7,10 @@ on:
 
 jobs:
   benchmark:
-    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - version: '1'
-            os: ubuntu-latest
-            arch: x64
+    name: ToQUBO.jl/PyQUBO Benchmarks
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@latest
+    - uses: actions/checkout@v3
     - uses: julia-actions/setup-julia@v1
       with:
         version: ${{ matrix.version }}
