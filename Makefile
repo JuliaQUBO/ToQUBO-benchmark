@@ -14,7 +14,7 @@ install:
 
 run:
 	# ToQUBO.jl
-	# julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./benchmark/ToQUBO/tsp.jl --run
+	julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./benchmark/ToQUBO/tsp.jl --run
 
 	# PyQUBO 
 	virtualenv ./benchmark/pyqubo
