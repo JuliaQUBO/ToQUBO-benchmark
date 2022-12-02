@@ -9,13 +9,14 @@ function tsp(n::Int)
 
         @variable(model, x[1:n, 1:n], Bin, Symmetric)
 
-        @constraint(model, [i in 1:n], sum(x[i,1:n]) == 2)
-        @constraint(model, [i in 1:n], sum(x[i,i]) == 0)
+        @constraint(model, [i in 1:n], sum(x[i,:]) == 1)
+        @constraint(model, [j in 1:n], sum(x[:,j]) == 1)
 
         D = fill(10, (n,n))
 
-        @objective(model, Min, sum(D .* x)/2)
+        @objective(model, Min, sum([D[i,j] * x[i,k] * x[j, (k % n)+1] for i = 1:n , j = 1:n, k = 1:n]))
 
+        
     end
 
     t₁ = @timed begin

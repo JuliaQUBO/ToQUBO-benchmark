@@ -1,0 +1,31 @@
+name: toqubo-benchmark
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  benchmark:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - version: '1'
+            os: ubuntu-latest
+            arch: x64
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@latest
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - run: make all
+
