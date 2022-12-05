@@ -28,19 +28,19 @@ end
 
 
 function measure(initial_size::Int, max_size::Int, step::Int)
-    results = Dict{Int,Float64}()
+    results = Tuple{Int,Float64,Float64}[]
     # tsp(2) # avoid time-to-first-solve
     for n in initial_size:step:max_size
-        println("Variables: $(n*n)")
         t₀, t₁ = tsp(n)
-        results[n*n] = t₀ + t₁  
+        println("Variables: $(n*n)")
         println("Model: $(t₀)")
         println("Convert to QUBO: $(t₁)")
         println("Total elapsed time: $(t₀ + t₁)")
         println("----------")
+        push!(results, (n*n, t₀ + t₁, t₀, t₁))
     end
     csv_path = joinpath(@__DIR__, "tsp_ToQUBO.csv")
-    CSV.write(csv_path, sort(collect(results)), header = ["n_var","time"])
+    CSV.write(csv_path, sort(collect(results)), header = ["n_var","time","jump_time","toqubo_time"])
 end
 
 measure(5,100,5)
