@@ -5,7 +5,7 @@ using Anneal
 
 function tsp(n::Int)
     t₀ = @timed begin
-        model = Model(() -> ToQUBO.Optimizer(ExactSampler.Optimizer))
+        model = Model(ToQUBO.Optimizer)
 
         @variable(model, x[1:n, 1:n], Bin, Symmetric)
 
@@ -18,8 +18,9 @@ function tsp(n::Int)
     end
 
     t₁ = @timed begin
-        qubo_model = ToQUBO.toqubo(JuMP.backend(model).model_cache)
-        Q, α, β = ToQUBO.qubo(qubo_model)
+        optimize!(model)
+        
+        Q, α, β = ToQUBO.qubo(model)
     end
 
     return t₀.time, t₁.time
