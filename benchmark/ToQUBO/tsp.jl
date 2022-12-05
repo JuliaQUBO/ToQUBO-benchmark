@@ -28,7 +28,7 @@ end
 
 
 function measure(initial_size::Int, max_size::Int, step::Int)
-    results = Tuple{Int,Float64,Float64}[]
+    results = []
     # tsp(2) # avoid time-to-first-solve
     for n in initial_size:step:max_size
         t₀, t₁ = tsp(n)
