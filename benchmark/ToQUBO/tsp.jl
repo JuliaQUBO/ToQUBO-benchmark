@@ -3,7 +3,11 @@ using JuMP
 using ToQUBO
 using Anneal
 
-function tsp(n::Int)
+function tsp(n::Int; clear_gc::Bool = false)
+    if clear_gc
+        GC.gc()
+    end
+
     t₀ = @timed begin
         model = Model(ToQUBO.Optimizer)
 
@@ -31,7 +35,7 @@ function measure(initial_size::Int, max_size::Int, step::Int)
     results = []
     # tsp(2) # avoid time-to-first-solve
     for n in initial_size:step:max_size
-        t₀, t₁ = tsp(n)
+        t₀, t₁ = tsp(n; clear_gc=true)
         println("Variables: $(n*n)")
         println("Model: $(t₀)")
         println("Convert to QUBO: $(t₁)")
