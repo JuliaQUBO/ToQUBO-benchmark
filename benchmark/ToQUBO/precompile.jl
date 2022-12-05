@@ -4,6 +4,8 @@ using ToQUBO
 using Anneal
 
 t₀ = @timed begin
+    n = 3
+
     model = Model(ToQUBO.Optimizer)
 
     @variable(model, x[1:n, 1:n], Bin, Symmetric)
