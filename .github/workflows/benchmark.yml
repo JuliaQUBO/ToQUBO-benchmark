@@ -29,6 +29,8 @@ jobs:
       run: make install TOQUBO_BRANCH=px/refactor
     - name: Run benchmarks
       run: make run
+    - name: Profiling
+      run: make perf
     - name: Make Plots
       run: make plot
     - name: Save Results
@@ -37,7 +39,7 @@ jobs:
       run: |
        git config --global user.name "GitHub Actions"
        git config --global user.email "suporte@psr-inc.com"
-       git add -f ./benchmark/ToQUBO/tsp_ToQUBO.csv ./benchmark/pyqubo/tsp_pyqubo.csv ./benchmark/pyqubo_040/tsp_pyqubo_040.csv ./benchmark/benchmark.png ./benchmark/toqubo.png
+       git add -f ./benchmark/ToQUBO/tsp_ToQUBO.csv ./benchmark/pyqubo/tsp_pyqubo.csv ./benchmark/pyqubo_040/tsp_pyqubo_040.csv ./benchmark/benchmark.png ./benchmark/toqubo.png ./performance/prof.svg
        git commit -m "Save Benchmark Results [actions]"
        git push
         

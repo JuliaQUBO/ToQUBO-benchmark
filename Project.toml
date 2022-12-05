@@ -1,7 +1,8 @@
 [deps]
-Anneal = "e4d9eb7f-b088-426e-aeb5-1c0dae3d8abb"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 JuMP = "4076af6c-e467-56ae-b986-b466b2749572"
 Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
+Profile = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
+ProfileSVG = "132c30aa-f267-4189-9183-c8a63c7e05e6"
 ToQUBO = "9a412ddf-83fa-43b6-9748-7843c851aa65"

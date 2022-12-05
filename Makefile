@@ -35,3 +35,7 @@ plot:
 	source ./benchmark/plots/bin/activate
 	$(PYTHON-PIP) install -r ./benchmark/plots/requirements.txt
 	$(PYTHON) ./benchmark/plots/plot.py
+
+perf:
+	# Profile
+	julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./performance/tsp.jl --run
