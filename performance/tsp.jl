@@ -2,7 +2,8 @@ using CSV
 using JuMP
 using ToQUBO
 using Anneal
-using PProf
+using Profile
+using ProfileSVG
 
 function tsp(n::Int)
     
