@@ -3,24 +3,24 @@ using JuMP
 using ToQUBO
 using Anneal
 
-
 t₀ = @timed begin
-    model = Model(() -> ToQUBO.Optimizer(ExactSampler.Optimizer))
+    model = Model(ToQUBO.Optimizer)
 
-    @variable(model, x[1:2, 1:2], Bin, Symmetric)
+    @variable(model, x[1:n, 1:n], Bin, Symmetric)
 
-    @constraint(model, [i in 1:2], sum(x[i,1:2]) == 2)
-    @constraint(model, [i in 1:2], sum(x[i,i]) == 0)
+    @constraint(model, [i in 1:n], sum(x[i,:]) == 1)
+    @constraint(model, [j in 1:n], sum(x[:,j]) == 1)
 
-    D = fill(10, (2,2))
+    D = fill(10, (n,n))
 
-    @objective(model, Min, sum(D .* x)/2)
+    @objective(model, Min, sum([D[i,j] * x[i,k] * x[j, (k % n)+1] for i = 1:n , j = 1:n, k = 1:n]))
 
+    optimize!(model)
 end
 
 t₁ = @timed begin
     qubo_model = ToQUBO.toqubo(JuMP.backend(model).model_cache)
-    Q, α, β = ToQUBO.qubo(qubo_model)
+    Q, α, β    = ToQUBO.qubo(qubo_model)
 end
 
 return t₀.time, t₁.time
