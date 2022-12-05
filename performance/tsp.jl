@@ -1,6 +1,7 @@
 using CSV
 using JuMP
 using ToQUBO
+using Anneal
 using PProf
 
 function tsp(n::Int)

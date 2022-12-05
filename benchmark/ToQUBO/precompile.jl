@@ -1,6 +1,7 @@
 using CSV
 using JuMP
 using ToQUBO
+using Anneal
 
 function tsp(n)
     t₀ = @timed begin    
