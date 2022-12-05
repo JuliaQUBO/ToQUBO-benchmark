@@ -4,9 +4,7 @@ using ToQUBO
 using Anneal
 
 function tsp(n::Int; clear_gc::Bool = false)
-    if clear_gc
-        GC.gc()
-    end
+    clear_gc && GC.gc()
 
     t₀ = @timed begin
         model = Model(ToQUBO.Optimizer)
@@ -20,6 +18,8 @@ function tsp(n::Int; clear_gc::Bool = false)
 
         @objective(model, Min, sum([D[i,j] * x[i,k] * x[j, (k % n)+1] for i = 1:n , j = 1:n, k = 1:n]))
     end
+
+    clear_gc && GC.gc()
 
     t₁ = @timed begin
         optimize!(model)
