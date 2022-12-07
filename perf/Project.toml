@@ -1,0 +1,6 @@
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+PProf = "e4faabce-9ead-11e9-39d9-4379958e3056"
+Profile = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
+ProfileVega = "4391764f-db79-4bd7-a4c6-f9062de4300e"
+ProfileView = "c46f51b8-102a-5cf2-8d2c-8597cb0e0da7"

@@ -3,10 +3,9 @@ using JuMP
 using ToQUBO
 using Anneal
 using Profile
-using ProfileSVG
+using PProf
 
 function tsp(n::Int)
-    
     model = Model(ToQUBO.Optimizer)
 
     @variable(model, x[1:n, 1:n], Bin, Symmetric)
@@ -18,16 +17,17 @@ function tsp(n::Int)
 
     @objective(model, Min, sum([D[i,j] * x[i,k] * x[j, (k % n)+1] for i = 1:n , j = 1:n, k = 1:n]))
 
+    optimize!(model)
     
-    qubo_model = ToQUBO.toqubo(JuMP.backend(model).model_cache)
-    Q, α, β = ToQUBO.qubo(qubo_model)
+    Q, α, β = ToQUBO.qubo(model)
     
-
     return nothing
 end
 
 Profile.clear()
-@profile tsp(75);
+@pprof tsp(75)
 
-# Save a graph that looks like the Jupyter example above
-ProfileSVG.save(joinpath(@__DIR__, "prof.svg"))
+# # Save a graph that looks like the Jupyter example above
+# ProfileSVG.save(joinpath(@__DIR__, "prof.svg"))
+
+# ProfileVega.view() |> save("prof.svg")

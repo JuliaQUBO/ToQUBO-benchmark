@@ -1,7 +1,6 @@
 using CSV
 using JuMP
 using ToQUBO
-using Anneal
 
 function tsp(n::Int; clear_gc::Bool = false)
     clear_gc && GC.gc()
@@ -24,7 +23,7 @@ function tsp(n::Int; clear_gc::Bool = false)
     t₁ = @timed begin
         optimize!(model)
         
-        Q, α, β = ToQUBO.qubo(model)
+        Q, α, β = ToQUBO.qubo(unsafe_backend(model))
     end
 
     return t₀.time, t₁.time
