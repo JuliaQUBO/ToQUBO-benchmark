@@ -1,7 +1,6 @@
 using CSV
 using JuMP
 using ToQUBO
-using Anneal
 
 n     = 5
 D     = fill(10, (n,n))
@@ -16,4 +15,4 @@ model = Model(ToQUBO.Optimizer)
 
 optimize!(model)
 
-Q, α, β = Anneal.qubo(model)
+Q, α, β = ToQUBO.qubo(unsafe_backend(model))
