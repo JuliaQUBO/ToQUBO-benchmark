@@ -3,35 +3,42 @@ import time
 import numpy as np
 import pandas as pd
 
-def tsp(n_city):
+import time
+import qubovert as qv
+
+def tsp(n: int, lam:float = 5.0):
     t0 = time.time()
-    x = []
-
-    x = [[qv.boolean_var(f"x[{i},{j}]") for j in range(n_city)] for i in range(n_city)] 
-
+   
+    # Create Model
     model = 0
 
-    # add objective function
-    for i in range(n_city):
-        for j in range(n_city):
-            for k in range(n_city):
-                d_ij = 10
-                model += d_ij * x[k][i] * x[(k + 1) % n_city][j]
+    # Add variables
+    x = [[qv.boolean_var(f"x[{i},{j}]") for j in range(n)] for i in range(n)]
+
+    # Distance Matrix
+    D = [[10.0 for _ in range(n)] for _ in range(n)]
+
+    # Add objective function
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                model += D[i][j] * x[k][i] * x[(k + 1) % n][j]
     
-    # add constraints
-    for i in range(n_city):
-        model.add_constraint_lt_zero(sum(x[i]) - 1, lam=1)
-        temp_sum = 0
-        for j in range(n_city):
-            temp_sum += x[j][i]
-        model.add_constraint_lt_zero(temp_sum -1, lam=1)
+    # Add constraints
+    for i in range(n):
+        model.add_constraint_eq_zero(sum(x[i][j] for j in range(n)) - 1, lam=lam)
+
+    for j in range(n):
+        model.add_constraint_eq_zero(sum(x[i][j] for i in range(n)) - 1, lam=lam)
 
     t1 = time.time()
-    qubo = model.to_qubo()
-    t2 = time.time()
-    # print(qubo)
-    return t1-t0, t2-t1
 
+    # Convert to QUBO
+    qubo = model.to_qubo()
+    
+    t2 = time.time()
+
+    return t1-t0, t2-t1
 
 def measure(init_size, max_size, step):
     results = {"n_var":[], "time":[]}
