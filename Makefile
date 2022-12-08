@@ -48,6 +48,11 @@ run:
 	$(PYTHON-PIP) install -r ./benchmark/pyqubo_040/requirements.txt
 	$(PYTHON) ./benchmark/pyqubo_040/tsp.py
 
+	virtualenv ./benchmark/qubovert
+	source ./benchmark/qubovert/$(VENV-SCRIPT)
+	$(PYTHON-PIP) install -r ./benchmark/qubovert/requirements.txt
+	$(PYTHON) ./benchmark/qubovert/tsp.py
+
 plot:
 	virtualenv ./benchmark/plots
 	source ./benchmark/plots/bin/activate
