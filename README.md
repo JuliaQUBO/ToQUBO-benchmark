@@ -4,29 +4,14 @@ Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
 
 
 ## Setup
-### ToQUBO 
-Initialize the Julia environments as follows:
-``` ps
-$ julia --project=. -e "import Pkg; Pkg.instantiate()" 
-$ julia --project=. benchmark/ToQUBO/create_sysimage.jl
-``` 
-
-
-### PyQUBO
-To run PyQUBO experiments you first need to install [virtualenv](https://github.com/pypa/virtualenv):
-``` ps
-$ pip install virtualenv
-``` 
-
-
-
-
+```
+make install
+```
 
 ## Run benchmark experiments
 
-### ToQUBO
-``` ps
-$ julia --project=. --sysimage .\benchmark\ToQUBO\sysimage .\benchmark\ToQUBO\tsp.jl --run
+```
+make run
 ```
 
 ### PyQUBO
@@ -57,7 +42,6 @@ $ deactivate
 
 ## Visualize benchmark results
 The results are saved on `.csv` files, present in the folders for each experiment. To visualize them, do the following:
-``` ps
-$ python .\benchmark\plot.py
 ```
-Note: to plot our graph, we use `matplotlib`, `pandas` and `scienceplots`
+make plot
+```
