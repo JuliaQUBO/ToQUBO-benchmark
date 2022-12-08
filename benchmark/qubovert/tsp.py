@@ -6,9 +6,9 @@ import pandas as pd
 def tsp(n_city):
     t0 = time.time()
     x = []
-    for i in range(n_city):
-        x += [[qv.boolean_var('x('+str(i)+','+str(j) + ')') for j in range(n_city)]]
-   
+
+    x = [[qv.boolean_var(f"x[{i},{j}]") for j in range(n_city)] for i in range(n_city)] 
+
     model = 0
 
     # add objective function
@@ -20,11 +20,11 @@ def tsp(n_city):
     
     # add constraints
     for i in range(n_city):
-        model.add_constraint_lt_zero(sum(x[i]) - 1, lam=5)
+        model.add_constraint_lt_zero(sum(x[i]) - 1, lam=1)
         temp_sum = 0
         for j in range(n_city):
             temp_sum += x[j][i]
-        model.add_constraint_lt_zero(temp_sum -1, lam=5)
+        model.add_constraint_lt_zero(temp_sum -1, lam=1)
 
     t1 = time.time()
     qubo = model.to_qubo()
