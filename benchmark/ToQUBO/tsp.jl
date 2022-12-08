@@ -32,7 +32,7 @@ end
 
 function measure(initial_size::Int, max_size::Int, step::Int)
     results = []
-    # tsp(2) # avoid time-to-first-solve
+    tsp(2) # avoid time-to-first-solve
     for n in initial_size:step:max_size
         t₀, t₁ = tsp(n; clear_gc=true)
         println("Variables: $(n*n)")
