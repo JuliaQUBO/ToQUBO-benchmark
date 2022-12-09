@@ -19,10 +19,6 @@ jobs:
             arch: x64
     steps:
     - uses: actions/checkout@v3
-    - uses: julia-actions/setup-julia@v1
-      with:
-        version: ${{ matrix.version }}
-        arch: ${{ matrix.arch }}
     - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
@@ -37,8 +33,8 @@ jobs:
         git config --global user.name "GitHub Actions";
         git config --global user.email "suporte@psr-inc.com";
         git add -f
-          ./benchmark/benchmark.png
-          ./benchmark/toqubo.png;
+        ./benchmark/benchmark.png
+        ./benchmark/toqubo.png;
         git commit -m "Save Benchmark Plots [actions]";
         git push;
         
