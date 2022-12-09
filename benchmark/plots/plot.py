@@ -16,18 +16,6 @@ def plot_benchmark():
     plt.style.use(['science','no-latex'])
 
     plt.plot(
-        pyqubo_040_data["n_var"],
-        pyqubo_040_data["time"],
-        label = "PyQUBO 0.4.0",
-        marker='o'
-    )
-    plt.plot(
-        pyqubo_current_data["n_var"],
-        pyqubo_current_data["time"],
-        label = "PyQUBO 1.3.1",
-        marker='o'
-    )
-    plt.plot(
         toqubo_data["n_var"],
         toqubo_data["time"],
         label = "ToQUBO 0.1.3",
@@ -37,6 +25,18 @@ def plot_benchmark():
         toqubo_data["n_var"],
         toqubo_data["toqubo_time"],
         label = "ToQUBO* 0.1.3",
+        marker='o'
+    )
+    plt.plot(
+        pyqubo_040_data["n_var"],
+        pyqubo_040_data["time"],
+        label = "PyQUBO 0.4.0",
+        marker='o'
+    )
+    plt.plot(
+        pyqubo_current_data["n_var"],
+        pyqubo_current_data["time"],
+        label = "PyQUBO 1.3.1",
         marker='o'
     )
     plt.plot(
