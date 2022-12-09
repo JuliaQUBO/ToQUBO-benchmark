@@ -33,7 +33,7 @@ jobs:
     - name: Save Plots
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
-      run: |
+      run: >
         git config --global user.name "GitHub Actions";
         git config --global user.email "suporte@psr-inc.com";
         git add -f
