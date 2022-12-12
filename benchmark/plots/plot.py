@@ -13,7 +13,7 @@ def plot_benchmark():
 
     plt.figure(figsize = (5,4))
 
-    plt.style.use(['science','no-latex'])
+    plt.style.use(['science', 'no-latex'])
 
     plt.plot(
         toqubo_data["n_var"],
@@ -52,7 +52,8 @@ def plot_benchmark():
     plt.ylabel("Execution Time (sec)")
     plt.grid(True)
     plt.legend()
-    plt.savefig(BASE_PATH.joinpath('benchmark.png'))
+
+    plt.savefig(str(BASE_PATH.joinpath("benchmark.pdf")))
 
     return None
 
@@ -61,7 +62,7 @@ def plot_toqubo():
 
     plt.figure(figsize = (5,4))
 
-    plt.style.use(['science','no-latex'])
+    plt.style.use(['science', 'no-latex'])
 
     plt.plot(toqubo_data["n_var"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
     plt.plot(toqubo_data["n_var"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
@@ -71,7 +72,8 @@ def plot_toqubo():
     plt.ylabel("Execution Time (sec)")
     plt.grid(True)
     plt.legend()
-    plt.savefig(BASE_PATH.joinpath('toqubo.png'))
+
+    plt.savefig(str(BASE_PATH.joinpath("toqubo.pdf")))
 
     return None
 

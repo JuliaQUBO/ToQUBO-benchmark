@@ -9,17 +9,20 @@ ifeq ($(OSNAME), Windows)
 	PYTHON      := python
 	PYTHON-PIP  := pip
 	SYSIMAGE    := sysimage.dll
-	VENV-SCRIPT := Scripts/activate
+	VENV-SCRIPT := Scripts/activate.bat
+	VENV-CMD    := 
 else ifeq ($(OSNAME), Darwin) # OSX
 	PYTHON      := python3
 	PYTHON-PIP  := pip3
 	SYSIMAGE    := sysimage.dylib
 	VENV-SCRIPT := bin/activate
+	VENV-CMD    := source
 else
 	PYTHON      := python3
 	PYTHON-PIP  := pip3
 	SYSIMAGE    := sysimage
 	VENV-SCRIPT := bin/activate
+	VENV-CMD    := source
 endif
 
 SHELL         := /bin/bash
@@ -45,25 +48,25 @@ run-toqubo:
 
 run-pyqubo:
 	virtualenv ./benchmark/pyqubo
-	source ./benchmark/pyqubo/$(VENV-SCRIPT)
+	$(VENV-CMD) ./benchmark/pyqubo/$(VENV-SCRIPT)
 	$(PYTHON-PIP) install -r ./benchmark/pyqubo/requirements.txt
 	$(PYTHON) ./benchmark/pyqubo/tsp.py
 
 run-toqubo-040:
 	virtualenv ./benchmark/pyqubo_040
-	source ./benchmark/pyqubo_040/$(VENV-SCRIPT)
+	$(VENV-CMD) ./benchmark/pyqubo_040/$(VENV-SCRIPT)
 	$(PYTHON-PIP) install -r ./benchmark/pyqubo_040/requirements.txt
 	$(PYTHON) ./benchmark/pyqubo_040/tsp.py
 
 run-qubovert:
 	virtualenv ./benchmark/qubovert
-	source ./benchmark/qubovert/$(VENV-SCRIPT)
+	$(VENV-CMD) ./benchmark/qubovert/$(VENV-SCRIPT)
 	$(PYTHON-PIP) install -r ./benchmark/qubovert/requirements.txt
 	$(PYTHON) ./benchmark/qubovert/tsp.py
 
 plot: install-venv
 	virtualenv ./benchmark/plots
-	source ./benchmark/plots/bin/activate
+	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
 	$(PYTHON-PIP) install -r ./benchmark/plots/requirements.txt
 	$(PYTHON) ./benchmark/plots/plot.py
 
