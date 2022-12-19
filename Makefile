@@ -50,7 +50,7 @@ setup-plot-venv:
 
 setup-plot: setup-plot-venv
 
-run: run-toqubo run-pyqubo run-pyqubo-040 run-qubovert
+run: run-pyqubo run-pyqubo-040 run-qubovert run-toqubo
 
 run-toqubo:
 	julia --project=. --sysimage ./benchmark/ToQUBO/$(SYSIMAGE) ./benchmark/ToQUBO/tsp.jl --run
