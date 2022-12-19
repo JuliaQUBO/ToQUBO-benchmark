@@ -10,7 +10,7 @@ TOQUBO_BRANCH := master
 
 all: install setup run
 
-install: install-toqubo install-venv
+install: install-toqubo install-venv setup
 	
 install-toqubo:
 	julia --proj -e 'import Pkg; Pkg.add(Pkg.PackageSpec(url="https://github.com/psrenergy/ToQUBO.jl.git", rev="$(TOQUBO_BRANCH)")); Pkg.instantiate()'
@@ -22,7 +22,7 @@ install-venv:
 install-latex:
 	sudo apt install texlive texlive-latex-extra cm-super dvipng
 
-install-plot: install-venv install-latex setup-plot-venv
+install-plot: install-venv install-latex setup-plot
 
 setup: setup-venv
 
@@ -48,6 +48,8 @@ setup-plot-venv:
 	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
 	$(PYTHON-PIP) install -r ./benchmark/plots/requirements.txt
 
+setup-plot: setup-plot-venv
+
 run: run-toqubo run-pyqubo run-pyqubo-040 run-qubovert
 
 run-toqubo:
@@ -65,7 +67,7 @@ run-qubovert:
 	$(VENV-CMD) ./benchmark/qubovert/$(VENV-SCRIPT)
 	$(PYTHON) ./benchmark/qubovert/tsp.py
 
-plot: 
+plot: install-plot
 	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
 	$(PYTHON) ./benchmark/plots/plot.py
 
