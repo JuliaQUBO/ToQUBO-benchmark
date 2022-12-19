@@ -44,7 +44,7 @@ def tsp(n_city):
     
     # Construct hamiltonian
     A = Placeholder("A")
-    H = distance
+    H = distance + A * (city_const + time_const)
 
     feed_dict["A"] = 1.0
 
