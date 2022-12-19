@@ -5,6 +5,10 @@ from pathlib import Path
 
 BASE_PATH = Path.cwd().joinpath("benchmark")
 
+plt.rcParams.update({
+    "text.usetex" : True
+})
+
 def plot_benchmark():
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , "tsp_ToQUBO.csv"))
     pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , "tsp_pyqubo.csv"))
@@ -13,7 +17,7 @@ def plot_benchmark():
 
     plt.figure(figsize = (5,4))
 
-    plt.style.use(['science', 'no-latex'])
+    plt.style.use(['science'])
 
     plt.plot(
         toqubo_data["n_var"],
@@ -24,7 +28,7 @@ def plot_benchmark():
     plt.plot(
         toqubo_data["n_var"],
         toqubo_data["toqubo_time"],
-        label = "ToQUBO* 0.1.3",
+        label = r"ToQUBO$^\dagger$ 0.1.3",
         marker='o'
     )
     plt.plot(
@@ -48,8 +52,8 @@ def plot_benchmark():
 
     plt.xscale('symlog')
     plt.yscale('symlog')
-    plt.xlabel("#variables")
-    plt.ylabel("Execution Time (sec)")
+    plt.xlabel(r"\#variables")
+    plt.ylabel("Building Time (sec)")
     plt.grid(True)
     plt.legend()
 
@@ -62,14 +66,14 @@ def plot_toqubo():
 
     plt.figure(figsize = (5,4))
 
-    plt.style.use(['science', 'no-latex'])
+    plt.style.use(['science'])
 
     plt.plot(toqubo_data["n_var"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
     plt.plot(toqubo_data["n_var"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
     plt.xscale('symlog')
     plt.yscale('symlog')
-    plt.xlabel("#variables")
-    plt.ylabel("Execution Time (sec)")
+    plt.xlabel(r"\#variables")
+    plt.ylabel("Running Time (sec)")
     plt.grid(True)
     plt.legend()
 

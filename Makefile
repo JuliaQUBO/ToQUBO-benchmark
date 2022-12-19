@@ -1,36 +1,14 @@
-# Detect OS
-ifeq ($(OS), Windows_NT)
-	OSNAME := Windows
-else
-	OSNAME := $(shell uname)
-endif
-
-ifeq ($(OSNAME), Windows)
-	PYTHON      := python
-	PYTHON-PIP  := pip
-	SYSIMAGE    := sysimage.dll
-	VENV-SCRIPT := Scripts/activate.bat
-	VENV-CMD    := 
-else ifeq ($(OSNAME), Darwin) # OSX
-	PYTHON      := python3
-	PYTHON-PIP  := pip3
-	SYSIMAGE    := sysimage.dylib
-	VENV-SCRIPT := bin/activate
-	VENV-CMD    := source
-else
-	PYTHON      := python3
-	PYTHON-PIP  := pip3
-	SYSIMAGE    := sysimage
-	VENV-SCRIPT := bin/activate
-	VENV-CMD    := source
-endif
-
+PYTHON        := python3
+PYTHON-PIP    := pip3
+SYSIMAGE      := sysimage
+VENV-SCRIPT   := bin/activate
+VENV-CMD      := source
 SHELL         := /bin/bash
 TOQUBO_BRANCH := master
 
 .PHONY: run perf plot
 
-all: install run
+all: install setup run
 
 install: install-toqubo install-venv
 	
@@ -41,33 +19,54 @@ install-toqubo:
 install-venv:
 	$(PYTHON-PIP) install virtualenv
 
-run: run-toqubo run-pyqubo run-toqubo-040 run-qubovert
+install-latex:
+	sudo apt install texlive texlive-latex-extra cm-super dvipng
+
+install-plot: install-venv install-latex setup-plot-venv
+
+setup: setup-venv
+
+setup-venv: setup-pyqubo-venv setup-pyqubo-040-venv setup-qubovert-venv
+
+setup-pyqubo-venv:
+	virtualenv ./benchmark/pyqubo
+	$(VENV-CMD) ./benchmark/pyqubo/$(VENV-SCRIPT)
+	$(PYTHON-PIP) install -r ./benchmark/pyqubo/requirements.txt
+
+setup-pyqubo-040-venv:
+	virtualenv ./benchmark/pyqubo_040
+	$(VENV-CMD) ./benchmark/pyqubo_040/$(VENV-SCRIPT)
+	$(PYTHON-PIP) install -r ./benchmark/pyqubo_040/requirements.txt
+
+setup-qubovert-venv:
+	virtualenv ./benchmark/qubovert
+	$(VENV-CMD) ./benchmark/qubovert/$(VENV-SCRIPT)
+	$(PYTHON-PIP) install -r ./benchmark/qubovert/requirements.txt
+
+setup-plot-venv:
+	virtualenv ./benchmark/plots
+	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
+	$(PYTHON-PIP) install -r ./benchmark/plots/requirements.txt
+
+run: run-toqubo run-pyqubo run-pyqubo-040 run-qubovert
 
 run-toqubo:
 	julia --project=. --sysimage ./benchmark/ToQUBO/$(SYSIMAGE) ./benchmark/ToQUBO/tsp.jl --run
 
 run-pyqubo:
-	virtualenv ./benchmark/pyqubo
 	$(VENV-CMD) ./benchmark/pyqubo/$(VENV-SCRIPT)
-	$(PYTHON-PIP) install -r ./benchmark/pyqubo/requirements.txt
 	$(PYTHON) ./benchmark/pyqubo/tsp.py
 
-run-toqubo-040:
-	virtualenv ./benchmark/pyqubo_040
+run-pyqubo-040:
 	$(VENV-CMD) ./benchmark/pyqubo_040/$(VENV-SCRIPT)
-	$(PYTHON-PIP) install -r ./benchmark/pyqubo_040/requirements.txt
 	$(PYTHON) ./benchmark/pyqubo_040/tsp.py
 
 run-qubovert:
-	virtualenv ./benchmark/qubovert
 	$(VENV-CMD) ./benchmark/qubovert/$(VENV-SCRIPT)
-	$(PYTHON-PIP) install -r ./benchmark/qubovert/requirements.txt
 	$(PYTHON) ./benchmark/qubovert/tsp.py
 
-plot: install-venv
-	virtualenv ./benchmark/plots
+plot: 
 	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
-	$(PYTHON-PIP) install -r ./benchmark/plots/requirements.txt
 	$(PYTHON) ./benchmark/plots/plot.py
 
 perf:
