@@ -1,22 +1,22 @@
-import qubovert as qv
 import time
-import numpy as np
-import pandas as pd
+import pandas   as pd
+import numpy    as np
+import qubovert as qv
+from pathlib import Path
 
-import time
-import qubovert as qv
+__DIR__ = Path(__file__).parent
 
 def tsp(n: int, lam:float = 5.0):
-    t0 = time.time()
-   
+    # Problem Data
+    D = 10.0 * np.ones((n, n), dtype=float)
+
     # Create Model
-    model = 0
+    t0 = time.time()
+    
+    model = 0.0
 
     # Add variables
     x = [[qv.boolean_var(f"x[{i},{j}]") for j in range(n)] for i in range(n)]
-
-    # Distance Matrix
-    D = [[10.0 for _ in range(n)] for _ in range(n)]
 
     # Add objective function
     for i in range(n):
@@ -31,27 +31,39 @@ def tsp(n: int, lam:float = 5.0):
     for j in range(n):
         model.add_constraint_eq_zero(sum(x[i][j] for i in range(n)) - 1, lam=lam)
 
-    t1 = time.time()
-
     # Convert to QUBO
+    t1 = time.time()
+    
     qubo = model.to_qubo()
     
+    # Stop the count!
     t2 = time.time()
 
     return t1-t0, t2-t1
 
-def measure(init_size, max_size, step):
-    results = {"n_var":[], "time":[]}
-    for n in range(init_size, max_size+step, step):
-        model_time, to_qubo_time = tsp(n)
-        print("Variables: ", n*n)
-        print("Model: ", model_time)
-        print("Convert to QUBO: ", to_qubo_time)
-        print("Total elapsed time: ", model_time + to_qubo_time)
-        print("----------")
-        results["n_var"] += [n*n]
-        results["time"] += [model_time + to_qubo_time]
-    df = pd.DataFrame(results)
-    df.to_csv("./benchmark/qubovert/tsp_qubovert.csv", index = False)
+def main(init_size, max_size, step):
+    results = {"nvar":[], "time":[]}
 
-measure(5,100,5)
+    for n in range(init_size, max_size+step, step):
+        model_time, convert_time = tsp(n)
+        total_time = model_time + convert_time
+
+        print(
+f"""\
+-----------------------------
+Variables: {n * n} ({n} sites)
+Model & Compilation.. {model_time:7.3f}
+Conversion........... {convert_time:7.3f}
+Total elapsed time... {total_time:7.3f}
+""",
+flush = True
+        )
+
+        results["nvar"].append(n * n)
+        results["time"].append(total_time)
+
+    df = pd.DataFrame(results)
+    df.to_csv(__DIR__.joinpath("results.csv"), index = False)
+
+if __name__ == '__main__':
+    main(5, 100, 5)
