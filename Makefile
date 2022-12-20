@@ -54,7 +54,11 @@ pyqubo-040:
 	@echo "Running PyQUBO (v0.4.0)"
 	@$(PYTHON) ./benchmark/pyqubo_040/tsp.py
 
-plot: install-plot
+plot: install-plot draw-plot
+
+install-plot: install-venv install-latex
+
+draw-plot:
 	@echo "Installing Plot Tools"
 	@$(VENV-CMD) ./benchmark/plots
 	@$(SOURCE-CMD) ./benchmark/plots/$(VENV-SCRIPT)
@@ -62,8 +66,6 @@ plot: install-plot
 
 	@echo "Drawing Plots"
 	@$(PYTHON) ./benchmark/plots/plot.py
-
-install-plot: install-venv install-latex
 
 install-venv:
 	$(PYTHON-PIP) install virtualenv

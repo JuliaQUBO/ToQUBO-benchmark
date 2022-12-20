@@ -19,12 +19,6 @@ def plot_benchmark():
 
     plt.style.use(['science'])
 
-    plt.plot(
-        toqubo_data["nvar"],
-        toqubo_data["time"],
-        label = "ToQUBO 0.1.4",
-        marker='o'
-    )
     # plt.plot(
     #     toqubo_data["nvar"],
     #     toqubo_data["toqubo_time"],
@@ -34,28 +28,46 @@ def plot_benchmark():
     plt.plot(
         pyqubo_040_data["nvar"],
         pyqubo_040_data["time"],
-        label = "PyQUBO 0.4.0",
-        marker='o'
-    )
-    plt.plot(
-        pyqubo_current_data["nvar"],
-        pyqubo_current_data["time"],
-        label = "PyQUBO 1.4.0",
-        marker='o'
+        label  = r"\texttt{PyQUBO 0.4.0}",
+        color  = "#2a838a", # PSRLIGHTGREEN
+        marker = 'o',
     )
     plt.plot(
         qubovert_data["nvar"],
         qubovert_data["time"],
-        label = "qubovert 1.2.5",
-        marker='o'
+        label  = r"\texttt{qubovert 1.2.5}",
+        color  = "#546670", # PSRGRAY
+        marker ='o',
+    )
+    plt.plot(
+        pyqubo_current_data["nvar"],
+        pyqubo_current_data["time"],
+        label  = r"\texttt{PyQUBO 1.4.0}",
+        color  = "#002846", # PSRBLUE
+        marker ='o',
+    )
+    plt.plot(
+        toqubo_data["nvar"],
+        toqubo_data["time"],
+        label  = r"\texttt{ToQUBO.jl 0.1.4}",
+        color  ="#a49375", # PSRGOLD
+        marker ='o',
     )
 
     plt.xscale('symlog')
     plt.yscale('symlog')
-    plt.xlabel(r"\#variables")
+    plt.xlabel(r"\texttt{\#variables}")
     plt.ylabel("Building Time (sec)")
     plt.grid(True)
-    plt.legend()
+
+    # Reorder Legend
+    handles, labels = plt.gca().get_legend_handles_labels()
+    legend_order    = [3,2,0,1]
+
+    plt.legend(
+        [handles[i] for i in legend_order],
+        [labels[i]  for i in legend_order],
+    )
 
     plt.savefig(str(BASE_PATH.joinpath("benchmark.pdf")))
 
