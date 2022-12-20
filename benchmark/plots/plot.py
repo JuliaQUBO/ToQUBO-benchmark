@@ -20,31 +20,31 @@ def plot_benchmark():
     plt.style.use(['science'])
 
     plt.plot(
-        toqubo_data["n_var"],
+        toqubo_data["nvar"],
         toqubo_data["time"],
         label = "ToQUBO 0.1.4",
         marker='o'
     )
     plt.plot(
-        toqubo_data["n_var"],
+        toqubo_data["nvar"],
         toqubo_data["toqubo_time"],
         label = r"ToQUBO$^\dagger$ 0.1.4",
         marker='o'
     )
     plt.plot(
-        pyqubo_040_data["n_var"],
+        pyqubo_040_data["nvar"],
         pyqubo_040_data["time"],
         label = "PyQUBO 0.4.0",
         marker='o'
     )
     plt.plot(
-        pyqubo_current_data["n_var"],
+        pyqubo_current_data["nvar"],
         pyqubo_current_data["time"],
         label = "PyQUBO 1.4.0",
         marker='o'
     )
     plt.plot(
-        qubovert_data["n_var"],
+        qubovert_data["nvar"],
         qubovert_data["time"],
         label = "qubovert 1.2.5",
         marker='o'
@@ -68,8 +68,8 @@ def plot_toqubo():
 
     plt.style.use(['science'])
 
-    plt.plot(toqubo_data["n_var"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
-    plt.plot(toqubo_data["n_var"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
+    plt.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
+    plt.plot(toqubo_data["nvar"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
     plt.xscale('symlog')
     plt.yscale('symlog')
     plt.xlabel(r"\#variables")

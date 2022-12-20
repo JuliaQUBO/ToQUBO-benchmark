@@ -6,60 +6,55 @@ from pathlib import Path
 
 __DIR__ = Path(__file__).parent
 
-def tsp(n_city):
+def tsp(n):
+    # Problem Data
+    D = 10.0 * np.ones((n, n), dtype=float)
+
+    # Create Model
     t0 = time.time()
-    x = Array.create('c', (n_city, n_city), 'BINARY')
-    use_for_loop=False
+    x  = Array.create('c', (n, n), 'BINARY')
 
     # Constraint not to visit more than two cities at the same time.
     time_const = 0.0
-    for i in range(n_city):
+    for i in range(n):
         # If you wrap the hamiltonian by Const(...), this part is recognized as constraint
-        time_const += Constraint((sum(x[i, j] for j in range(n_city)) - 1)**2, label="time{}".format(i))
+        time_const += Constraint((sum(x[i,j] for j in range(n)) - 1)**2, label="time{}".format(i))
 
     # Constraint not to visit the same city more than twice.
     city_const = 0.0
-    for j in range(n_city):
-        city_const += Constraint((sum(x[i, j] for i in range(n_city)) - 1)**2, label="city{}".format(j))
+    for j in range(n):
+        city_const += Constraint((sum(x[i,j] for i in range(n)) - 1)**2, label="city{}".format(j))
 
-    # distance of route
-    feed_dict = {}
-    
-    if use_for_loop:
-        distance = 0.0
-        for i in range(n_city):
-            for j in range(n_city):
-                for k in range(n_city):
-                    # we set the constant distance
-                    d_ij = 10
-                    distance += d_ij * x[k, i] * x[(k + 1) % n_city, j]
-                
-    else:
-        distance = []
-        for i in range(n_city):
-            for j in range(n_city):
-                for k in range(n_city):
-                    # we set the constant distance
-                    d_ij = 10
-                    distance.append(d_ij * x[k, i] * x[(k + 1) % n_city, j])
-        distance = sum(distance)
-
-    print("express done")
+    # Objective Value
+    distance = sum(
+        D[i,j] * x[k,i] * x[(k+1)%n,j]
+        for i in range(n)
+        for j in range(n)
+        for k in range(n)
+    )
     
     # Construct hamiltonian
-    A = Placeholder("A")
-    H = distance
+    # A = Placeholder("A") 
+    # NOTE: Using a placeholder is not working on Linux!
+    A = 2.0 
+    H = distance + A * (time_const + city_const)
 
-    feed_dict["A"] = 1.0
+    # Also, no need for passing a value for "A" as in
+    # feed_dict = {"A":  2.0}
+    feed_dict = {}
 
-    # Compile model
+    # Compile Model
     t1 = time.time()
-    model = H.compile()
-    t2 = time.time()
-    qubo, offset = model.to_qubo(index_label=False, feed_dict=feed_dict)
-    t3 = time.time()
 
-    print("len(qubo)", len(qubo))
+    model = H.compile()
+
+    # Translate to QUBO
+    t2 = time.time()
+
+    qubo, offset = model.to_qubo(feed_dict=feed_dict)
+
+    # Stop the count!
+    t3 = time.time()
 
     return t1-t0, t2-t1, t3-t2
 

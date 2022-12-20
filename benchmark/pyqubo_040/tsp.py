@@ -1,5 +1,6 @@
 import time
 import pandas as pd
+import numpy  as np
 from pyqubo  import Array, Constraint, Placeholder
 from pathlib import Path
 
@@ -7,7 +8,7 @@ __DIR__ = Path(__file__).parent
 
 def tsp(n):
     # Problem Data
-    D  = [[10.0 for j in range(n)] for i in range(n)]
+    D = 10.0 * np.ones((n, n), dtype=float)
 
     # Create Model
     t0 = time.time()
@@ -26,7 +27,7 @@ def tsp(n):
 
     # Objective Value
     distance = sum(
-        D[i][j] * x[k, i] * x[(k+1)%n,j]
+        D[i,j] * x[k,i] * x[(k+1)%n,j]
         for i in range(n)
         for j in range(n)
         for k in range(n)
@@ -58,25 +59,25 @@ def tsp(n):
     return t1-t0, t2-t1, t3-t2
 
 def main(init_size, max_size, step):
-    results = {"n_var":[], "time":[]}
+    results = {"nvar":[], "time":[]}
 
     for n in range(init_size, max_size+step, step):
-        model_time, compiler_time, to_qubo_time = tsp(n)
-        total_time = model_time + compiler_time + to_qubo_time
+        model_time, compiler_time, convert_time = tsp(n)
+        total_time = model_time + compiler_time + convert_time
 
         print(
-            f"""
-            -------------------------------------
-            Variables: {n * n}
-            Model................ {model_time}
-            Compilation.......... {compiler_time}
-            Conversion........... {to_qubo_time}
-            Total elapsed time... {total_time}
-            """,
-            flush = True
+f"""\
+-----------------------------
+Variables: {n * n} ({n} sites)
+Model................ {model_time:7.3f}
+Compilation.......... {compiler_time:7.3f}
+Conversion........... {convert_time:7.3f}
+Total elapsed time... {total_time:7.3f}
+""",
+flush = True
         )
 
-        results["n_var"].append(n * n)
+        results["nvar"].append(n * n)
         results["time"].append(total_time)
 
     df = pd.DataFrame(results)

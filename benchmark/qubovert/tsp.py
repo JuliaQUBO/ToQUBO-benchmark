@@ -45,15 +45,14 @@ def main(init_size, max_size, step):
     results = {"nvar":[], "time":[]}
 
     for n in range(init_size, max_size+step, step):
-        model_time, compiler_time, convert_time = tsp(n)
-        total_time = model_time + compiler_time + convert_time
+        model_time, convert_time = tsp(n)
+        total_time = model_time + convert_time
 
         print(
 f"""\
 -----------------------------
 Variables: {n * n} ({n} sites)
-Model................ {model_time:7.3f}
-Compilation.......... {compiler_time:7.3f}
+Model & Compilation.. {model_time:7.3f}
 Conversion........... {convert_time:7.3f}
 Total elapsed time... {total_time:7.3f}
 """,
