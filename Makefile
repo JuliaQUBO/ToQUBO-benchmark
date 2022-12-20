@@ -67,7 +67,7 @@ run-qubovert:
 	$(VENV-CMD) ./benchmark/qubovert/$(VENV-SCRIPT)
 	$(PYTHON) ./benchmark/qubovert/tsp.py
 
-plot: install-plot
+plot:
 	$(VENV-CMD) ./benchmark/plots/$(VENV-SCRIPT)
 	$(PYTHON) ./benchmark/plots/plot.py
 

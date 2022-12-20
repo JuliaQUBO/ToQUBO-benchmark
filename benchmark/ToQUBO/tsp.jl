@@ -1,6 +1,7 @@
 using CSV
 using JuMP
 using ToQUBO
+using Printf
 
 function tsp(n::Int; clear_gc::Bool = false)
     clear_gc && GC.gc()
@@ -9,7 +10,7 @@ function tsp(n::Int; clear_gc::Bool = false)
     D = fill(10, (n,n))
 
     # Build Model
-    t₀ = @timed(begin
+    t₀ = @timed begin
         model = Model(ToQUBO.Optimizer)
 
         @variable(model, x[1:n, 1:n], Bin, Symmetric)
@@ -18,17 +19,17 @@ function tsp(n::Int; clear_gc::Bool = false)
         @constraint(model, [j in 1:n], sum(x[:,j]) == 1)
 
         @objective(model, Min, sum(D[i,j] * x[i,k] * x[j, (k % n)+1] for i = 1:n , j = 1:n, k = 1:n))
-    end).time
+    end
 
     clear_gc && GC.gc()
 
     # Compile Model
-    t₁ = @timed(optimize!(model)).time
+    t₁ = @timed optimize!(model)
 
     # Convert to QUBO
-    t₂ = @timed(Q, α, β = ToQUBO.qubo(unsafe_backend(model))).time
+    t₂ = @timed Q, α, β = ToQUBO.qubo(unsafe_backend(model))
 
-    return t₀, t₁, t₂
+    return t₀.time, t₁.time, t₂.time
 end
 
 function main(initial_size::Int, max_size::Int, step::Int)
@@ -40,22 +41,23 @@ function main(initial_size::Int, max_size::Int, step::Int)
         t₀, t₁, t₂ = tsp(n; clear_gc=true)
         tₜ = t₀ + t₁ + t₂
 
-        println(
+        @printf(
             """
-            -------------------------------------
-            Variables: $(n * n)
-            Model................ $(t₀)
-            Compilation.......... $(t₁)
-            Conversion........... $(t₂)
-            Total elapsed time... $(tₜ)
-            """
+            -----------------------------
+            Variables: %d (%d sites)
+            Model................ %7.3f
+            Compilation.......... %7.3f
+            Conversion........... %7.3f
+            Total elapsed time... %7.3f
+            """,
+            n * n, n, t₀, t₁, t₂, tₜ,
         )
 
         push!(results, (n * n, tₜ, t₀, t₁ + t₂))
     end
 
     csv_path = joinpath(@__DIR__, "results.csv")
-    CSV.write(csv_path, sort(collect(results)), header = ["n_var","time","jump_time","toqubo_time"])
+    CSV.write(csv_path, sort(collect(results)), header = ["nvar","time","jump_time","toqubo_time"])
 end
 
 main(5,100,5)

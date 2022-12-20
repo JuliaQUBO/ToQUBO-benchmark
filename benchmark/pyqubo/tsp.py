@@ -1,82 +1,88 @@
 import time
 import pandas as pd
+import numpy  as np
 from pyqubo  import Array, Constraint, Placeholder
 from pathlib import Path
 
 __DIR__ = Path(__file__).parent
 
-def tsp(n):
-    # Problem Data
-    D  = [[10.0 for j in range(n)] for i in range(n)]
-
-    # Create Model
+def tsp(n_city):
     t0 = time.time()
-    x  = Array.create('c', (n, n), 'BINARY')
+    x = Array.create('c', (n_city, n_city), 'BINARY')
+    use_for_loop=False
 
     # Constraint not to visit more than two cities at the same time.
     time_const = 0.0
-    for i in range(n):
+    for i in range(n_city):
         # If you wrap the hamiltonian by Const(...), this part is recognized as constraint
-        time_const += Constraint((sum(x[i,j] for j in range(n)) - 1)**2, label="time{}".format(i))
+        time_const += Constraint((sum(x[i, j] for j in range(n_city)) - 1)**2, label="time{}".format(i))
 
     # Constraint not to visit the same city more than twice.
     city_const = 0.0
-    for j in range(n):
-        city_const += Constraint((sum(x[i,j] for i in range(n)) - 1)**2, label="city{}".format(j))
+    for j in range(n_city):
+        city_const += Constraint((sum(x[i, j] for i in range(n_city)) - 1)**2, label="city{}".format(j))
 
-    # Objective Value
-    distance = sum(
-        D[i][j] * x[k, i] * x[(k+1)%n,j]
-        for i in range(n)
-        for j in range(n)
-        for k in range(n)
-    )
+    # distance of route
+    feed_dict = {}
+    
+    if use_for_loop:
+        distance = 0.0
+        for i in range(n_city):
+            for j in range(n_city):
+                for k in range(n_city):
+                    # we set the constant distance
+                    d_ij = 10
+                    distance += d_ij * x[k, i] * x[(k + 1) % n_city, j]
+                
+    else:
+        distance = []
+        for i in range(n_city):
+            for j in range(n_city):
+                for k in range(n_city):
+                    # we set the constant distance
+                    d_ij = 10
+                    distance.append(d_ij * x[k, i] * x[(k + 1) % n_city, j])
+        distance = sum(distance)
+
+    print("express done")
     
     # Construct hamiltonian
-    # A = Placeholder("A") 
-    # NOTE: Using a placeholder is not working on Linux!
-    A = 2.0 
-    H = distance + A * (time_const + city_const)
+    A = Placeholder("A")
+    H = distance
 
-    # Also, no need for passing a value for "A" as in
-    # feed_dict = {"A":  2.0}
-    feed_dict = {}
+    feed_dict["A"] = 1.0
 
-    # Compile Model
+    # Compile model
     t1 = time.time()
-
     model = H.compile()
-
-    # Translate to QUBO
     t2 = time.time()
-
-    qubo, offset = model.to_qubo(feed_dict=feed_dict)
-
-    # Stop the count!
+    qubo, offset = model.to_qubo(index_label=False, feed_dict=feed_dict)
     t3 = time.time()
+
+    print("len(qubo)", len(qubo))
 
     return t1-t0, t2-t1, t3-t2
 
 def main(init_size, max_size, step):
-    results = {"n_var":[], "time":[]}
+    results = {"nvar":[], "time":[]}
 
     for n in range(init_size, max_size+step, step):
-        model_time, compiler_time, to_qubo_time = tsp(n)
-        total_time = model_time + compiler_time + to_qubo_time
+        model_time, compiler_time, convert_time = tsp(n)
+        total_time = model_time + compiler_time + convert_time
 
         print(
-            f"""
-            -------------------------------------
-            Variables: {n * n}
-            Model................ {model_time}
-            Compilation.......... {compiler_time}
-            Conversion........... {to_qubo_time}
-            Total elapsed time... {total_time}
-            """,
-            flush = True
+f"""\
+-----------------------------
+Variables: {n * n} ({n} sites)
+Model................ {model_time:7.3f}
+Compilation.......... {compiler_time:7.3f}
+Conversion........... {convert_time:7.3f}
+Total elapsed time... {total_time:7.3f}
+""",
+flush = True
         )
 
-        results["n_var"].append(n * n)
+        results["nvar"].append(n * n)
         results["time"].append(total_time)
 
     df = pd.DataFrame(results)
