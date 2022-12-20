@@ -72,7 +72,8 @@ def main(init_size, max_size, step):
             Compilation.......... {compiler_time}
             Conversion........... {to_qubo_time}
             Total elapsed time... {total_time}
-            """
+            """,
+            flush = True
         )
 
         results["n_var"].append(n * n)
