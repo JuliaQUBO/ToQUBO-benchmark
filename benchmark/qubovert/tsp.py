@@ -54,7 +54,8 @@ def main(init_size, max_size, step):
             Model................ {model_time}
             Compilation.......... {compiler_time}
             Total elapsed time... {total_time}
-            """
+            """,
+            flush = True
         )
 
         results["n_var"].append(n * n)
