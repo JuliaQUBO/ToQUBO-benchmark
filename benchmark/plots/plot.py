@@ -25,12 +25,12 @@ def plot_benchmark():
         label = "ToQUBO 0.1.4",
         marker='o'
     )
-    plt.plot(
-        toqubo_data["nvar"],
-        toqubo_data["toqubo_time"],
-        label = r"ToQUBO$^\dagger$ 0.1.4",
-        marker='o'
-    )
+    # plt.plot(
+    #     toqubo_data["nvar"],
+    #     toqubo_data["toqubo_time"],
+    #     label = r"ToQUBO$^\dagger$ 0.1.4",
+    #     marker='o'
+    # )
     plt.plot(
         pyqubo_040_data["nvar"],
         pyqubo_040_data["time"],
