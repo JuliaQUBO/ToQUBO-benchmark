@@ -22,13 +22,13 @@ def plot_benchmark():
     plt.plot(
         toqubo_data["n_var"],
         toqubo_data["time"],
-        label = "ToQUBO 0.1.3",
+        label = "ToQUBO 0.1.4",
         marker='o'
     )
     plt.plot(
         toqubo_data["n_var"],
         toqubo_data["toqubo_time"],
-        label = r"ToQUBO$^\dagger$ 0.1.3",
+        label = r"ToQUBO$^\dagger$ 0.1.4",
         marker='o'
     )
     plt.plot(
@@ -40,7 +40,7 @@ def plot_benchmark():
     plt.plot(
         pyqubo_current_data["n_var"],
         pyqubo_current_data["time"],
-        label = "PyQUBO 1.3.1",
+        label = "PyQUBO 1.4.0",
         marker='o'
     )
     plt.plot(
