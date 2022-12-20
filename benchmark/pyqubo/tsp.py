@@ -44,7 +44,7 @@ def tsp(n_city):
     
     # Construct hamiltonian
     A = Placeholder("A")
-    H = distance + A * city_const + A * time_const
+    H = distance + A * (time_const + city_const)
 
     feed_dict["A"] = 1.0
 
@@ -52,7 +52,7 @@ def tsp(n_city):
     t1 = time.time()
     model = H.compile()
     t2 = time.time()
-    qubo, offset = model.to_qubo(index_label=False, feed_dict=feed_dict)
+    qubo, offset = model.to_qubo(feed_dict=feed_dict)
     t3 = time.time()
 
     # print("len(qubo)", len(qubo))
