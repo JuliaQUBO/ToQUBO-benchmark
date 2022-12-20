@@ -10,10 +10,10 @@ plt.rcParams.update({
 })
 
 def plot_benchmark():
-    toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , "tsp_ToQUBO.csv"))
-    pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , "tsp_pyqubo.csv"))
-    pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", "tsp_pyqubo_040.csv"))
-    qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert"  , "tsp_qubovert.csv"))
+    toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , "results.csv"))
+    pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , "results.csv"))
+    pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", "results.csv"))
+    qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert"  , "results.csv"))
 
     plt.figure(figsize = (5,4))
 
@@ -62,7 +62,7 @@ def plot_benchmark():
     return None
 
 def plot_toqubo():
-    toqubo_data = read_csv(BASE_PATH.joinpath("ToQUBO", "tsp_ToQUBO.csv"))
+    toqubo_data = read_csv(BASE_PATH.joinpath("ToQUBO", "results.csv"))
 
     plt.figure(figsize = (5,4))
 

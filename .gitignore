@@ -31,3 +31,6 @@ Lib
 Scripts
 share
 pyvenv.cfg
+
+benchmark/bin
+benchmark/lib
