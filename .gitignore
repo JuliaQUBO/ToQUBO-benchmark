@@ -23,8 +23,7 @@ docs/site/
 # environment.
 Manifest.toml
 
-
-*/__pycache__
+__pycache__
 sysimage.*
 Include
 Lib

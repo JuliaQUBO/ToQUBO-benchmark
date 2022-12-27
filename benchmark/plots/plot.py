@@ -5,17 +5,24 @@ from pathlib import Path
 
 BASE_PATH = Path.cwd().joinpath("benchmark")
 
+TITLE_REF = {
+    "tsp": "Travelling Salesperson Problem",
+    "npp": "Number Partitioning Problem",
+}
+
 plt.rcParams.update({
     "text.usetex" : True
 })
 
-def plot_benchmark():
-    toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , "results.csv"))
-    pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , "results.csv"))
-    pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", "results.csv"))
-    qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert"  , "results.csv"))
+def plot_benchmark(key: str):
+    toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , f"results.{key}.csv"))
+    pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , f"results.{key}.csv"))
+    pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", f"results.{key}.csv"))
+    qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert"  , f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
+
+    plt.title(TITLE_REF[key])
 
     plt.style.use(['science'])
 
@@ -54,8 +61,10 @@ def plot_benchmark():
         marker ='o',
     )
 
-    plt.xscale('symlog')
-    plt.yscale('symlog')
+    if key == "tsp":
+        plt.xscale('symlog')
+        plt.yscale('symlog')
+
     plt.xlabel(r"\texttt{\#variables}")
     plt.ylabel("Building Time (sec)")
     plt.grid(True)
@@ -69,12 +78,13 @@ def plot_benchmark():
         [labels[i]  for i in legend_order],
     )
 
-    plt.savefig(str(BASE_PATH.joinpath("benchmark.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"benchmark.{key}.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"benchmark.{key}.png")))
 
     return None
 
-def plot_toqubo():
-    toqubo_data = read_csv(BASE_PATH.joinpath("ToQUBO", "results.csv"))
+def plot_toqubo(key: str):
+    toqubo_data = read_csv(BASE_PATH.joinpath("ToQUBO", f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
 
@@ -82,17 +92,23 @@ def plot_toqubo():
 
     plt.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
     plt.plot(toqubo_data["nvar"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
-    plt.xscale('symlog')
-    plt.yscale('symlog')
+    
+    if key == "tsp":
+        plt.xscale('symlog')
+        plt.yscale('symlog')
+
     plt.xlabel(r"\#variables")
     plt.ylabel("Running Time (sec)")
     plt.grid(True)
     plt.legend()
 
-    plt.savefig(str(BASE_PATH.joinpath("toqubo.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"toqubo.{key}.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"toqubo.{key}.png")))
 
     return None
 
 if __name__ == "__main__":
-    plot_benchmark()
-    plot_toqubo()
+    plot_benchmark("tsp")
+    plot_benchmark("npp")
+    plot_toqubo("tsp")
+    plot_toqubo("npp")

@@ -2,6 +2,8 @@
 
 Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
 
+[![tsp](./benchmark/benchmark.tsp.png)]()
+[![npp](./benchmark/benchmark.npp.png)]()
 
 ## Setup
 ```
