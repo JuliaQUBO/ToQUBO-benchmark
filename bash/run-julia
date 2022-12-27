@@ -10,8 +10,8 @@
 # - `time` (float)
 
 echo "Installing ToQUBO.jl"
-# julia --proj -e 'import Pkg; Pkg.add(Pkg.PackageSpec(url="https://github.com/psrenergy/ToQUBO.jl.git", rev="px/refactor")); Pkg.instantiate()'
-# julia --proj ./benchmark/ToQUBO/create_sysimage.jl
+julia --proj -e 'import Pkg; Pkg.add(Pkg.PackageSpec(url="https://github.com/psrenergy/ToQUBO.jl.git", rev="px/refactor")); Pkg.instantiate()'
+julia --proj ./benchmark/ToQUBO/create_sysimage.jl
 
 echo "Running ToQUBO.jl"
 julia --project=. --sysimage ./benchmark/ToQUBO/sysimage ./benchmark/ToQUBO/benchmark.jl --run

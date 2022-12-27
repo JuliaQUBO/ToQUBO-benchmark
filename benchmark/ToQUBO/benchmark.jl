@@ -47,13 +47,13 @@ function tsp_nvar(n::Integer)
 end
 
 const tsp_info = Dict{Symbol,Any}(
-    :path => @__DIR__,
-    :run => tsp,
-    :data => tsp_data,
-    :nvar => tsp_nvar,
+    :path  => @__DIR__,
+    :run   => tsp,
+    :data  => tsp_data,
+    :nvar  => tsp_nvar,
     :start => 5,
-    :step => 5,
-    :stop => 35,
+    :step  => 5,
+    :stop  => 100,
 )
 
 
@@ -104,9 +104,9 @@ const npp_info = Dict{Symbol,Any}(
     :run => npp,
     :data => npp_data,
     :nvar => npp_nvar,
-    :start => 5,
-    :step => 5,
-    :stop => 35,
+    :start => 10,
+    :step  => 10,
+    :stop  => 1_000,
 )
 
 function benchmark(
