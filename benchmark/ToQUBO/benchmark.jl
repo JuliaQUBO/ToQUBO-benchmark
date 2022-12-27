@@ -105,7 +105,7 @@ const npp_info = Dict{Symbol,Any}(
     :data => npp_data,
     :nvar => npp_nvar,
     :start => 10,
-    :step  => 10,
+    :step  => 20,
     :stop  => 1_000,
 )
 
