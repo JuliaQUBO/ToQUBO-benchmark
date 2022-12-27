@@ -23,8 +23,8 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install ToQUBO.jl 0.1.4, PyQUBO 1.4.0, PyQUBO 0.4.0 & Run Benchmarks
-      run: make run TOQUBO_BRANCH=px/refactor
+    - name: Install ToQUBO.jl, PyQUBO, PyQUBO 0.4.0, qubovert & Run Benchmarks
+      run: make run
     - name: Save Results
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
@@ -32,9 +32,10 @@ jobs:
         git config --global user.name "GitHub Actions";
         git config --global user.email "suporte@psr-inc.com";
         git add -f
-        ./benchmark/ToQUBO/results.csv
-        ./benchmark/pyqubo/results.csv
-        ./benchmark/pyqubo_040/results.csv
-        ./benchmark/qubovert/results.csv;
+        ./benchmark/ToQUBO/results.*
+        ./benchmark/pyqubo/results.*
+        ./benchmark/pyqubo_040/results.*
+        ./benchmark/qubovert/results.*
+        ;
         git commit -m "Save Benchmark Results [actions]";
         git push;

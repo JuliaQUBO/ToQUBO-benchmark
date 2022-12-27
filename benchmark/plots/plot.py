@@ -78,8 +78,8 @@ def plot_benchmark(key: str):
         [labels[i]  for i in legend_order],
     )
 
-    plt.savefig(str(BASE_PATH.joinpath(f"benchmark.{key}.pdf")))
-    plt.savefig(str(BASE_PATH.joinpath(f"benchmark.{key}.png")))
+    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.png")))
 
     return None
 
