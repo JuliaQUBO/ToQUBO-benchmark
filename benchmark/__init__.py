@@ -1,4 +1,5 @@
 # Standard Library
+import gc
 from pathlib import Path
 
 # Third-party
@@ -68,6 +69,8 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
         print("nvar,time", file=fp)
 
         for n in range(start, stop+step, step):
+            gc.collect()
+
             time_info = run(n, data(n))
 
             report(n, nvar(n), **time_info)
