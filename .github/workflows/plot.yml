@@ -34,7 +34,7 @@ jobs:
         git config --global user.email "suporte@psr-inc.com";
         git add --ignore-errors -f
         ./benchmark/results.*
-        ./benchmark/toqubo.*;
+        ;
         git commit -m "Save Benchmark Plots [actions]";
         git push;
         
