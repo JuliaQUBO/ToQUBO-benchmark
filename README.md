@@ -2,8 +2,10 @@
 
 Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
 
-[![tsp](./benchmark/benchmark.tsp.png)]()
-[![npp](./benchmark/benchmark.npp.png)]()
+<div align="center">
+    <img src="./benchmark/results.tsp.png" alt="TSP benchmark results" width="40%">
+    <img src="./benchmark/results.npp.png" alt="NPP benchmark results" width="40%">
+</div>
 
 ## Setup
 ```
