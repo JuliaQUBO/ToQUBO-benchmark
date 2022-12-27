@@ -24,7 +24,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install ToQUBO.jl, PyQUBO, PyQUBO 0.4.0, qubovert & Run Benchmarks
-      run: make run
+      run: >
+        chmod +x ./bash/run-python && ./bash/run-python;
+        chmod +x ./bash/run-julia  && ./bash/run-julia;
+
     - name: Save Results
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
