@@ -13,7 +13,7 @@
 
 function benchmark {
     echo "Installing ${1}"
-    virtualenv ./benchmark/${1}
+    python3 -m venv ./benchmark/${1}
     source ./benchmark/${1}/bin/activate
     pip install -r ./benchmark/${1}/requirements.txt
 
