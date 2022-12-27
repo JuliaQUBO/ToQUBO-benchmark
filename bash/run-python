@@ -22,6 +22,8 @@ function benchmark {
 
     echo "Finishing ${1}"
     deactivate
+
+    return 0
 }
 
 benchmark "pyqubo"
