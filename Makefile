@@ -14,9 +14,11 @@ all: run plot
 run: run-python run-julia
 
 run-julia:
+	@chmod +x ./bash/run-julia
 	@./bash/run-julia
 
 run-python:
+	@chmod +x ./bash/run-python
 	@./bash/run-python
 
 plot: install-plot draw-plot
