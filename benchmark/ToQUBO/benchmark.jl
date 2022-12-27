@@ -72,7 +72,7 @@ function npp(n::Int, s::Vector{Int}; clear_gc::Bool=false)
         t₀ = @timed begin
             model = Model(ToQUBO.Optimizer)
 
-            @variable(model, x[1:n], Bool)
+            @variable(model, x[1:n], Bin)
 
             # ‖∑ᵢ xᵢ sᵢ - ∑ᵢ x̄ᵢ sᵢ‖ = ‖∑ᵢ (xᵢ - x̄ᵢ) sᵢ‖
             #                       = ‖∑ᵢ (2xᵢ - 1) sᵢ‖
@@ -123,7 +123,7 @@ function benchmark(
 
     println("Problem: $(key)")
 
-    run(2) # avoid time-to-first-solve
+    run(2, data(2)) # avoid time-to-first-solve
 
     for n in start:step:stop
         time_info = run(n, data(n); clear_gc=true)
@@ -160,5 +160,5 @@ function benchmark(
     CSV.write(csv_path, sort(collect(results)), header=["nvar", "time", "jump_time", "toqubo_time"])
 end
 
-benchmark("tsp", tsp_info...)
-benchmark("npp", npp_info...)
+benchmark("tsp"; tsp_info...)
+benchmark("npp"; npp_info...)
