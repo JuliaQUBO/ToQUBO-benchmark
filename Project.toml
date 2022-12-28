@@ -6,3 +6,7 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PackageCompiler = "9b87118b-4619-50d2-8e1e-99f35a4d4d9d"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ToQUBO = "9a412ddf-83fa-43b6-9748-7843c851aa65"
+
+[compat]
+ToQUBO = "0.1.4"
+julia  = "1.6"
