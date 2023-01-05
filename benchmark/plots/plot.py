@@ -17,7 +17,7 @@ plt.rcParams.update({
 def plot_benchmark(key: str):
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , f"results.{key}.csv"))
     pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"    , f"results.{key}.csv"))
-    pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", f"results.{key}.csv"))
+    # pyqubo_040_data     = read_csv(BASE_PATH.joinpath("pyqubo_040", f"results.{key}.csv"))
     qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert"  , f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
@@ -69,17 +69,22 @@ def plot_benchmark(key: str):
     plt.ylabel("Building Time (sec)")
     plt.grid(True)
 
+    legend = plt.legend()
+    frame = legend.get_frame()
+    frame.set_facecolor("white")
+
+    plt.show()
+
     # Reorder Legend
-    handles, labels = plt.gca().get_legend_handles_labels()
-    legend_order    = [3,2,0,1]
+    # handles, labels = plt.gca().get_legend_handles_labels()
+    # legend_order    = [3,2,0,1]
 
-    plt.legend(
-        [handles[i] for i in legend_order],
-        [labels[i]  for i in legend_order],
-    )
-
-    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.pdf")))
-    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.png")))
+    # plt.legend(
+    #     [handles[i] for i in legend_order],
+    #     [labels[i]  for i in legend_order],
+    # )
+    # plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.pdf")))
+    # plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.png")))
 
     return None
 
