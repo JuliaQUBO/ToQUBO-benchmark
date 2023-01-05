@@ -17,12 +17,12 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     x = [[qv.boolean_var(f"x[{i},{k}]") for k in range(n)] for i in range(n)]
 
     # Add objective function
-    model = sum(
-        x[i][k] * D[i,k] * x[j][(k + 1) % n]
-        for i in range(n)
-        for j in range(n)
-        for k in range(n)
-    )
+    model = 0
+
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                model += D[i, j] * x[i][k] * x[j][(k + 1) % n]
 
     # Add constraints
     for i in range(n):
