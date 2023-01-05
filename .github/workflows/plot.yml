@@ -29,13 +29,12 @@ jobs:
     - name: Save Plots
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
-      run: >
-        git config --global user.name "GitHub Actions";
-        git config --global user.email "suporte@psr-inc.com";
-        git add --ignore-errors -f
-        ./benchmark/results.*
-        ;
-        git commit -m "Save Benchmark Plots [actions]";
-        git push;
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "suporte@psr-inc.com"
+        git add -f ./benchmark/results.*
+        git add -f ./benchmark/toqubo.*
+        git commit -m "Save Benchmark Plots [actions]"
+        git push
         
 
