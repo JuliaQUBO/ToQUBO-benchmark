@@ -27,5 +27,4 @@ function benchmark {
 }
 
 benchmark "pyqubo"
-benchmark "pyqubo_040"
 benchmark "qubovert"

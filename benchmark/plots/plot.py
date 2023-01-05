@@ -29,34 +29,34 @@ def plot_benchmark(key: str):
     plt.plot(
         toqubo_data["nvar"],
         toqubo_data["toqubo_time"],
-        label = r"ToQUBO$^\dagger$ 0.1.4",
+        label = r"ToQUBO",
         marker='o'
     )
-    plt.plot(
-        pyqubo_040_data["nvar"],
-        pyqubo_040_data["time"],
-        label  = r"\texttt{PyQUBO 0.4.0}",
-        color  = "#2a838a", # PSRLIGHTGREEN
-        marker = 'o',
-    )
+    # plt.plot(
+    #     pyqubo_040_data["nvar"],
+    #     pyqubo_040_data["time"],
+    #     label  = r"\texttt{PyQUBO 0.4.0}",
+    #     color  = "#2a838a", # PSRLIGHTGREEN
+    #     marker = 'o',
+    # )
     plt.plot(
         qubovert_data["nvar"],
         qubovert_data["time"],
-        label  = r"\texttt{qubovert 1.2.5}",
+        label  = r"\texttt{qubovert}",
         color  = "#546670", # PSRGRAY
         marker ='o',
     )
     plt.plot(
         pyqubo_current_data["nvar"],
         pyqubo_current_data["time"],
-        label  = r"\texttt{PyQUBO 1.4.0}",
+        label  = r"\texttt{PyQUBO}",
         color  = "#002846", # PSRBLUE
         marker ='o',
     )
     plt.plot(
         toqubo_data["nvar"],
         toqubo_data["time"],
-        label  = r"\texttt{ToQUBO.jl 0.1.4}",
+        label  = r"\texttt{ToQUBO.jl}",
         color  ="#a49375", # PSRGOLD
         marker ='o',
     )
