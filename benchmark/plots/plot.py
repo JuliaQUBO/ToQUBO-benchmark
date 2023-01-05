@@ -26,12 +26,12 @@ def plot_benchmark(key: str):
 
     plt.style.use(['science'])
 
-    plt.plot(
-        toqubo_data["nvar"],
-        toqubo_data["toqubo_time"],
-        label = r"ToQUBO",
-        marker='o'
-    )
+    # plt.plot(
+    #     toqubo_data["nvar"],
+    #     toqubo_data["toqubo_time"],
+    #     label = r"ToQUBO",
+    #     marker='o'
+    # )
     # plt.plot(
     #     pyqubo_040_data["nvar"],
     #     pyqubo_040_data["time"],
@@ -100,7 +100,9 @@ def plot_toqubo(key: str):
     plt.xlabel(r"\#variables")
     plt.ylabel("Running Time (sec)")
     plt.grid(True)
-    plt.legend()
+    legend = plt.legend()
+    frame = legend.get_frame()
+    frame.set_facecolor("white")
 
     plt.savefig(str(BASE_PATH.joinpath(f"toqubo.{key}.pdf")))
     plt.savefig(str(BASE_PATH.joinpath(f"toqubo.{key}.png")))
