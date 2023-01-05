@@ -14,9 +14,18 @@ TITLE_REF = {
 def has_latex():
     return (shutil.which("latex") is not None)
 
-plt.rcParams.update({
-    "text.usetex" : has_latex()
-})
+if has_latex():
+    plt.rcParams.update({
+        "text.usetex" : True
+    })
+
+    USE_FLAGS = ['science']
+else:
+    plt.rcParams.update({
+        "text.usetex" : False
+    })
+
+    USE_FLAGS = ['science', 'no-latex']
 
 def plot_benchmark(key: str):
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"    , f"results.{key}.csv"))
@@ -28,7 +37,7 @@ def plot_benchmark(key: str):
 
     plt.title(TITLE_REF[key])
 
-    plt.style.use(['science'])
+    plt.style.use(USE_FLAGS)
 
     # plt.plot(
     #     toqubo_data["nvar"],
@@ -97,7 +106,7 @@ def plot_toqubo(key: str):
 
     plt.figure(figsize = (5,4))
 
-    plt.style.use(['science'])
+    plt.style.use(USE_FLAGS)
 
     plt.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
     plt.plot(toqubo_data["nvar"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')

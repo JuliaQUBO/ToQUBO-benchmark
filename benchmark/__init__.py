@@ -75,4 +75,6 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
 
             report(n, nvar(n), **time_info)
 
-            print(f"{nvar(n)},{time_info['total_time']}", file=fp)
+            total_time = time_info["total_time"]
+
+            print(f"{nvar(n)},{total_time}", file=fp)
