@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import scienceplots
+import shutil
 from pandas import read_csv
 from pathlib import Path
 
@@ -10,8 +11,11 @@ TITLE_REF = {
     "npp": "Number Partitioning Problem",
 }
 
+def has_latex():
+    return (shutil.which("latex") is not None)
+
 plt.rcParams.update({
-    "text.usetex" : True
+    "text.usetex" : has_latex()
 })
 
 def plot_benchmark(key: str):
