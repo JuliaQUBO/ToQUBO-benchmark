@@ -18,7 +18,7 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 
     # Add objective function
     model = sum(
-        x[i, k] * D * x[j, (k + 1) % n]
+        x[i][k] * D[i,k] * x[j][(k + 1) % n]
         for i in range(n)
         for j in range(n)
         for k in range(n)
@@ -26,10 +26,10 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 
     # Add constraints
     for i in range(n):
-        model.add_constraint_eq_zero(sum(x[i, k] for k in range(n)) - 1, lam=lam)
+        model.add_constraint_eq_zero(sum(x[i][k] for k in range(n)) - 1, lam=lam)
 
     for k in range(n):
-        model.add_constraint_eq_zero(sum(x[i, k] for i in range(n)) - 1, lam=lam)
+        model.add_constraint_eq_zero(sum(x[i][k] for i in range(n)) - 1, lam=lam)
 
     # Convert to QUBO
     t1 = time.time()
