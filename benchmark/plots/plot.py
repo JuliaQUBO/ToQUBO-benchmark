@@ -86,7 +86,7 @@ def plot_benchmark(key: str):
     frame = legend.get_frame()
     frame.set_facecolor("white")
 
-    plt.show()
+    # plt.show()
 
     # Reorder Legend
     # handles, labels = plt.gca().get_legend_handles_labels()
@@ -96,8 +96,9 @@ def plot_benchmark(key: str):
     #     [handles[i] for i in legend_order],
     #     [labels[i]  for i in legend_order],
     # )
-    # plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.pdf")))
-    # plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.png")))
+    
+    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.pdf")))
+    plt.savefig(str(BASE_PATH.joinpath(f"results.{key}.png")))
 
     return None
 
