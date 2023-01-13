@@ -19,7 +19,7 @@ function tsp(n::Int, D::Matrix{Float64}; clear_gc::Bool=false)
         t₀ = @timed begin
             model = Model(ToQUBO.Optimizer)
 
-            @variable(model, x[1:n, 1:n], Bin, Symmetric)
+            @variable(model, x[1:n, 1:n], Bin)
 
             @constraint(model, [i = 1:n], sum(x[i, :]) == 1)
             @constraint(model, [k = 1:n], sum(x[:, k]) == 1)
@@ -31,7 +31,7 @@ function tsp(n::Int, D::Matrix{Float64}; clear_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed Q, α, β = ToQUBO.qubo(unsafe_backend(model))
+        t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
     end
 
     return Dict{String,Float64}(
@@ -84,7 +84,7 @@ function npp(n::Int, s::Vector{Int}; clear_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed Q, α, β = ToQUBO.qubo(unsafe_backend(model))
+        t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
     end
 
     return Dict{String,Float64}(
@@ -108,6 +108,53 @@ const npp_info = Dict{Symbol,Any}(
     :step  => 20,
     :stop  => 1_000,
 )
+
+# function gcp(n::Int, A::Matrix{Float64}; clear_gc::Bool=false)
+#     clear_gc && GC.gc()
+
+#     tₜ = @timed begin
+#         # Build Model
+#         t₀ = @timed begin
+#             model = Model(ToQUBO.Optimizer)
+
+#             @variable(model, x[1:n, 1:n], Bin)
+#             @variable(model, c[1:n], Bin)
+
+#             @constraint(model, [i = 1:n, k = 1:n], c[k] >= x[i, k])
+#             @constraint(model, [i = 1:n, j = 1:n, k = 1:n], x[i,k] + x[j,k] <= A[i,j])
+#             @constraint(model, [i = 1:n], sum(x[i,:]) == 1)
+
+#             @objective(model, Min, sum(c))
+#         end
+
+#         # Compile Model
+#         t₁ = @timed optimize!(model)
+
+#         # Convert to QUBO
+#         t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
+#     end
+
+#     return Dict{String,Float64}(
+#         "model_time" => t₀.time,
+#         "compiler_time" => t₁.time,
+#         "convert_time" => t₂.time,
+#         "total_time" => tₜ.time,
+#     )
+# end
+
+# function gcp_nvar(n::Integer)
+#     return n * n + n
+# end
+
+# const gcp_info = Dict{Symbol,Any}(
+#     :path => @__DIR__,
+#     :run => gcp,
+#     :data => gcp_data,
+#     :nvar => gcp_nvar,
+#     :start => 5,
+#     :step  => 5,
+#     :stop  => 100,
+# )
 
 function benchmark(
     key::String;
@@ -162,3 +209,4 @@ end
 
 benchmark("tsp"; tsp_info...)
 benchmark("npp"; npp_info...)
+benchmark("gcp"; gcp_info...)

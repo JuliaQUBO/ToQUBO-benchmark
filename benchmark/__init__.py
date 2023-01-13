@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 
 def tsp_data(n: int):
-    return np.array([[10.0 * abs(i - j) for j in range(n)] for i in range(n)])
+    return np.array([[10.0 * (i != j) for j in range(n)] for i in range(n)])
 
 def tsp_nvar(n: int):
     return n * n
@@ -16,6 +16,12 @@ def npp_data(n: int):
 
 def npp_nvar(n: int):
     return n
+
+# def gcp_data(n: int):
+#     return np.array([[1.0 * (i != j) for j in range(n)] for i in range(n)])
+
+# def gcp_nvar(n: int):
+#     return n * n + n
 
 def report(
     n: int,
@@ -59,6 +65,16 @@ def npp_info(**kwargs: dict):
         "stop" : 100,
         **kwargs
     }
+
+# def gcp_info(**kwargs: dict):
+#     return {
+#         "data" : npp_data,
+#         "nvar" : npp_nvar,
+#         "start": 5,
+#         "step" : 5,
+#         "stop" : 100,
+#         **kwargs
+#     }
 
 def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, stop: int):
     csv_path = Path(path).joinpath(f"results.{key}.csv")
