@@ -17,7 +17,7 @@ PREFIX="./benchmark/ToQUBO/"
 
 function benchmark {
     echo "Installing ToQUBO.jl..."
-    ${JULIA_EXE} --proj -e "
+    ${JULIA_EXE} --proj=${PREFIX} -e "
         import Pkg;
         Pkg.add(Pkg.PackageSpec(url=\"${GIT_REPO}\", rev=\"${BRANCH}\"));
         Pkg.instantiate();
