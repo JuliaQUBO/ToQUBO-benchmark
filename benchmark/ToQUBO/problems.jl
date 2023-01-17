@@ -6,7 +6,10 @@ function tsp_data(n::Integer)
 end
 
 function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
-    skip_gc && GC.gc()
+    if skip_gc
+        GC.gc()
+        GC.enable(false)
+    end
 
     tₜ = @timed begin
         # Build Model
@@ -26,6 +29,11 @@ function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
 
         # Convert to QUBO
         t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
+    end
+
+    if skip_gc
+        GC.enable(true)
+        GC.gc()
     end
 
     return Dict{String,Float64}(
@@ -60,7 +68,10 @@ function npp_data(n::Int)
 end
 
 function npp(n::Int, s::Vector{Int}; skip_gc::Bool=false)
-    skip_gc && GC.gc()
+    if skip_gc
+        GC.gc()
+        GC.enable(false)
+    end
 
     tₜ = @timed begin
         # Build Model
@@ -80,6 +91,11 @@ function npp(n::Int, s::Vector{Int}; skip_gc::Bool=false)
 
         # Convert to QUBO
         t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
+    end
+
+    if skip_gc
+        GC.enable(true)
+        GC.gc()
     end
 
     return Dict{String,Float64}(
