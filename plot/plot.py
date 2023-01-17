@@ -1,7 +1,7 @@
+import csv
 import matplotlib.pyplot as plt
 import scienceplots
 import shutil
-from pandas import read_csv
 from pathlib import Path
 
 ROOT_PATH = Path(__file__).parent.parent
@@ -30,6 +30,19 @@ else:
     })
 
     STYLE_FLAGS = ['science', 'no-latex']
+
+def read_csv(path):
+    with open(path, "r") as fp:
+        reader = csv.reader(fp)
+        header = list(next(reader))
+        table  = {col: [] for col in header}
+        for row in reader:
+            for (col, val) in zip(header, row):
+                if col == "nvar":
+                    table[col].append(int(val))
+                else:
+                    table[col].append(float(val))
+        return table 
 
 def plot_benchmark(key: str):
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
@@ -75,6 +88,8 @@ def plot_benchmark(key: str):
     legend = plt.legend()
     frame = legend.get_frame()
     frame.set_facecolor("white")
+
+    DATA_PATH.mkdir(parents=True, exist_ok=True)
     
     plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.pdf")))
     plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.png")))
@@ -102,6 +117,8 @@ def plot_toqubo(key: str):
     legend = plt.legend()
     frame = legend.get_frame()
     frame.set_facecolor("white")
+
+    DATA_PATH.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.pdf")))
     plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.png")))
