@@ -1,3 +1,4 @@
+using Pkg; Pkg.instantiate()
 using PackageCompiler, Libdl
 
 PackageCompiler.create_sysimage(

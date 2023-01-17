@@ -1,41 +1,23 @@
-PYTHON        := python3
-PYTHON-PIP    := pip3
-SYSIMAGE      := sysimage
-VENV-SCRIPT   := bin/activate
-VENV-CMD      := virtualenv
-SOURCE-CMD    := source
+JULIA-EXE     := julia
+PYTHON-EXE    := python3
+TOQUBO-BRANCH := master
 SHELL         := /bin/bash
-TOQUBO_BRANCH := master
 
 .PHONY: run plot
 
 all: run plot
 
-run: run-python run-julia
+run:
+	@chmod +x ./bash/julia-run.sh
+	./bash/julia-run.sh $(JULIA-EXE) $(TOQUBO-BRANCH)
 
-run-julia:
-	@chmod +x ./bash/run-julia
-	@./bash/run-julia
+	@chmod +x ./bash/python-run.sh
+	./bash/python-run.sh $(PYTHON-EXE)
 
-run-python:
-	@chmod +x ./bash/run-python
-	@./bash/run-python
+plot:
+	@chmod +x ./bash/plot-run.sh
+	./bash/plot-run.sh $(PYTHON-EXE)
 
-plot: install-plot draw-plot
-
-install-plot: install-venv install-latex
-
-draw-plot:
-	@echo "Installing Plot Tools"
-	@$(VENV-CMD) ./benchmark/plots
-	@$(SOURCE-CMD) ./benchmark/plots/$(VENV-SCRIPT)
-	@pip install -r ./benchmark/plots/requirements.txt
-
-	@echo "Drawing Plots"
-	@$(PYTHON) ./benchmark/plots/plot.py
-
-install-venv:
-	$(PYTHON-PIP) install virtualenv
-
-install-latex:
-	sudo apt install texlive texlive-latex-extra cm-super dvipng
+clean:
+	@rm -f ./benchmark/**/results.*.csv
+	@rm -f ./data/results.*.pdf

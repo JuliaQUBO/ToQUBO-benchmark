@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+PYTHON_EXE="$1"
+
+PREFIX="./benchmark/"
+
 # Benchmarks:
 # - PyQUBO   (latest)
 # - PyQUBO   (0.4.0)
@@ -12,16 +16,13 @@
 # - `time` (float)
 
 function benchmark {
-    echo "Installing ${1}"
-    python3 -m venv ./benchmark/${1}
-    source ./benchmark/${1}/bin/activate
-    pip install -r ./benchmark/${1}/requirements.txt
+    echo "Installing ${1}..."
+    ${PYTHON_EXE} -m pip install -r "${PREFIX}/${1}/requirements.txt"
 
-    echo "Running ${1}"
-    python -m benchmark.${1}
+    echo "Running ${1}..."
+    ${PYTHON_EXE} -m benchmark.${1}
 
-    echo "Finishing ${1}"
-    deactivate
+    echo "Finished ${1}"
 
     return 0
 }
