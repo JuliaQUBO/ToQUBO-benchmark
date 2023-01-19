@@ -1,9 +1,13 @@
 name: toqubo-benchmark
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
 
 jobs:
   benchmark:
+    if: ${{ !(github.event_name == 'push') || contains(github.event.head_commit.message, '[run]') }}
     name: Julia ${{ matrix.julia-version }}, Python ${{ matrix.python-version }} @ ${{ matrix.os }}/${{ matrix.arch }}/${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     strategy:
