@@ -92,7 +92,7 @@ def plot_benchmark(key: str):
     DATA_PATH.mkdir(parents=True, exist_ok=True)
     
     plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.pdf")))
-    plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.png")))
+    plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.png")), dpi=300)
 
     return None
 
@@ -121,7 +121,7 @@ def plot_toqubo(key: str):
     DATA_PATH.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.pdf")))
-    plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.png")))
+    plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.png")), dpi=300)
 
     return None
 
