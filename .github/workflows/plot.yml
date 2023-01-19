@@ -32,7 +32,7 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "suporte@psr-inc.com"
-        git add ./benchmark/results.* ./benchmark/toqubo.* 
+        git add ./data/*.pdf
         git commit -m "Save Benchmark Plots [actions]"
         git push
         
