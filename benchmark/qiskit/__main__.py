@@ -6,6 +6,7 @@ from qiskit_optimization.converters import QuadraticProgramToQubo
 from qiskit_optimization.translators import from_docplex_mp
 from pathlib import Path
 
+
 from .. import benchmark, tsp_info, npp_info
 
 __DIR__ = Path(__file__).parent
