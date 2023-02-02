@@ -48,6 +48,7 @@ def plot_benchmark(key: str):
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
     qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
     pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
+    qiskit_data = read_csv(BASE_PATH.joinpath("Qiskit"  , f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
 
@@ -67,6 +68,13 @@ def plot_benchmark(key: str):
         pyqubo_current_data["time"],
         label  = r"\texttt{PyQUBO}",
         color  = "#002846", # PSRBLUE
+        marker ='o',
+    )
+    plt.plot(
+        qiskit_data["nvar"],
+        qiskit_data["time"],
+        label  = r"\texttt{Qiskit}",
+        color  = "#0C4156", # PSRGREEN
         marker ='o',
     )
     plt.plot(

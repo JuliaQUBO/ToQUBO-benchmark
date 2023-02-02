@@ -2,7 +2,7 @@
     Travelling Salesperson Problem
 """
 function tsp_data(n::Integer)
-    return Float64[10.0 * abs(i - j) for i = 1:n, j = 1:n]
+    return Float64[abs(i - j) for i = 1:n, j = 1:n]
 end
 
 function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
