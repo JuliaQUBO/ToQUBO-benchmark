@@ -6,7 +6,7 @@ PREFIX="./benchmark/"
 
 # Benchmarks:
 # - PyQUBO   (latest)
-# - PyQUBO   (0.4.0)
+# - Qiskit   (0.41)
 # - qubovert (latest)
 # Every benchmark must produce the following files:
 # - results.tsp.csv
@@ -29,3 +29,4 @@ function benchmark {
 
 benchmark "pyqubo"
 benchmark "qubovert"
+benchmark "qiskit"

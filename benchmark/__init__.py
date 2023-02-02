@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 
 def tsp_data(n: int):
-    return np.array([[10.0 * (i != j) for j in range(n)] for i in range(n)])
+    return np.array([[abs(i - j) for j in range(n)] for i in range(n)])
 
 def tsp_nvar(n: int):
     return n * n
