@@ -4,19 +4,21 @@ from docplex.mp.model import Model
 from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from qiskit_optimization.translators import from_docplex_mp
+from pathlib import Path
 
 from .. import benchmark, tsp_info, npp_info
 
+__DIR__ = Path(__file__).parent
 
 def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     t0 = time.time()
-    model = Model()
+    model = Model("tsp"+str(n))
 
     var_matrix = []
     for i in range(n):
         var_row = []
         for j in range(n):
-            var_row += [model.binary_var("x"+str(i)+str(j))]
+            var_row += [model.binary_var("xi"+str(i)+"j"+str(j))]
         var_matrix += [var_row]
 
     for i in range(n):
@@ -62,9 +64,9 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
     t0 = time.time()
     
-    model = Model()
+    model = Model("npp"+str(n))
 
-    x = [model.binary_var("x"+str(1)) for i in range(n)]
+    x = [model.binary_var("x"+str(i)) for i in range(n)]
 
     H = 0
     for i in range(n):
@@ -96,8 +98,6 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
         "total_time"    : t3 - t0,
     }
 
-
-    return
 
 if __name__ == "__main__":
     benchmark("tsp", **tsp_info(path=__DIR__, run=tsp, start=5, step=5, stop=35))
