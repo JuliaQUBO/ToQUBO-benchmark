@@ -57,6 +57,13 @@ def plot_benchmark(key: str):
     plt.style.use(STYLE_FLAGS)
 
     plt.plot(
+        qiskit_data["nvar"],
+        qiskit_data["time"],
+        label  = r"\texttt{Qiskit}",
+        color  = "#2A838A", # PSRLIGHTGREEN
+        marker ='o',
+    )
+    plt.plot(
         qubovert_data["nvar"],
         qubovert_data["time"],
         label  = r"\texttt{qubovert}",
@@ -68,13 +75,6 @@ def plot_benchmark(key: str):
         pyqubo_current_data["time"],
         label  = r"\texttt{PyQUBO}",
         color  = "#002846", # PSRBLUE
-        marker ='o',
-    )
-    plt.plot(
-        qiskit_data["nvar"],
-        qiskit_data["time"],
-        label  = r"\texttt{Qiskit}",
-        color  = "#0C4156", # PSRGREEN
         marker ='o',
     )
     plt.plot(
