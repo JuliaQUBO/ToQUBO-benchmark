@@ -59,7 +59,7 @@ def plot_benchmark(key: str):
     plt.plot(
         qiskit_data["nvar"],
         qiskit_data["time"],
-        label  = r"\texttt{Qiskit}",
+        label  = r"\texttt{docplex+Qiskit}",
         color  = "#2A838A", # PSRLIGHTGREEN
         marker ='o',
     )
