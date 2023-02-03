@@ -48,7 +48,7 @@ def plot_benchmark(key: str):
     toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
     qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
     pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
-    qiskit_data = read_csv(BASE_PATH.joinpath("Qiskit"  , f"results.{key}.csv"))
+    qiskit_data = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
 
