@@ -68,7 +68,7 @@ def plot_benchmark(key: str):
         openqaoa_data["nvar"],
         openqaoa_data["time"],
         label  = r"\texttt{docplex+OpenQAOA}",
-        color  = "#231F20", # PSRBLACK
+        color  = "#0C4156", # PSRGREEN
         marker ='o',
     )
     plt.plot(

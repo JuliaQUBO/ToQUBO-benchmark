@@ -94,4 +94,4 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
 if __name__ == "__main__":
     benchmark("tsp", **tsp_info(path=__DIR__, run=tsp, start=5, step=5, stop=35))
-    benchmark("npp", **npp_info(path=__DIR__, run=npp, start=20, step=20, stop=200))
+    benchmark("npp", **npp_info(path=__DIR__, run=npp, start=20, step=20, stop=600))
