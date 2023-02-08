@@ -49,6 +49,7 @@ def plot_benchmark(key: str):
     qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
     pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
     qiskit_data = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
+    openqaoa_data = read_csv(BASE_PATH.joinpath("openqaoa"  , f"results.{key}.csv"))
 
     plt.figure(figsize = (5,4))
 
@@ -61,6 +62,13 @@ def plot_benchmark(key: str):
         qiskit_data["time"],
         label  = r"\texttt{docplex+Qiskit}",
         color  = "#2A838A", # PSRLIGHTGREEN
+        marker ='o',
+    )
+    plt.plot(
+        openqaoa_data["nvar"],
+        openqaoa_data["time"],
+        label  = r"\texttt{docplex+OpenQAOA}",
+        color  = "#231F20", # PSRBLACK
         marker ='o',
     )
     plt.plot(

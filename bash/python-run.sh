@@ -30,3 +30,4 @@ function benchmark {
 benchmark "pyqubo"
 benchmark "qubovert"
 benchmark "qiskit"
+benchmark "openqaoa"

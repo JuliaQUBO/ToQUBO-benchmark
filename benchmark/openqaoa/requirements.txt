@@ -1,0 +1,5 @@
+qiskit==0.41.0
+qiskit-optimization==0.5.0
+docplex==2.24.232
+numpy
+openqaoa
