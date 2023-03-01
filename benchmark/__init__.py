@@ -1,6 +1,7 @@
 # Standard Library
 import gc
 from pathlib import Path
+import signal
 
 # Third-party
 import numpy as np
@@ -76,6 +77,9 @@ def npp_info(**kwargs: dict):
 #         **kwargs
 #     }
 
+def timeout_handler(num, stack):
+    raise TimeoutError
+
 def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, stop: int):
     csv_path = Path(path).joinpath(f"results.{key}.csv")
 
@@ -84,20 +88,22 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
     with csv_path.open("w") as fp:
         print("nvar,time", file=fp)
 
-        n = start
-        while True:
+        for n in range(start, stop+step, step):
             gc.collect()
 
-            time_info = run(n, data(n))
+            signal.signal(signal.SIGALRM, timeout_handler)
+            if "key" == "npp":
+                signal.alarm(5)
+            else:
+                signal.alarm(100)
+            
+            try: 
+                time_info = run(n, data(n))
 
-            report(n, nvar(n), **time_info)
+                report(n, nvar(n), **time_info)
 
-            total_time = time_info["total_time"]
+                total_time = time_info["total_time"]
 
-            if key == "tsp" and total_time > 100.0:
-                break
-            if key == "npp" and total_time > 5.0:
-                break
-
-            print(f"{nvar(n)},{total_time}", file=fp)
-            n += step
+                print(f"{nvar(n)},{total_time}", file=fp)
+            except TimeoutError:
+                print("Timeout")
