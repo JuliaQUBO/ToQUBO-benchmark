@@ -28,7 +28,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Run Benchmarks
-      run: make run TOQUBO-BRANCH=px/refactor
+      run: make run TOQUBO-BRANCH=master
     - name: Save Results
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token

@@ -2,6 +2,8 @@ import csv
 import matplotlib.pyplot as plt
 import scienceplots
 import shutil
+import numpy as np
+from scipy.optimize import curve_fit
 from pathlib import Path
 
 ROOT_PATH = Path(__file__).parent.parent
@@ -13,6 +15,31 @@ TITLE_REF = {
     "tsp": "Travelling Salesperson Problem",
     "npp": "Number Partitioning Problem",
     "gcp": "Graph Coloring Problem",
+}
+
+PSRBLUE = "#002846"
+PSRGOLD = "#a49375"
+
+COLOR_REF = {
+    "toqubo"  : PSRGOLD,
+    "qiskit"  : PSRBLUE,
+    "openqaoa": PSRBLUE,
+    "qubovert": PSRBLUE,
+    "pyqubo"  : PSRBLUE,
+}
+LABEL_REF = {
+    "toqubo"  : r"\texttt{ToQUBO.jl}",
+    "qiskit"  : r"\texttt{Qiskit (docplex)}",
+    "openqaoa": r"\texttt{OpenQAOA (docplex)}",
+    "qubovert": r"\texttt{qubovert}",
+    "pyqubo"  : r"\texttt{PyQUBO}",
+}
+MARKER_REF = {
+    "toqubo"  : "*",
+    "qiskit"  : "o",
+    "openqaoa": "s",
+    "qubovert": "^",
+    "pyqubo"  : "d",
 }
 
 def has_latex():
@@ -45,11 +72,21 @@ def read_csv(path):
         return table 
 
 def plot_benchmark(key: str):
-    toqubo_data         = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
-    qubovert_data       = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
-    pyqubo_current_data = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
-    qiskit_data = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
-    openqaoa_data = read_csv(BASE_PATH.joinpath("openqaoa"  , f"results.{key}.csv"))
+    data = {}
+
+    data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
+    data["qubovert"] = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
+    data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
+    data["qiskit"]   = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
+    data["openqaoa"] = read_csv(BASE_PATH.joinpath("openqaoa", f"results.{key}.csv"))
+
+    tags = [
+        "qiskit",
+        "openqaoa",
+        "qubovert",
+        "pyqubo",
+        "toqubo",
+    ]
 
     plt.figure(figsize = (5,4))
 
@@ -57,51 +94,56 @@ def plot_benchmark(key: str):
 
     plt.style.use(STYLE_FLAGS)
 
-    plt.plot(
-        qiskit_data["nvar"],
-        qiskit_data["time"],
-        label  = r"\texttt{docplex+Qiskit}",
-        color  = "#2A838A", # PSRLIGHTGREEN
-        marker ='o',
-    )
-    plt.plot(
-        openqaoa_data["nvar"],
-        openqaoa_data["time"],
-        label  = r"\texttt{docplex+OpenQAOA}",
-        color  = "#0C4156", # PSRGREEN
-        marker ='o',
-    )
-    plt.plot(
-        qubovert_data["nvar"],
-        qubovert_data["time"],
-        label  = r"\texttt{qubovert}",
-        color  = "#546670", # PSRGRAY
-        marker ='o',
-    )
-    plt.plot(
-        pyqubo_current_data["nvar"],
-        pyqubo_current_data["time"],
-        label  = r"\texttt{PyQUBO}",
-        color  = "#002846", # PSRBLUE
-        marker ='o',
-    )
-    plt.plot(
-        toqubo_data["nvar"],
-        toqubo_data["time"],
-        label  = r"\texttt{ToQUBO.jl}",
-        color  ="#a49375", # PSRGOLD
-        marker ='o',
-    )
-
     if key == "tsp":
         plt.xscale('symlog')
         plt.yscale('symlog')
+
+        # def f(n, a4, a3, a2, a1, a0):
+        #     return a4 * n ** 4 + a3 * n ** 3 + a2 * n ** 2 + a1 * n + a0
+
+        def f(n, a4, a3, a2, a1, a0):
+            return a4 * n ** 4 + a3 * n ** 3 + a2 * n ** 2 + a1 * n + a0
+
+    elif key == "npp":
+        def f(n, a2, a1, a0):
+            return a2 * n ** 2 + a1 * n + a0
+    else:
+        pass
+
+    xl = yl = +float("inf")
+    xu = yu = -float("inf")
+
+    for tag in tags:
+        color  = COLOR_REF.get(tag, "#002846") # PSRBLUE
+        marker = MARKER_REF.get(tag)
+        label  = LABEL_REF.get(tag)
+        line   = "--"
+
+        n = np.array(data[tag]["nvar"], dtype=int)
+        t = np.array(data[tag]["time"], dtype=float)
+
+        xl = min(xl, np.min(n))
+        yl = min(yl, np.min(t))
+        xu = max(xu, np.max(n))
+        yu = max(yu, np.max(t))
+
+        p, _ = curve_fit(f, n, t)
+
+        x = np.array(data["toqubo"]["nvar"], dtype=int)
+        y = f(x, *p)
+
+        plt.plot(x, y,    color = color, linestyle = line)
+        plt.scatter(n, t, color = color, marker = marker)
+        plt.plot([], [],  color = color, marker = marker, linestyle = line, label = label)
+
+    plt.ylim(yl, yu)
+    plt.xlim(xl, xu)
 
     plt.xlabel(r"\texttt{\#variables}")
     plt.ylabel("Building Time (sec)")
     plt.grid(True)
 
-    legend = plt.legend()
+    legend = plt.legend(loc = "best")
     frame = legend.get_frame()
     frame.set_facecolor("white")
 
