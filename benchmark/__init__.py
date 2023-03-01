@@ -92,7 +92,7 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
             gc.collect()
 
             signal.signal(signal.SIGALRM, timeout_handler)
-            if "key" == "npp":
+            if key == "npp":
                 signal.alarm(5)
             else:
                 signal.alarm(100)
