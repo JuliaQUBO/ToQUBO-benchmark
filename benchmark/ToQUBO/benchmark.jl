@@ -23,7 +23,8 @@ function benchmark(;
     # avoid time-to-first-solve
     _ = run(3, data(3))
 
-    for n in start:step:stop
+    n = start
+    while true
         time_info = run(n, data(n); skip_gc=true)
 
         @printf(
@@ -42,7 +43,12 @@ function benchmark(;
             time_info["convert_time"],
             time_info["total_time"],
         )
-
+        if  key == "tsp" && time_info["total_time"] > 100.0
+            break
+        end
+        if key == "npp" && time_info["total_time"] > 5.0
+            break
+        end
         push!(
             results,
             (
@@ -52,6 +58,7 @@ function benchmark(;
                 time_info["compiler_time"] + time_info["convert_time"],
             )
         )
+        n += step
     end
 
     csv_path = joinpath(path, "results.$(key).csv")

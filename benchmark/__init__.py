@@ -84,7 +84,8 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
     with csv_path.open("w") as fp:
         print("nvar,time", file=fp)
 
-        for n in range(start, stop+step, step):
+        n = start
+        while True:
             gc.collect()
 
             time_info = run(n, data(n))
@@ -93,4 +94,10 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
 
             total_time = time_info["total_time"]
 
+            if key == "tsp" and total_time > 100.0:
+                break
+            if key == "npp" and total_time > 5.0:
+                break
+
             print(f"{nvar(n)},{total_time}", file=fp)
+            n += step
