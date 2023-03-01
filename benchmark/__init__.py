@@ -107,3 +107,4 @@ def benchmark(key: str, *, path: str, run, data, nvar, start: int, step: int, st
                 print(f"{nvar(n)},{total_time}", file=fp)
             except TimeoutError:
                 print("Timeout")
+                break
