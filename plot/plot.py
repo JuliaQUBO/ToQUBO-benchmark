@@ -14,7 +14,6 @@ DATA_PATH = ROOT_PATH.joinpath("data")
 TITLE_REF = {
     "tsp": "Travelling Salesperson Problem",
     "npp": "Number Partitioning Problem",
-    "gcp": "Graph Coloring Problem",
 }
 
 PSRBLUE = "#002846"
@@ -71,7 +70,7 @@ def read_csv(path):
                     table[col].append(float(val))
         return table 
 
-def plot_benchmark(key: str):
+def plot_benchmark(key: str, ax):
     data = {}
 
     data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
@@ -88,30 +87,16 @@ def plot_benchmark(key: str):
         "toqubo",
     ]
 
-    plt.figure(figsize = (5,4))
-
-    plt.title(TITLE_REF[key])
-
-    plt.style.use(STYLE_FLAGS)
+    ax.set_title(TITLE_REF[key])
 
     if key == "tsp":
-        plt.xscale('symlog')
-        plt.yscale('symlog')
-
-        # def f(n, a4, a3, a2, a1, a0):
-        #     return a4 * n ** 4 + a3 * n ** 3 + a2 * n ** 2 + a1 * n + a0
-
-        def f(n, a4, a3, a2, a1, a0):
-            return a4 * n ** 4 + a3 * n ** 3 + a2 * n ** 2 + a1 * n + a0
-
-    elif key == "npp":
-        def f(n, a2, a1, a0):
-            return a2 * n ** 2 + a1 * n + a0
-    else:
-        pass
+        ax.set_xscale('symlog')
+        ax.set_yscale('symlog')
 
     xl = yl = +float("inf")
     xu = yu = -float("inf")
+
+    handles = []
 
     for tag in tags:
         color  = COLOR_REF.get(tag, "#002846") # PSRBLUE
@@ -127,63 +112,72 @@ def plot_benchmark(key: str):
         xu = max(xu, np.max(n))
         yu = max(yu, np.max(t))
 
-        p, _ = curve_fit(f, n, t)
+        ax.plot(n, t, color=color, linestyle=line)
+        ax.scatter(n, t, color=color, marker=marker)
 
-        x = np.array(data["toqubo"]["nvar"], dtype=int)
-        y = f(x, *p)
+        h, = ax.plot([], [], color=color, marker=marker, linestyle=line, label=label)
 
-        plt.plot(x, y,    color = color, linestyle = line)
-        plt.scatter(n, t, color = color, marker = marker)
-        plt.plot([], [],  color = color, marker = marker, linestyle = line, label = label)
+        handles.append(h)
 
-    plt.ylim(yl, yu)
-    plt.xlim(xl, xu)
+    ax.set_ylim(yl, yu)
+    ax.set_xlim(xl, xu)
 
-    plt.xlabel(r"\texttt{\#variables}")
-    plt.ylabel("Building Time (sec)")
-    plt.grid(True)
+    ax.set_xlabel(r"\texttt{\#variables}")
+    ax.set_ylabel("Building Time (sec)")
+    ax.grid(True)
 
-    legend = plt.legend(loc = "best")
-    frame = legend.get_frame()
-    frame.set_facecolor("white")
+    return handles
 
-    DATA_PATH.mkdir(parents=True, exist_ok=True)
-    
-    plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.pdf")))
-    plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.png")), dpi=300)
-
-    return None
-
-def plot_toqubo(key: str):
+def plot_toqubo(key: str, ax):
     toqubo_data = read_csv(BASE_PATH.joinpath("ToQUBO", f"results.{key}.csv"))
 
-    plt.figure(figsize = (5,4))
+    ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
+    ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
 
-    plt.style.use(STYLE_FLAGS)
+    ax.set_xscale('symlog')
+    ax.set_yscale('symlog')
 
-    plt.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label = "ToQUBO", marker='D')
-    plt.plot(toqubo_data["nvar"], toqubo_data["jump_time"]  , label = "JuMP"  , marker='D')
-    
-    if key == "tsp":
-        plt.xscale('symlog')
-        plt.yscale('symlog')
+    ax.set_xlabel(r"\#variables")
+    ax.set_ylabel("Running Time (sec)")
+    ax.grid(True)
 
-    plt.xlabel(r"\#variables")
-    plt.ylabel("Running Time (sec)")
-    plt.grid(True)
-    
-    legend = plt.legend()
+    legend = ax.legend(loc="best")
     frame = legend.get_frame()
     frame.set_facecolor("white")
-
-    DATA_PATH.mkdir(parents=True, exist_ok=True)
-
-    plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.pdf")))
-    plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.png")), dpi=300)
 
     return None
 
 if __name__ == "__main__":
-    for key in ["tsp", "npp"]:
-        plot_benchmark(key)
-        plot_toqubo(key)
+    DATA_PATH.mkdir(parents=True, exist_ok=True)
+
+    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    handles = []
+
+    for i, key in enumerate(["tsp", "npp"]):
+        h = plot_benchmark(key, axs[i])
+
+        handles.append(h)
+
+    fig.subplots_adjust(bottom=0.2, wspace=0.2, left=0.05, right=0.95)
+    fig.legend(
+        handles = handles[0],
+        loc='center',
+        bbox_to_anchor=(0.5, 0.075),
+        bbox_transform=fig.transFigure,
+        ncol=5,
+        shadow=True,
+    )
+
+    # plt.tight_layout()
+    plt.savefig(str(DATA_PATH.joinpath("results.pdf")))
+    plt.savefig(str(DATA_PATH.joinpath("results.png")), dpi=300)
+
+    fig, axs = plt.subplots(1, 2, figsize=(10, 4))
+
+    for i, key in enumerate(["tsp", "npp"]):
+        plot_toqubo(key, axs[i])
+
+    plt.tight_layout()
+    plt.savefig(str(DATA_PATH.joinpath("results.toqubo.pdf")))
+    plt.savefig(str(DATA_PATH.joinpath("results.toqubo.png")), dpi=300)
