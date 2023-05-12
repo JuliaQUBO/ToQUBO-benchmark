@@ -25,6 +25,7 @@ COLOR_REF = {
     "openqaoa": PSRBLUE,
     "qubovert": PSRBLUE,
     "pyqubo"  : PSRBLUE,
+    "amplify" : PSRBLUE,
 }
 LABEL_REF = {
     "toqubo"  : r"\texttt{ToQUBO.jl}",
@@ -32,6 +33,7 @@ LABEL_REF = {
     "openqaoa": r"\texttt{OpenQAOA (docplex)}",
     "qubovert": r"\texttt{qubovert}",
     "pyqubo"  : r"\texttt{PyQUBO}",
+    "amplify": r"\texttt{amplify}",
 }
 MARKER_REF = {
     "toqubo"  : "*",
@@ -39,6 +41,7 @@ MARKER_REF = {
     "openqaoa": "s",
     "qubovert": "^",
     "pyqubo"  : "d",
+    "amplify" : "h",
 }
 
 def has_latex():
@@ -78,14 +81,9 @@ def plot_benchmark(key: str, ax):
     data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
     data["qiskit"]   = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
     data["openqaoa"] = read_csv(BASE_PATH.joinpath("openqaoa", f"results.{key}.csv"))
+    data["amplify"]  = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
 
-    tags = [
-        "qiskit",
-        "openqaoa",
-        "qubovert",
-        "pyqubo",
-        "toqubo",
-    ]
+    tags = list(data.keys())
 
     ax.set_title(TITLE_REF[key])
 
