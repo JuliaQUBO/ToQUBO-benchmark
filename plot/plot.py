@@ -163,7 +163,7 @@ if __name__ == "__main__":
         loc='center',
         bbox_to_anchor=(0.5, 0.075),
         bbox_transform=fig.transFigure,
-        ncol=5,
+        ncol=6,
         shadow=True,
     )
 
