@@ -132,8 +132,9 @@ def plot_toqubo(key: str, ax):
     ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
     ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
 
-    ax.set_xscale('symlog')
-    ax.set_yscale('symlog')
+    if key == "tsp":
+        ax.set_xscale('symlog')
+        ax.set_yscale('symlog')
 
     ax.set_xlabel(r"\#variables")
     ax.set_ylabel("Running Time (sec)")
