@@ -132,8 +132,8 @@ def plot_toqubo(key: str, ax):
 
     ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
     ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
-    ax.plot(toqubo_data["nvar"], toqubo_data["total_time"], label="JuMP + ToQUBO", marker='*')
-    ax.plot(amplify_data["nvar"], amplify_data["total_time"], label="Amplify", marker='h')
+    ax.plot(toqubo_data["nvar"], toqubo_data["time"], label="JuMP + ToQUBO", marker='*')
+    ax.plot(amplify_data["nvar"], amplify_data["time"], label="Amplify", marker='h')
 
     if key == "tsp":
         ax.set_xscale('symlog')
