@@ -76,12 +76,12 @@ def read_csv(path):
 def plot_benchmark(key: str, ax):
     data = {}
 
-    data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
-    data["qubovert"] = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
-    data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
     data["qiskit"]   = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
     data["openqaoa"] = read_csv(BASE_PATH.joinpath("openqaoa", f"results.{key}.csv"))
+    data["qubovert"] = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
+    data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
     data["amplify"]  = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
+    data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
 
     tags = list(data.keys())
 
