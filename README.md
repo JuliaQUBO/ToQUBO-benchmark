@@ -3,8 +3,7 @@
 Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
 
 <div align="center">
-    <img src="./data/results.tsp.png" alt="TSP benchmark results" width="400px" height="320px">
-    <img src="./data/results.npp.png" alt="NPP benchmark results" width="400px" height="320px">
+    <img src="./data/results.png" alt="Benchmark Results" width="700px">
 </div>
 
 ## Setup
