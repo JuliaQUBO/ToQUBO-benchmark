@@ -8,6 +8,8 @@ PREFIX="./benchmark/"
 # - PyQUBO   (latest)
 # - Qiskit   (0.41)
 # - qubovert (latest)
+# - openqaoa (latest)
+# - amplify  (latest)
 # Every benchmark must produce the following files:
 # - results.tsp.csv
 # - results.npp.csv

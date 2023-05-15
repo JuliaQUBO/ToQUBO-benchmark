@@ -36,5 +36,6 @@ jobs:
         git config --global user.name "PSR Actions"
         git config --global user.email "suporte@psr-inc.com"
         git add ./benchmark/**/results.*.csv
+        git add ./data/report.json
         git commit -m "Save Benchmark Results [actions]"
         git push
