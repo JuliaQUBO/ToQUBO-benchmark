@@ -10,7 +10,7 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 </div>
 
 ## How to reproduce the results
-
+<center>
 <table>
   <tr>
     <th colspan="2">Requirements</th>
@@ -28,7 +28,7 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
     <td>1.9</td>
   </tr>
 </table>
-
+</center>
 
 First clone the repository
 
