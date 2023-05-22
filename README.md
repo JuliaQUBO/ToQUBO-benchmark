@@ -1,6 +1,6 @@
 # ToQUBO-benchmark
 
-Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
+Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 
 <div align="center">
     <img src="./data/results.png" alt="Benchmark Results" width="700px">
