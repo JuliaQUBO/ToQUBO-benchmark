@@ -1,55 +1,56 @@
 # ToQUBO-benchmark
 
-Benchmarks for a paper on [ToQUBO.jl](https://github.com/psrenergy/ToQUBO.jl)
+Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
+
+[![arXiv](https://img.shields.io/badge/arXiv-1234.56789-b31b1b.svg)]()
 
 <div align="center">
     <img src="./data/results.png" alt="Benchmark Results" width="700px">
 </div>
 
-## Setup
-```
-make install
+## How to reproduce the results
+<center>
+<table>
+  <tr>
+    <th colspan="2">Requirements</th>
+  </tr>
+  <tr>
+    <td>OS</td>
+    <td>Linux</td>
+  </tr>
+  <tr>
+    <td>Python</td>
+    <td>3.11</td>
+  </tr>
+  <tr>
+    <td>Julia</td>
+    <td>1.9</td>
+  </tr>
+</table>
+</center>
+
+First clone the repository
+
+```shell
+git clone https://github.com/psrenergy/ToQUBO-benchmark.git
 ```
 
-## Run benchmark experiments
-
+To run the code and plot the results
 ```
+cd ./ToQUBO-benchmark
+make
+```
+
+You can also do this separately
+```
+cd ./ToQUBO-benchmark
 make run
-```
-
-### PyQUBO
-
-PyQUBO is tested with two different versions(1.3.1 and 0.4.0), so you need to use two different environments:
-### PyQUBO - latest
-```ps
-$ virtualenv benchmark\pyqubo
-$ .\benchmark\pyqubo\Scripts\activate                 
-$ pip install pyqubo==1.3.1
-$ pip install pandas
-$ python .\benchmark\pyqubo\tsp.py
-``` 
-
-### PyQUBO - 0.4.0
-```ps
-$ virtualenv benchmark\pyqubo_040
-$ .\benchmark\pyqubo_040\Scripts\activate                 
-$ pip install pyqubo==0.4.0
-$ pip install pandas
-$ python .\benchmark\pyqubo_040\tsp.py
-``` 
-
-To exit an environment run the following:
-``` ps
-$ deactivate
-```
-
-## Visualize benchmark results
-The results are saved on `.csv` files, present in the folders for each experiment. To visualize them, do the following:
-```
 make plot
 ```
 
-## Package Versions
+## Environment
+
+## Packages
 
 | Package | Version |
 | :-----: | :-----: |
@@ -59,3 +60,4 @@ make plot
 | `qubovert`  | `v?.?.?` |
 | `Qiskit`    | `v?.?.?` |
 | `amplify`   | `v?.?.?` |
+
