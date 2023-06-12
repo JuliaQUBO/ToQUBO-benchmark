@@ -48,3 +48,14 @@ The results are saved on `.csv` files, present in the folders for each experimen
 ```
 make plot
 ```
+
+## Package Versions
+
+| Package | Version |
+| :-----: | :-----: |
+| `ToQUBO.jl` | `v0.1.6` |
+| `PyQUBO`    | `v1.4.0` |
+| `OpenQAOA`  | `v?.?.?` |
+| `qubovert`  | `v?.?.?` |
+| `Qiskit`    | `v?.?.?` |
+| `amplify`   | `v?.?.?` |

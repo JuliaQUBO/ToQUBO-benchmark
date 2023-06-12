@@ -1,4 +1,5 @@
 import csv
+import sys
 import matplotlib.pyplot as plt
 import scienceplots
 import shutil
@@ -12,8 +13,8 @@ BASE_PATH = ROOT_PATH.joinpath("benchmark")
 DATA_PATH = ROOT_PATH.joinpath("data")
 
 TITLE_REF = {
-    "tsp": "Travelling Salesperson Problem",
-    "npp": "Number Partitioning Problem",
+        "tsp": {"en": "Travelling Salesperson Problem", "pt": "Problema do Caixeiro-viajante"},
+        "npp": {"en": "Number Partitioning Problem", "pt": "Problema da Partição de Números"}
 }
 
 PSRBLUE = "#002846"
@@ -46,6 +47,15 @@ MARKER_REF = {
 
 def has_latex():
     return (shutil.which("latex") is not None)
+
+def get_lang():
+    if "pt" in sys.argv:
+        return "pt"
+    else:
+        return "en"
+
+def is_simple():
+    return "simple" in sys.argv
 
 if has_latex():
     plt.rcParams.update({
@@ -83,9 +93,14 @@ def plot_benchmark(key: str, ax):
     data["amplify"]  = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
     data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
 
-    tags = list(data.keys())
+    if is_simple():
+        tags = ["qubovert", "pyqubo", "amplify", "toqubo"]
+        LABEL_REF["toqubo"] = r"\texttt{QUBO.jl}"
+    else:
+        tags = list(data.keys())
+    lang = get_lang()
 
-    ax.set_title(TITLE_REF[key])
+    ax.set_title(TITLE_REF[key][lang])
 
     if key == "tsp":
         ax.set_xscale('symlog')
@@ -120,8 +135,12 @@ def plot_benchmark(key: str, ax):
     ax.set_ylim(yl, yu)
     ax.set_xlim(xl, xu)
 
-    ax.set_xlabel(r"\texttt{\#variables}")
-    ax.set_ylabel("Building Time (sec)")
+    if lang == "en":
+        ax.set_xlabel(r"\texttt{\#variables}")
+        ax.set_ylabel("Building Time (sec)")
+    elif lang == "pt":
+        ax.set_xlabel(r"\texttt{\#variáveis}")
+        ax.set_ylabel("Tempo de Montagem (seg)")
     ax.grid(True)
 
     return handles
@@ -152,7 +171,10 @@ def plot_toqubo(key: str, ax):
 if __name__ == "__main__":
     DATA_PATH.mkdir(parents=True, exist_ok=True)
 
-    fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+    if is_simple():
+        fig, axs = plt.subplots(1, 2, figsize=(10, 4))
+    else:
+        fig, axs = plt.subplots(1, 2, figsize=(10, 5))
 
     handles = []
 
@@ -161,7 +183,11 @@ if __name__ == "__main__":
 
         handles.append(h)
 
-    fig.subplots_adjust(bottom=0.2, wspace=0.2, left=0.05, right=0.95)
+    if is_simple():
+        fig.subplots_adjust(bottom=0.25, wspace=0.2, left=0.05, right=0.95)
+    else:
+        fig.subplots_adjust(bottom=0.2, wspace=0.2, left=0.05, right=0.95)
+    
     fig.legend(
         handles = handles[0],
         loc='center',
