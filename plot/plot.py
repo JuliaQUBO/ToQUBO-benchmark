@@ -38,9 +38,9 @@ LABEL_REF = {
 }
 MARKER_REF = {
     "toqubo"  : "*",
-    "qiskit"  : "s",
+    "qiskit"  : "X",
     "openqaoa": "^",
-    "qubovert": "v",
+    "qubovert": "s",
     "pyqubo"  : "d",
     "amplify" : "h",
 }
@@ -115,7 +115,7 @@ def plot_benchmark(key: str, ax):
         color  = COLOR_REF.get(tag, "#002846") # PSRBLUE
         marker = MARKER_REF.get(tag)
         label  = LABEL_REF.get(tag)
-        line   = "--"
+        line   = ":"
 
         n = np.array(data[tag]["nvar"], dtype=int)
         t = np.array(data[tag]["time"], dtype=float)
