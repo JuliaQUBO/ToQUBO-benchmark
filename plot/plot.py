@@ -38,11 +38,11 @@ LABEL_REF = {
 }
 MARKER_REF = {
     "toqubo"  : "*",
-    "qiskit"  : "o",
-    "openqaoa": "s",
-    "qubovert": "^",
+    "qiskit"  : "s",
+    "openqaoa": "^",
+    "qubovert": "v",
     "pyqubo"  : "d",
-    "amplify" : "X",
+    "amplify" : "h",
 }
 
 def has_latex():
