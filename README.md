@@ -2,20 +2,18 @@
 
 Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 
-[![arXiv](https://img.shields.io/badge/arXiv-1234.56789-b31b1b.svg)]()
+[![arXiv](https://img.shields.io/badge/arXiv-1234.56789-b31b1b.svg)](https://arxiv.org)
 
-<div align="center">
-    <img src="./data/results.png" alt="Benchmark Results" width="700px">
-</div>
+[![Benchmark Results](./data/results.png)](/)
 
 ## How to reproduce the results
 
 ## Environment
 
-| Linux | Ubuntu 22.04 |
-| :----: | :---------: |
+| Linux  | Ubuntu 22.04   |
+| :----: | :------------: |
 | Python | CPython 3.10.6 |
-| Julia | julia 1.9.0 |
+| Julia  | julia 1.9.0    |
 
 ## Packages
 
@@ -33,21 +31,32 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 First clone the repository
 
 ```shell
-git clone https://github.com/psrenergy/ToQUBO-benchmark.git#master
+$ git clone https://github.com/psrenergy/ToQUBO-benchmark.git#master
+...
 ```
 
 To run the code and plot the results
-```
-cd ./ToQUBO-benchmark
-make
+
+```shell
+$ cd ./ToQUBO-benchmark
+...
+
+$ make
 ```
 
 You can also do this separately
+
+```shell
+$ cd ./ToQUBO-benchmark
+...
+
+$ make install
+...
+
+$ make run
+...
+
+$ make plot
+...
+
 ```
-cd ./ToQUBO-benchmark
-make run
-make plot
-```
-
-
-
