@@ -2,7 +2,7 @@
 
 Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 
-[![arXiv](https://img.shields.io/badge/arXiv-1234.56789-b31b1b.svg)](https://arxiv.org)
+[![arXiv](https://img.shields.io/badge/arXiv-2307.02577-b31b1b.svg)]([https://arxiv.org](https://arxiv.org/abs/2307.02577))
 
 [![Benchmark Results](./data/results.png)](/)
 
