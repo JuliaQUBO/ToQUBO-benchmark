@@ -1,7 +1,6 @@
 import time
 import numpy as np
 from docplex.mp.model import Model
-from qiskit_optimization import QuadraticProgram
 from qiskit_optimization.converters import QuadraticProgramToQubo
 from qiskit_optimization.translators import from_docplex_mp
 from pathlib import Path
@@ -13,14 +12,10 @@ __DIR__ = Path(__file__).parent
 
 def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     t0 = time.time()
-    model = Model("tsp"+str(n))
 
-    var_matrix = []
-    for i in range(n):
-        var_row = []
-        for j in range(n):
-            var_row += [model.binary_var("xi"+str(i)+"j"+str(j))]
-        var_matrix += [var_row]
+    model = Model(f"TSP({n})")
+
+    var_matrix = [[model.binary_var(f"x({i},{j})") for j in range(n)] for i in range(n)]
 
     for i in range(n):
         model.add_constraint(sum(var_matrix[i][:])==1)
@@ -29,13 +24,13 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
         model.add_constraint(sum(var_matrix[:][j])==1)
 
     distance = []
+
     for i in range(n):
         for j in range(n):
             for k in range(n):
-                d = abs(i-j)
-                distance += [var_matrix[k][i] * var_matrix[(k+1)%n][j]] * d
-    distance = sum(distance)
+                distance.append(var_matrix[k][i] * var_matrix[(k+1)%n][j] * D[i,j])
 
+    distance = sum(distance)
 
     model.minimize(distance)
 
@@ -65,16 +60,11 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
     t0 = time.time()
     
-    model = Model("npp"+str(n))
+    model = Model(f"NPP({n})")
 
     x = [model.binary_var("x"+str(i)) for i in range(n)]
 
-    H = 0
-    for i in range(n):
-        H += (2*x[i]-1) * s[i]
-    
-    H = H**2
-
+    H = sum((2*x[i]-1) * s[i] for i in range(n))**2
 
     model.minimize(H)
 

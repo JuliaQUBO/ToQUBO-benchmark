@@ -1,25 +1,28 @@
 import time
 import numpy as np
-from docplex.mp.model import Model
-from openqaoa.problems.converters import FromDocplex2IsingModel
+import dimod
 from pathlib import Path
 
 
 from .. import benchmark, tsp_info, npp_info
 
+# Reference:
+# https://docs.ocean.dwavesys.com/en/stable/docs_binarycsp/intro.html
+
 __DIR__ = Path(__file__).parent
 
 def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     t0 = time.time()
-    model = Model(f"TSP({n})")
+    
+    model = dimod.ConstrainedQuadraticModel()
 
-    var_matrix = [[model.binary_var(f"x({i},{j})") for j in range(n)] for i in range(n)]
+    var_matrix = [[dimod.Binary(f"x({i},{j})") for j in range(n)] for i in range(n)]
 
     for i in range(n):
-        model.add_constraint(sum(var_matrix[i][:])==1)
+        model.add_constraint(sum(var_matrix[i][:]) == 1)
     
     for j in range(n):
-        model.add_constraint(sum(var_matrix[:][j])==1)
+        model.add_constraint(sum(var_matrix[:][j]) == 1)
 
     distance = []
 
@@ -30,14 +33,18 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 
     distance = sum(distance)
 
+    # This is already following the minimization sense
+    model.set_objective(distance)
+
     # Compile Model
     t1 = time.time()
 
-    ising = FromDocplex2IsingModel(model)
+    bqm = dimod.cqm_to_bqm(model, lam)
 
     # Translate to QUBO
     t2 = time.time() 
 
+    qubo = bqm.to_qubo()
 
     t3 = time.time()
 
@@ -53,22 +60,20 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
     t0 = time.time()
     
-    model = Model(f"NPP({n})")
+    model = dimod.BinaryQuadraticModel()
 
-    x = [model.binary_var(f"x({i})") for i in range(n)]
-
+    x = [dimod.Binary(f"x({i})") for i in range(n)]    
     H = sum((2*x[i]-1) * s[i] for i in range(n))**2
 
-    model.minimize(H)
+    model.set_objective(H)
 
     # Compile Model
     t1 = time.time()
 
-    qubo = FromDocplex2IsingModel(model)
-
     # Translate to QUBO
     t2 = time.time() 
 
+    qubo = model.to_qubo()
 
     t3 = time.time()
 

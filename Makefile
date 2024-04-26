@@ -6,7 +6,7 @@ SHELL  := /bin/bash
 
 all: install run plot
 
-install: install-plot install-pyqubo install-qubovert install-qiskit install-openqaoa install-amplify install-toqubo
+install: install-plot install-pyqubo install-qubovert install-qiskit install-openqaoa install-amplify install-dwave install-toqubo
 
 install-plot:
 	@echo "Installing Plot Tools..."
@@ -33,6 +33,10 @@ install-amplify:
 	@echo "Installing amplify..."
 	$(PYTHON) -m pip install --user -r "./benchmark/amplify/requirements.txt"
 
+install-dwave:
+	@echo "Installing dwave..."
+	$(PYTHON) -m pip install --user -r "./benchmark/dwave/requirements.txt"
+
 install-toqubo:
 	@echo "Installing ToQUBO.jl..."
 	$(JULIA) --proj=benchmark/ToQUBO -e 'import Pkg; Pkg.add(;name="ToQUBO", version=v"0.1.6"); Pkg.instantiate();'
@@ -40,7 +44,7 @@ install-toqubo:
 	@echo "Creating sysimage..."
 	$(JULIA) --proj=benchmark/ToQUBO "./benchmark/ToQUBO/create_sysimage.jl"
 
-run: run-pyqubo run-qubovert run-qiskit run-openqaoa run-amplify
+run: run-pyqubo run-qubovert run-qiskit run-openqaoa run-amplify run-dwave run-toqubo
 
 run-pyqubo:
 	@echo "Running pyqubo..."
@@ -61,6 +65,10 @@ run-openqaoa:
 run-amplify:
 	@echo "Running amplify..."
 	$(PYTHON) -m benchmark.amplify
+
+run-dwave:
+	@echo "Running dwave..."
+	$(PYTHON) -m benchmark.dwave
 	
 run-toqubo:
 	@echo "Running ToQUBO.jl..."
