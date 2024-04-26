@@ -39,7 +39,7 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     # Compile Model
     t1 = time.time()
 
-    bqm = dimod.cqm_to_bqm(model, lam)
+    bqm, _ = dimod.cqm_to_bqm(model, lam)
 
     # Translate to QUBO
     t2 = time.time() 
