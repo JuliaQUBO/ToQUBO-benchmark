@@ -60,12 +60,12 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
     t0 = time.time()
     
-    model = dimod.BinaryQuadraticModel()
+    model = dimod.BinaryQuadraticModel(dimod.Vartype.BINARY)
 
     x = [dimod.Binary(f"x({i})") for i in range(n)]    
     H = sum((2*x[i]-1) * s[i] for i in range(n))**2
 
-    model.set_objective(H)
+    model.update(H)
 
     # Compile Model
     t1 = time.time()
@@ -86,5 +86,5 @@ def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
 
 if __name__ == "__main__":
-    benchmark("tsp", **tsp_info(path=__DIR__, run=tsp, start=5, step=5, stop=100))
+    # benchmark("tsp", **tsp_info(path=__DIR__, run=tsp, start=5, step=5, stop=100))
     benchmark("npp", **npp_info(path=__DIR__, run=npp, start=20, step=20, stop=1000))
