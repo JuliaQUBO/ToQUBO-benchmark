@@ -27,6 +27,7 @@ COLOR_REF = {
     "qubovert": PSRBLUE,
     "pyqubo"  : PSRBLUE,
     "amplify" : PSRBLUE,
+    "dwave"   : PSRBLUE,
 }
 LABEL_REF = {
     "toqubo"  : r"\texttt{ToQUBO.jl}",
@@ -34,7 +35,8 @@ LABEL_REF = {
     "openqaoa": r"\texttt{OpenQAOA (docplex)}",
     "qubovert": r"\texttt{qubovert}",
     "pyqubo"  : r"\texttt{PyQUBO}",
-    "amplify": r"\texttt{amplify}",
+    "amplify" : r"\texttt{amplify}",
+    "dwave"   : r"\texttt{dwave}",
 }
 MARKER_REF = {
     "toqubo"  : "*",
@@ -43,6 +45,7 @@ MARKER_REF = {
     "qubovert": "s",
     "pyqubo"  : "d",
     "amplify" : "h",
+    "dwave"   : "o",
 }
 
 def has_latex():
@@ -92,6 +95,7 @@ def plot_benchmark(key: str, ax):
     data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
     data["amplify"]  = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
     data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
+    data["dwave"]    = read_csv(BASE_PATH.joinpath("dwave", f"results.{key}.csv"))
 
     if is_simple():
         tags = ["qubovert", "pyqubo", "amplify", "toqubo"]
