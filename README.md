@@ -17,14 +17,15 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 
 ## Packages
 
-| Package   | Version |
-| :-------: | :-----: |
-| ToQUBO.jl | v0.1.6  |
-| PyQUBO    | v1.4.0  |
-| OpenQAOA  | v0.1.3  |
-| qubovert  | v1.2.5  |
-| Qiskit    | v0.41.0 |
-| amplify   | v0.11.1 |
+| Package   | Version  |
+| :-------: | :------: |
+| ToQUBO.jl | v0.1.6   |
+| PyQUBO    | v1.4.0   |
+| OpenQAOA  | v0.1.3   |
+| qubovert  | v1.2.5   |
+| Qiskit    | v0.41.0  |
+| amplify   | v0.11.1  |
+| dimod     | v0.12.14 |
 
 ## Instructions
 
