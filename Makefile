@@ -1,41 +1,45 @@
 JULIA  := julia
 PYTHON := python3
+PIP    := ~/.local/bin/pip
 SHELL  := /bin/bash
 
 .PHONY: install run plot
 
 all: install run plot
 
+venv:
+	$(PYTHON) -m venv ~/.local --system-site-packages
+
 install: install-plot install-pyqubo install-qubovert install-qiskit install-openqaoa install-amplify install-dwave install-toqubo
 
-install-plot:
+install-plot: venv
 	@echo "Installing Plot Tools..."
 	@sudo apt install texlive texlive-latex-extra cm-super dvipng
-	$(PYTHON) -m pip install --user -r "./plot/requirements.txt"
+	$(PIP) install --user -r "./plot/requirements.txt"
 
-install-pyqubo:
+install-pyqubo: venv
 	@echo "Installing pyqubo..."
-	$(PYTHON) -m pip install --user -r "./benchmark/pyqubo/requirements.txt"
+	$(PIP) install --user -r "./benchmark/pyqubo/requirements.txt"
 
-install-qubovert:
+install-qubovert: venv
 	@echo "Installing qubovert..."
-	$(PYTHON) -m pip install --user -r "./benchmark/qubovert/requirements.txt"
+	$(PIP) install --user -r "./benchmark/qubovert/requirements.txt"
 
-install-qiskit:
+install-qiskit: venv
 	@echo "Installing qiskit..."
-	$(PYTHON) -m pip install --user -r "./benchmark/qiskit/requirements.txt"
+	$(PIP) install --user -r "./benchmark/qiskit/requirements.txt"
 
-install-openqaoa:
+install-openqaoa: venv
 	@echo "Installing openqaoa..."
-	$(PYTHON) -m pip install --user -r "./benchmark/openqaoa/requirements.txt"
+	$(PIP) install --user -r "./benchmark/openqaoa/requirements.txt"
 
-install-amplify:
+install-amplify: venv
 	@echo "Installing amplify..."
-	$(PYTHON) -m pip install --user -r "./benchmark/amplify/requirements.txt"
+	$(PIP) install --user -r "./benchmark/amplify/requirements.txt"
 
-install-dwave:
+install-dwave: venv
 	@echo "Installing dwave..."
-	$(PYTHON) -m pip install --user -r "./benchmark/dwave/requirements.txt"
+	$(PIP) install --user -r "./benchmark/dwave/requirements.txt"
 
 install-toqubo:
 	@echo "Installing ToQUBO.jl..."
@@ -46,35 +50,35 @@ install-toqubo:
 
 run: run-pyqubo run-qubovert run-qiskit run-openqaoa run-amplify run-dwave run-toqubo
 
-run-pyqubo:
+run-pyqubo: venv
 	@echo "Running pyqubo..."
 	$(PYTHON) -m benchmark.pyqubo
 
-run-qubovert:
+run-qubovert: venv
 	@echo "Running qubovert..."
 	$(PYTHON) -m benchmark.qubovert
 
-run-qiskit:
+run-qiskit: venv
 	@echo "Running qiskit..."
 	$(PYTHON) -m benchmark.qiskit
 
-run-openqaoa:
+run-openqaoa: venv
 	@echo "Running openqaoa..."
 	$(PYTHON) -m benchmark.openqaoa
 
-run-amplify:
+run-amplify: venv
 	@echo "Running amplify..."
 	$(PYTHON) -m benchmark.amplify
 
-run-dwave:
+run-dwave: venv
 	@echo "Running dwave..."
 	$(PYTHON) -m benchmark.dwave
 	
-run-toqubo:
+run-toqubo: venv
 	@echo "Running ToQUBO.jl..."
 	$(JULIA) --proj=benchmark/ToQUBO --sysimage "./benchmark/ToQUBO/sysimage" "./benchmark/ToQUBO/benchmark.jl" --run
 
-plot:
+plot: venv
 	@echo "Drawing Plots..."
 	$(PYTHON) "./plot/plot.py"
 
