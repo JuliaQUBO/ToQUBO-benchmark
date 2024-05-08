@@ -44,7 +44,7 @@ MARKER_REF = {
     "qubovert": "s",
     "pyqubo"  : "d",
     "amplify" : "h",
-    "dwave"   : "o",
+    "dwave"   : "P",
     "toqubo"  : "*",
 }
 
