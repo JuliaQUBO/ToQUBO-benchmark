@@ -1,4 +1,4 @@
-qiskit==0.41.0
-qiskit-optimization==0.5.0
+qiskit==1.0.2
+qiskit-optimization==0.6.1
 docplex==2.24.232
 numpy
