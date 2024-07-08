@@ -35,7 +35,7 @@ LABEL_REF = {
     "qubovert": r"\texttt{qubovert}",
     "pyqubo"  : r"\texttt{PyQUBO}",
     "amplify" : r"\texttt{amplify}",
-    "dwave"   : r"\texttt{dwave}",
+    "dwave"   : r"\texttt{dimod}",
     "toqubo"  : r"\texttt{ToQUBO.jl}",
 }
 MARKER_REF = {
