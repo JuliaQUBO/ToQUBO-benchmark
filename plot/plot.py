@@ -17,17 +17,22 @@ TITLE_REF = {
         "npp": {"en": "Number Partitioning Problem", "pt": "Problema da Partição de Números"}
 }
 
-PSRBLUE = "#002846"
-PSRGOLD = "#a49375"
+GREEN = "#169E4D"
+RED = "#BE1D2C"
+PURPLE = "#642F8F"
+BROWN = "#AE6F2B"
+PINK = "#901F63"
+BLUE = "#1897D4"
+ORANGE = "#FBB03F"
 
 COLOR_REF = {
-    "qiskit"  : PSRBLUE,
-    "openqaoa": PSRBLUE,
-    "qubovert": PSRBLUE,
-    "pyqubo"  : PSRBLUE,
-    "amplify" : PSRBLUE,
-    "dwave"   : PSRBLUE,
-    "toqubo"  : PSRGOLD,
+    "qiskit"  : GREEN,
+    "openqaoa": RED,
+    "qubovert": PURPLE,
+    "pyqubo"  : BROWN,
+    "amplify" : PINK,
+    "dwave"   : ORANGE,
+    "toqubo"  : BLUE,
 }
 LABEL_REF = {
     "qiskit"  : r"\texttt{Qiskit (docplex)}",
