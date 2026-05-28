@@ -7,7 +7,7 @@ on:
     types:
       - completed
   push:
-    branches: [master]
+    branches: [main]
   
 
 jobs:
@@ -41,4 +41,3 @@ jobs:
         git commit -m "Save Benchmark Plots [actions]"
         git push
         
-

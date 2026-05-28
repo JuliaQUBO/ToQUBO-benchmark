@@ -3,7 +3,7 @@ name: toqubo-benchmark
 on:
   workflow_dispatch:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   benchmark:
