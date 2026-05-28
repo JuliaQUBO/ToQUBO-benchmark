@@ -19,12 +19,12 @@ jobs:
             os: ubuntu-22.04
             arch: x64
     steps:
-    - uses: actions/checkout@v3
-    - uses: julia-actions/setup-julia@v1
+    - uses: actions/checkout@v6
+    - uses: julia-actions/setup-julia@v3
       with:
         version: ${{ matrix.julia-version }}
         arch: ${{ matrix.arch }}
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install & Run Benchmarks
