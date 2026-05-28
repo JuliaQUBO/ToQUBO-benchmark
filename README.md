@@ -1,6 +1,6 @@
 # ToQUBO-benchmark
 
-Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
+Benchmarks for a paper on [QUBO.jl](https://github.com/JuliaQUBO/QUBO.jl)
 
 [![arXiv](https://img.shields.io/badge/arXiv-2307.02577-b31b1b.svg)](https://arxiv.org/abs/2307.02577)
 
@@ -32,7 +32,7 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/psrenergy/QUBO.jl)
 First clone the repository
 
 ```shell
-$ git clone https://github.com/psrenergy/ToQUBO-benchmark.git#master
+$ git clone https://github.com/JuliaQUBO/ToQUBO-benchmark.git
 ...
 ```
 
