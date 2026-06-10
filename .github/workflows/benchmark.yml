@@ -39,5 +39,9 @@ jobs:
         git config --global user.email "suporte@psr-inc.com"
         git add ./benchmark/**/results.*.csv
         git add ./data/report.json
-        git commit -m "Save Benchmark Results [actions]"
-        git push
+        if git diff --cached --quiet; then
+          echo "No benchmark result changes to commit."
+        else
+          git commit -m "Save Benchmark Results [actions]"
+          git push
+        fi

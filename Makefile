@@ -2,8 +2,9 @@ JULIA  := julia
 PYTHON := python3
 PIP    := ~/.local/bin/pip
 SHELL  := /bin/bash
+PAPER_BASELINE := archive/paper-v1
 
-.PHONY: install run plot
+.PHONY: install run plot plot-paper
 
 all: install run plot
 
@@ -14,7 +15,8 @@ install: install-plot install-pyqubo install-qubovert install-qiskit install-ope
 
 install-plot: venv
 	@echo "Installing Plot Tools..."
-	@sudo apt install texlive texlive-latex-extra cm-super dvipng
+	@sudo apt-get update
+	@sudo apt-get install -y texlive texlive-latex-extra cm-super dvipng
 	$(PIP) install --user -r "./plot/requirements.txt"
 
 install-pyqubo: venv
@@ -81,6 +83,10 @@ run-toqubo: venv
 plot: venv
 	@echo "Drawing Plots..."
 	$(PYTHON) "./plot/plot.py"
+
+plot-paper: venv
+	@echo "Drawing Paper Plots..."
+	$(PYTHON) "./plot/plot.py" --results-dir "$(PAPER_BASELINE)/benchmark" --output-dir "$(PAPER_BASELINE)/data"
 
 clean:
 	@rm -f ./benchmark/**/results*.csv

@@ -12,7 +12,19 @@ on:
 
 jobs:
   plot:
-    if: ${{ !(github.event_name == 'push') || contains(github.event.head_commit.message, '[plot]') }}
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (github.event_name == 'push' && contains(github.event.head_commit.message, '[plot]')) ||
+        (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion == 'success' &&
+          (
+            github.event.workflow_run.event == 'workflow_dispatch' ||
+            contains(github.event.workflow_run.head_commit.message, '[run]')
+          )
+        )
+      }}
     name: Python ${{ matrix.python-version }} @ ${{ matrix.os }}/${{ matrix.arch }}/${{ github.event_name }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -38,6 +50,10 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "suporte@psr-inc.com"
         git add ./data/*.pdf ./data/*.png
-        git commit -m "Save Benchmark Plots [actions]"
-        git push
+        if git diff --cached --quiet; then
+          echo "No plot changes to commit."
+        else
+          git commit -m "Save Benchmark Plots [actions]"
+          git push
+        fi
         

@@ -9,8 +9,26 @@ from pathlib import Path
 
 ROOT_PATH = Path(__file__).parent.parent
 
-BASE_PATH = ROOT_PATH.joinpath("benchmark")
-DATA_PATH = ROOT_PATH.joinpath("data")
+def get_path_arg(flag, default):
+    if flag not in sys.argv:
+        return default
+
+    index = sys.argv.index(flag)
+
+    try:
+        value = sys.argv[index + 1]
+    except IndexError as exc:
+        raise SystemExit(f"{flag} requires a path") from exc
+
+    path = Path(value)
+
+    if not path.is_absolute():
+        path = ROOT_PATH.joinpath(path)
+
+    return path
+
+BASE_PATH = get_path_arg("--results-dir", ROOT_PATH.joinpath("benchmark"))
+DATA_PATH = get_path_arg("--output-dir", ROOT_PATH.joinpath("data"))
 
 TITLE_REF = {
         "tsp": {"en": "Travelling Salesperson Problem", "pt": "Problema do Caixeiro-viajante"},
