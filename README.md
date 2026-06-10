@@ -6,6 +6,33 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/JuliaQUBO/QUBO.jl)
 
 [![Benchmark Results](./data/results.png)](/)
 
+## Archived paper results
+
+The benchmark CSV files used for the paper are archived in
+[`archive/paper-v1`](./archive/paper-v1). This baseline should stay fixed while
+the top-level `benchmark/` and `data/` directories are modernized and rerun.
+
+To redraw the paper plots from the archived CSV files:
+
+```shell
+$ make plot-paper
+```
+
+## Updating dependencies and results
+
+Dependabot PRs should update dependency files only. They should not change
+`archive/paper-v1`; the `verify` workflow checks that the archived files still
+match their recorded hashes.
+
+The top-level `benchmark/` and `data/` directories are the live benchmark
+outputs. After merging dependency updates, rerun the benchmark intentionally
+with the `toqubo-benchmark` workflow dispatch or a commit containing `[run]`.
+The plot workflow will then redraw plots for the new live results.
+
+If a future run needs to be preserved as another fixed reference point, add a new
+archive directory such as `archive/modern-v1` instead of overwriting
+`archive/paper-v1`.
+
 ## How to reproduce the results
 
 ## Environment
@@ -23,7 +50,7 @@ Benchmarks for a paper on [QUBO.jl](https://github.com/JuliaQUBO/QUBO.jl)
 | PyQUBO    | v1.4.0   |
 | OpenQAOA  | v0.1.3   |
 | qubovert  | v1.2.5   |
-| Qiskit    | v0.41.0  |
+| Qiskit    | v1.4.2   |
 | amplify   | v0.11.1  |
 | dimod     | v0.12.14 |
 

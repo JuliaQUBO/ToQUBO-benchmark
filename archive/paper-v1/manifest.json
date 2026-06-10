@@ -1,0 +1,92 @@
+{
+  "baseline_id": "paper-v1",
+  "description": "Archived benchmark results used for the QUBO.jl paper before package modernization.",
+  "paper": {
+    "title": "QUBO.jl benchmark results",
+    "arxiv": "2307.02577"
+  },
+  "source": {
+    "results_commit": "323a83afb19427b51f97acb8858799ac1aceb841",
+    "archived_from_commit": "57c1836accaa2ddae19ec6f6a7fe729f1c65b43e",
+    "report_time": "2023-05-14 23:16:20.211039"
+  },
+  "environment": {
+    "linux": "Ubuntu 22.04",
+    "python": "CPython version 3.10.6",
+    "julia": "1.9.0",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz"
+  },
+  "packages": {
+    "ToQUBO.jl": "0.1.6",
+    "PyQUBO": "1.4.0",
+    "OpenQAOA": "0.1.3",
+    "qubovert": "1.2.5",
+    "Qiskit": "0.41.0",
+    "qiskit-optimization": "0.5.0",
+    "docplex": "2.24.232",
+    "amplify": "0.11.1",
+    "dimod": "0.12.14"
+  },
+  "files": [
+    {
+      "path": "benchmark/ToQUBO/results.npp.csv",
+      "sha256": "5f7914e0a0df785f700f091e043fe1439a740755d950300b2b2f58200eab7a73"
+    },
+    {
+      "path": "benchmark/ToQUBO/results.tsp.csv",
+      "sha256": "ed353ca045a82296c48de78fa2f815e3962f100574b2c86781f6038d93bcc4f9"
+    },
+    {
+      "path": "benchmark/amplify/results.npp.csv",
+      "sha256": "853131a96d36f425a6b3a7a2be1f361a08cebffd81b653c68f04cab844d81dfe"
+    },
+    {
+      "path": "benchmark/amplify/results.tsp.csv",
+      "sha256": "339d7c49a54bfeb82cf64774bb793b60c2f2f44325d4e3b2f04821ce41c96e2a"
+    },
+    {
+      "path": "benchmark/dwave/results.npp.csv",
+      "sha256": "4b2db6e853229b3fb0ebc37b8ebed4203fe6152b4e386f0fbf0dcecaa0abe48e"
+    },
+    {
+      "path": "benchmark/dwave/results.tsp.csv",
+      "sha256": "823dac64e3553da42feb381cb109a5c4cb4e841c0972ca262adceee23d9b1ab5"
+    },
+    {
+      "path": "benchmark/openqaoa/results.npp.csv",
+      "sha256": "edd03f9e98e61a535b87c86446307c912f3b19f608a16eb174a5db6d174c07c9"
+    },
+    {
+      "path": "benchmark/openqaoa/results.tsp.csv",
+      "sha256": "00a52f7de6fa636074b09df4ce955d423bf589826c0f5d3c4b1c61096c6fbf23"
+    },
+    {
+      "path": "benchmark/pyqubo/results.npp.csv",
+      "sha256": "859f35f5f028f40dfb27c522f69e1bed605ba0685e8aaf6aaf070a9d855e5be0"
+    },
+    {
+      "path": "benchmark/pyqubo/results.tsp.csv",
+      "sha256": "37e4aadfef8bf9e5963a4983434c21c41729f506f53ea267089d7caaccbc7116"
+    },
+    {
+      "path": "benchmark/qiskit/results.npp.csv",
+      "sha256": "ce578c20dd1ed6d2f4de922dc66167a0dd19cc6b9667a575e89fd3ea11a2a5c8"
+    },
+    {
+      "path": "benchmark/qiskit/results.tsp.csv",
+      "sha256": "a6c05eebb4ccd4c006fb273c357239a5890f2e3f66cd8a9a467ca79e1da9dfcd"
+    },
+    {
+      "path": "benchmark/qubovert/results.npp.csv",
+      "sha256": "a356b2b60d2c80f69e3982c7c5706f0fd4e759ea1ae40d69b60695d85c97e046"
+    },
+    {
+      "path": "benchmark/qubovert/results.tsp.csv",
+      "sha256": "35c6cf06ba1c072ff98c55c28afec48d79fc689782e8793d221a2fab8a5335d8"
+    },
+    {
+      "path": "data/report.json",
+      "sha256": "77b63d360195479539385073eb2b478255e6b80f71771b7f34137878d8efe08e"
+    }
+  ]
+}
