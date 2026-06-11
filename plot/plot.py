@@ -196,10 +196,17 @@ def plot_benchmark(key: str, ax):
 def plot_toqubo(key: str, ax):
     toqubo_data  = read_csv(BASE_PATH.joinpath("ToQUBO", f"results.{key}.csv"))
     amplify_data = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
+    has_phase_split = "compiler_time" in toqubo_data and "convert_time" in toqubo_data
 
-    ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
-    ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
     ax.plot(toqubo_data["nvar"], toqubo_data["time"], label="JuMP + ToQUBO", marker='*')
+    ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
+
+    if has_phase_split:
+        ax.plot(toqubo_data["nvar"], toqubo_data["compiler_time"], label="ToQUBO optimize!", marker='o')
+        ax.plot(toqubo_data["nvar"], toqubo_data["convert_time"], label="Backend extraction", marker='s')
+    else:
+        ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
+
     ax.plot(amplify_data["nvar"], amplify_data["time"], label="Amplify", marker='X')
 
     if key == "tsp":

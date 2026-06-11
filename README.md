@@ -60,6 +60,10 @@ The latest OpenQAOA release found on PyPI was `0.2.6`, but it does not resolve
 for the Python 3.12 runtime used by the modern benchmark run. The historical
 OpenQAOA results remain available in `archive/paper-v1`.
 
+The live ToQUBO result CSVs also include `compiler_time` for the `optimize!`
+step and `convert_time` for QUBOTools backend extraction. The `toqubo_time`
+column remains their sum for compatibility with the existing plots.
+
 ## Instructions
 
 First clone the repository
