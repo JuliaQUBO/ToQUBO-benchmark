@@ -1,5 +1,6 @@
 import csv
 import sys
+import subprocess
 import matplotlib.pyplot as plt
 import scienceplots
 import shutil
@@ -53,13 +54,13 @@ COLOR_REF = {
     "toqubo"  : BLUE,
 }
 LABEL_REF = {
-    "qiskit"  : r"\texttt{Qiskit (docplex)}",
-    "openqaoa": r"\texttt{OpenQAOA (docplex)}",
-    "qubovert": r"\texttt{qubovert}",
-    "pyqubo"  : r"\texttt{PyQUBO}",
-    "amplify" : r"\texttt{amplify}",
-    "dwave"   : r"\texttt{dimod}",
-    "toqubo"  : r"\texttt{ToQUBO.jl}",
+    "qiskit"  : "Qiskit (docplex)",
+    "openqaoa": "OpenQAOA (docplex)",
+    "qubovert": "qubovert",
+    "pyqubo"  : "PyQUBO",
+    "amplify" : "amplify",
+    "dwave"   : "dimod",
+    "toqubo"  : "ToQUBO.jl",
 }
 MARKER_REF = {
     "qiskit"  : "X",
@@ -72,7 +73,17 @@ MARKER_REF = {
 }
 
 def has_latex():
-    return (shutil.which("latex") is not None)
+    if shutil.which("latex") is None or shutil.which("kpsewhich") is None:
+        return False
+
+    result = subprocess.run(
+        ["kpsewhich", "type1cm.sty"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+
+    return result.returncode == 0
 
 def get_lang():
     if "pt" in sys.argv:
@@ -109,20 +120,30 @@ def read_csv(path):
                     table[col].append(float(val))
         return table 
 
-def plot_benchmark(key: str, ax):
-    data = {}
+def maybe_read_csv(package, key):
+    path = BASE_PATH.joinpath(package, f"results.{key}.csv")
 
-    data["qiskit"]   = read_csv(BASE_PATH.joinpath("qiskit"  , f"results.{key}.csv"))
-    data["openqaoa"] = read_csv(BASE_PATH.joinpath("openqaoa", f"results.{key}.csv"))
-    data["qubovert"] = read_csv(BASE_PATH.joinpath("qubovert", f"results.{key}.csv"))
-    data["pyqubo"]   = read_csv(BASE_PATH.joinpath("pyqubo"  , f"results.{key}.csv"))
-    data["amplify"]  = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
-    data["dwave"]    = read_csv(BASE_PATH.joinpath("dwave", f"results.{key}.csv"))
-    data["toqubo"]   = read_csv(BASE_PATH.joinpath("ToQUBO"  , f"results.{key}.csv"))
+    if path.exists():
+        return read_csv(path)
+    else:
+        return None
+
+def plot_benchmark(key: str, ax):
+    data = {
+        "qiskit"  : maybe_read_csv("qiskit", key),
+        "openqaoa": maybe_read_csv("openqaoa", key),
+        "qubovert": maybe_read_csv("qubovert", key),
+        "pyqubo"  : maybe_read_csv("pyqubo", key),
+        "amplify" : maybe_read_csv("amplify", key),
+        "dwave"   : maybe_read_csv("dwave", key),
+        "toqubo"  : maybe_read_csv("ToQUBO", key),
+    }
+
+    data = {tag: table for tag, table in data.items() if table is not None}
 
     if is_simple():
         tags = ["qubovert", "pyqubo", "amplify", "toqubo"]
-        LABEL_REF["toqubo"] = r"\texttt{QUBO.jl}"
+        LABEL_REF["toqubo"] = "QUBO.jl"
     else:
         tags = list(data.keys())
     lang = get_lang()
@@ -163,10 +184,10 @@ def plot_benchmark(key: str, ax):
     ax.set_xlim(xl, xu)
 
     if lang == "en":
-        ax.set_xlabel(r"\texttt{\#variables}")
+        ax.set_xlabel("#variables")
         ax.set_ylabel("Building Time (sec)")
     elif lang == "pt":
-        ax.set_xlabel(r"\texttt{\#variáveis}")
+        ax.set_xlabel("#variaveis")
         ax.set_ylabel("Tempo de Montagem (seg)")
     ax.grid(True)
 
@@ -185,7 +206,7 @@ def plot_toqubo(key: str, ax):
         ax.set_xscale('symlog')
         ax.set_yscale('symlog')
 
-    ax.set_xlabel(r"\#variables")
+    ax.set_xlabel("#variables")
     ax.set_ylabel("Running Time (sec)")
     ax.grid(True)
 

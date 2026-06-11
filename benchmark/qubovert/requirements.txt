@@ -1,2 +1,2 @@
 qubovert==1.2.5
-numpy
+numpy==2.4.6

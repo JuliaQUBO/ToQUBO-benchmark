@@ -37,22 +37,28 @@ archive directory such as `archive/modern-v1` instead of overwriting
 
 ## Environment
 
-| Linux  | Ubuntu 22.04   |
-| :----: | :------------: |
-| Python | CPython 3.10.6 |
-| Julia  | julia 1.9.0    |
+| Linux  | Ubuntu 22.04 / 24.04 |
+| :----: | :------------------: |
+| Python | CPython 3.12         |
+| Julia  | julia 1.12.6         |
 
 ## Packages
 
-| Package   | Version  |
-| :-------: | :------: |
-| ToQUBO.jl | v0.1.6   |
-| PyQUBO    | v1.4.0   |
-| OpenQAOA  | v0.1.3   |
-| qubovert  | v1.2.5   |
-| Qiskit    | v1.4.2   |
-| amplify   | v0.11.1  |
-| dimod     | v0.12.14 |
+| Package             | Version |
+| :-----------------: | :-----: |
+| ToQUBO.jl           | v0.4.0  |
+| PyQUBO              | v1.5.0  |
+| OpenQAOA            | excluded on Python 3.12 |
+| qubovert            | v1.2.5  |
+| Qiskit              | v2.4.1  |
+| qiskit-optimization | v0.7.0  |
+| docplex             | v2.32.264 |
+| amplify             | v1.6.1  |
+| dimod               | v0.12.22 |
+
+The latest OpenQAOA release found on PyPI was `0.2.6`, but it does not resolve
+for the Python 3.12 runtime used by the modern benchmark run. The historical
+OpenQAOA results remain available in `archive/paper-v1`.
 
 ## Instructions
 

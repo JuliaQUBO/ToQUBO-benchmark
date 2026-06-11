@@ -1,8 +1,8 @@
 import time
 import numpy as np
 from pathlib import Path
-from amplify import BinaryPoly, BinaryQuadraticModel, gen_symbols, sum_poly
-from amplify.constraint import equal_to
+from amplify import Model, VariableGenerator, equal_to
+from amplify import sum as amplify_sum
 
 from .. import benchmark, tsp_info, npp_info
 
@@ -11,38 +11,32 @@ __DIR__ = Path(__file__).parent
 def tsp(n: int, D: np.ndarray, lam: float = 5.0):
     # Create Model
     t0 = time.time()
-    x  = gen_symbols(BinaryPoly, n, n)
+    gen = VariableGenerator()
+    x = gen.array("Binary", n, n)
 
     # Constraints on rows
-    row_constraints = [
-        equal_to(sum_poly([x[k][i] for i in range(n)]), 1) for k in range(n)
-    ]
+    row_constraints = equal_to(x, 1, axis=1)
 
     # Constraints on columns
-    col_constraints = [
-        equal_to(sum_poly([x[k][i] for k in range(n)]), 1) for i in range(n)
-    ]
+    col_constraints = equal_to(x, 1, axis=0)
 
-    constraints = sum(row_constraints) + sum(col_constraints)
+    constraints = row_constraints + col_constraints
 
     # Objective Value
-    cost = sum_poly(
-        n,
-        lambda k: sum_poly(
-            n,
-            lambda i: sum_poly(
-                n, lambda j: D[i][j] * x[k][i] * x[(k + 1) % n][j]
-            ),
-        ),
+    cost = amplify_sum(
+        D[i][j] * x[k, i] * x[(k + 1) % n, j]
+        for k in range(n)
+        for i in range(n)
+        for j in range(n)
     )
 
-    # Construct hamiltonian
-    f = cost + lam * constraints
+    # Construct model
+    f = Model(cost, lam * constraints)
 
     # Compile Model
     t1 = time.time()
 
-    model = BinaryQuadraticModel(f)
+    model = f.to_unconstrained_poly()
 
     # Stop the count!
     t2 = time.time()
@@ -56,15 +50,16 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 def npp(n: int, s: np.ndarray, lam: float = 5.0):
     # Create Model
     t0 = time.time()
-    x  = gen_symbols(BinaryPoly, n)
+    gen = VariableGenerator()
+    x = gen.array("Binary", n)
 
     # Objective Value / Construct hamiltonian
-    f = (sum((2 * x[i] - 1) * s[i] for i in range(n))) ** 2
+    f = amplify_sum((2 * x[i] - 1) * s[i] for i in range(n)) ** 2
 
     # Compile Model
     t1 = time.time()
 
-    model = BinaryQuadraticModel(f)
+    model = Model(f).to_unconstrained_poly()
 
     # Stop the count!
     t2 = time.time()
