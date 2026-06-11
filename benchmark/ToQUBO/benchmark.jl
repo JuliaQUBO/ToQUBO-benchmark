@@ -50,12 +50,18 @@ function benchmark(;
                 time_info["total_time"],
                 time_info["model_time"],
                 time_info["compiler_time"] + time_info["convert_time"],
+                time_info["compiler_time"],
+                time_info["convert_time"],
             )
         )
     end
 
     csv_path = joinpath(path, "results.$(key).csv")
-    CSV.write(csv_path, sort(collect(results)), header=["nvar", "time", "jump_time", "toqubo_time"])
+    CSV.write(
+        csv_path,
+        sort(collect(results)),
+        header=["nvar", "time", "jump_time", "toqubo_time", "compiler_time", "convert_time"],
+    )
 
     return nothing
 end

@@ -1,5 +1,5 @@
-matplotlib
-pandas
-numpy
-scipy
-scienceplots
+matplotlib==3.10.9
+pandas==3.0.3
+numpy==2.4.6
+scipy==1.17.1
+scienceplots==2.2.1

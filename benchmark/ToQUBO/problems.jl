@@ -28,7 +28,7 @@ function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
+        t₂ = @timed qubo_model = ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
     end
 
     if skip_gc
@@ -90,7 +90,7 @@ function npp(n::Int, s::Vector{Int}; skip_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed Q, α, β = ToQUBO.qubo(model, Dict)
+        t₂ = @timed qubo_model = ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
     end
 
     if skip_gc
