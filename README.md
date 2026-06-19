@@ -33,14 +33,40 @@ If a future run needs to be preserved as another fixed reference point, add a ne
 archive directory such as `archive/modern-v1` instead of overwriting
 `archive/paper-v1`.
 
+## Current live result set
+
+The top-level CSV files currently contain `latest-stack-2026-06-19-rerun`, a
+coherent diagnostic rerun of the live benchmark packages. This replaces the
+mixed-date latest-stack experiment from PR #11, but it is not archived as a
+paper-style fixed reference point.
+
+OpenQAOA is still excluded from the live run because `openqaoa==0.2.6` does not
+resolve on Python 3.12. The historical OpenQAOA rows remain available under
+`archive/paper-v1`.
+
+The ToQUBO.jl benchmark still uses `extract_qubo_backend` in
+`benchmark/ToQUBO/problems.jl` to reach the QUBOTools backend through
+JuMP/ToQUBO optimizer internals. ToQUBO v0.4.1 does not expose the old
+`ToQUBO.qubo` helper, so this path should be rechecked on future ToQUBO or
+QUBOTools bumps. In the current TSP run, backend extraction is 27.344 s of
+29.189 s at 10,000 variables.
+
+The live run provenance, package versions, CSV row counts, and SHA-256 hashes
+are recorded in [`data/report.json`](./data/report.json).
+
+The environment table below describes this diagnostic WSL2 run only. A future
+authoritative archived baseline should be produced from the documented CI
+matrix or should record its exact environment before being compared with the
+archived paper baseline.
+
 ## How to reproduce the results
 
 ## Environment
 
-| Linux  | Ubuntu 22.04 / 24.04 |
-| :----: | :------------------: |
-| Python | CPython 3.12         |
-| Julia  | julia 1.12.6         |
+| Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
+| :----: | :----------------------------: |
+| Python | CPython 3.12.12                |
+| Julia  | julia version 1.12.6           |
 
 ## Packages
 
@@ -93,6 +119,9 @@ $ make install
 ...
 
 $ make run
+...
+
+$ make report
 ...
 
 $ make plot

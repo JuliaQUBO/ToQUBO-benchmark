@@ -4,7 +4,8 @@ PIP    := ~/.local/bin/pip
 SHELL  := /bin/bash
 PAPER_BASELINE := archive/paper-v1
 
-.PHONY: install run plot plot-paper
+.PHONY: install run report plot plot-paper
+.NOTPARALLEL: run
 
 all: install run plot
 
@@ -48,6 +49,7 @@ install-toqubo:
 	$(JULIA) --proj=benchmark/ToQUBO -e 'import Pkg; Pkg.instantiate();'
 
 run: run-pyqubo run-qubovert run-qiskit run-amplify run-dwave run-toqubo
+	$(MAKE) report
 
 run-pyqubo: venv
 	@echo "Running pyqubo..."
@@ -75,6 +77,12 @@ run-dwave: venv
 run-toqubo: venv
 	@echo "Running ToQUBO.jl..."
 	$(JULIA) --proj=benchmark/ToQUBO "./benchmark/ToQUBO/benchmark.jl" --run
+
+report: venv
+	@echo "Writing benchmark report..."
+	BENCHMARK_JULIA="$(JULIA)" \
+	BENCHMARK_JULIA_VERSION="$$($(JULIA) --version)" \
+	$(PYTHON) "./scripts/write_benchmark_report.py"
 
 plot: venv
 	@echo "Drawing Plots..."

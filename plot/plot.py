@@ -261,6 +261,7 @@ if __name__ == "__main__":
     # plt.tight_layout()
     plt.savefig(str(DATA_PATH.joinpath("results.pdf")))
     plt.savefig(str(DATA_PATH.joinpath("results.png")), dpi=300)
+    plt.close(fig)
 
     fig, axs = plt.subplots(1, 2, figsize=(10, 4))
 
@@ -270,3 +271,25 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.savefig(str(DATA_PATH.joinpath("results.toqubo.pdf")))
     plt.savefig(str(DATA_PATH.joinpath("results.toqubo.png")), dpi=300)
+    plt.close(fig)
+
+    for key in ["tsp", "npp"]:
+        fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+        handles = plot_benchmark(key, ax)
+
+        if handles:
+            legend = ax.legend(handles=handles, loc="best")
+            frame = legend.get_frame()
+            frame.set_facecolor("white")
+
+        plt.tight_layout()
+        plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.pdf")))
+        plt.savefig(str(DATA_PATH.joinpath(f"results.{key}.png")), dpi=300)
+        plt.close(fig)
+
+        fig, ax = plt.subplots(1, 1, figsize=(5, 4))
+        plot_toqubo(key, ax)
+        plt.tight_layout()
+        plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.pdf")))
+        plt.savefig(str(DATA_PATH.joinpath(f"toqubo.{key}.png")), dpi=300)
+        plt.close(fig)
