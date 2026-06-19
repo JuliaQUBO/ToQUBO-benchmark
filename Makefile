@@ -32,7 +32,7 @@ install-qiskit: venv
 	$(PIP) install --user -r "./benchmark/qiskit/requirements.txt"
 
 install-openqaoa: venv
-	@echo "Skipping openqaoa: latest PyPI release does not support Python 3.12."
+	@echo "Installing openqaoa when supported by its Python version marker (no-op on Python 3.12)."
 	$(PIP) install --user -r "./benchmark/openqaoa/requirements.txt"
 
 install-amplify: venv

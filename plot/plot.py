@@ -194,20 +194,23 @@ def plot_benchmark(key: str, ax):
     return handles
 
 def plot_toqubo(key: str, ax):
-    toqubo_data  = read_csv(BASE_PATH.joinpath("ToQUBO", f"results.{key}.csv"))
-    amplify_data = read_csv(BASE_PATH.joinpath("amplify" , f"results.{key}.csv"))
-    has_phase_split = "compiler_time" in toqubo_data and "convert_time" in toqubo_data
+    toqubo_data = maybe_read_csv("ToQUBO", key)
+    amplify_data = maybe_read_csv("amplify", key)
 
-    ax.plot(toqubo_data["nvar"], toqubo_data["time"], label="JuMP + ToQUBO", marker='*')
-    ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
+    if toqubo_data is not None:
+        has_phase_split = "compiler_time" in toqubo_data and "convert_time" in toqubo_data
 
-    if has_phase_split:
-        ax.plot(toqubo_data["nvar"], toqubo_data["compiler_time"], label="ToQUBO optimize!", marker='o')
-        ax.plot(toqubo_data["nvar"], toqubo_data["convert_time"], label="Backend extraction", marker='s')
-    else:
-        ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
+        ax.plot(toqubo_data["nvar"], toqubo_data["time"], label="JuMP + ToQUBO", marker='*')
+        ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
 
-    ax.plot(amplify_data["nvar"], amplify_data["time"], label="Amplify", marker='X')
+        if has_phase_split:
+            ax.plot(toqubo_data["nvar"], toqubo_data["compiler_time"], label="ToQUBO optimize!", marker='o')
+            ax.plot(toqubo_data["nvar"], toqubo_data["convert_time"], label="Backend extraction", marker='s')
+        else:
+            ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
+
+    if amplify_data is not None:
+        ax.plot(amplify_data["nvar"], amplify_data["time"], label="Amplify", marker='X')
 
     if key == "tsp":
         ax.set_xscale('symlog')
@@ -217,9 +220,12 @@ def plot_toqubo(key: str, ax):
     ax.set_ylabel("Running Time (sec)")
     ax.grid(True)
 
-    legend = ax.legend(loc="best")
-    frame = legend.get_frame()
-    frame.set_facecolor("white")
+    handles, _ = ax.get_legend_handles_labels()
+
+    if handles:
+        legend = ax.legend(loc="best")
+        frame = legend.get_frame()
+        frame.set_facecolor("white")
 
     return None
 
