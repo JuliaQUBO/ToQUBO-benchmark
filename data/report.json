@@ -1,7 +1,9 @@
 {
   "environment": {
     "cpu": "Intel(R) Xeon(R) w5-2565X",
-    "julia": "1.12.6",
+    "julia": "julia version 1.12.6",
+    "julia_executable": "/home/bernalde/.julia/juliaup/julia-1.12.6+0.x64.linux.gnu/bin/julia",
+    "julia_manifest": "1.12.6",
     "machine": "x86_64",
     "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
     "python": "3.12.12",
@@ -93,7 +95,7 @@
       "sha256": "1d2349929bdcc6648f61973ece667041a6183c3524b8bffdd829d8566cd5d4a0"
     }
   ],
-  "generated_at": "2026-06-19T17:29:18+00:00",
+  "generated_at": "2026-06-19T18:54:36+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",

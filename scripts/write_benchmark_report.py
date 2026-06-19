@@ -4,6 +4,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import subprocess
 import sys
 import tomllib
 from datetime import datetime, timezone
@@ -66,6 +67,25 @@ def read_julia_manifest():
     }
 
 
+def julia_runtime():
+    executable = os.environ.get("BENCHMARK_JULIA", "julia")
+    version = os.environ.get("BENCHMARK_JULIA_VERSION")
+
+    if version is None:
+        result = subprocess.run(
+            [executable, "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        version = result.stdout
+
+    return {
+        "executable": executable,
+        "version": version.strip(),
+    }
+
+
 def cpu_model():
     cpuinfo = Path("/proc/cpuinfo")
     if cpuinfo.exists():
@@ -99,32 +119,62 @@ def result_files():
     return files
 
 
-def toqubo_extraction_summary():
-    path = BENCHMARK / "ToQUBO" / "results.tsp.csv"
+def toqubo_extraction_summary(path=None):
+    if path is None:
+        path = BENCHMARK / "ToQUBO" / "results.tsp.csv"
+    else:
+        path = Path(path)
+
     with path.open(newline="", encoding="utf-8") as csv_file:
-        rows = list(csv.DictReader(csv_file))
+        reader = csv.DictReader(csv_file)
+        rows = list(reader)
+        fieldnames = set(reader.fieldnames or [])
 
     largest = max(rows, key=lambda row: int(row["nvar"]))
-    convert_time = float(largest["convert_time"])
     total_time = float(largest["time"])
 
-    return {
-        "status": "internal-backend-access",
+    summary = {
         "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
         "public_api_check": (
             "ToQUBO v0.4.1 does not define ToQUBO.qubo; the benchmark still "
             "reaches the QUBOTools backend through JuMP/ToQUBO optimizer internals."
         ),
         "largest_tsp_nvar": int(largest["nvar"]),
-        "largest_tsp_convert_time": convert_time,
         "largest_tsp_total_time": total_time,
-        "largest_tsp_convert_share": convert_time / total_time,
     }
+
+    if "convert_time" in fieldnames:
+        convert_time = float(largest["convert_time"])
+        summary.update(
+            {
+                "status": "internal-backend-access",
+                "largest_tsp_convert_time": convert_time,
+                "largest_tsp_convert_share": convert_time / total_time,
+            }
+        )
+    elif "toqubo_time" in fieldnames:
+        summary.update(
+            {
+                "status": "phase-split-unavailable",
+                "reason": "ToQUBO result CSV does not include convert_time.",
+                "largest_tsp_toqubo_time": float(largest["toqubo_time"]),
+            }
+        )
+    else:
+        summary.update(
+            {
+                "status": "extraction-unavailable",
+                "reason": "ToQUBO result CSV does not include convert_time or toqubo_time.",
+            }
+        )
+
+    return summary
 
 
 def main():
     DATA.mkdir(exist_ok=True)
-    julia = read_julia_manifest()
+    julia_manifest = read_julia_manifest()
+    julia = julia_runtime()
 
     report = {
         "schema_version": 1,
@@ -149,11 +199,13 @@ def main():
             "cpu": cpu_model(),
             "python": platform.python_version(),
             "python_executable": sys.executable,
-            "julia": julia["julia"],
+            "julia": julia["version"],
+            "julia_executable": julia["executable"],
+            "julia_manifest": julia_manifest["julia"],
         },
         "packages": {
             "python": {name: package_version(name) for name in PYTHON_PACKAGES},
-            "julia": julia["packages"],
+            "julia": julia_manifest["packages"],
         },
         "toqubo_extraction": toqubo_extraction_summary(),
         "files": result_files(),

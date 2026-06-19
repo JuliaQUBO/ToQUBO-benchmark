@@ -5,6 +5,7 @@ SHELL  := /bin/bash
 PAPER_BASELINE := archive/paper-v1
 
 .PHONY: install run report plot plot-paper
+.NOTPARALLEL: run
 
 all: install run plot
 
@@ -47,7 +48,8 @@ install-toqubo:
 	@echo "Installing ToQUBO.jl..."
 	$(JULIA) --proj=benchmark/ToQUBO -e 'import Pkg; Pkg.instantiate();'
 
-run: run-pyqubo run-qubovert run-qiskit run-amplify run-dwave run-toqubo report
+run: run-pyqubo run-qubovert run-qiskit run-amplify run-dwave run-toqubo
+	$(MAKE) report
 
 run-pyqubo: venv
 	@echo "Running pyqubo..."
@@ -78,6 +80,8 @@ run-toqubo: venv
 
 report: venv
 	@echo "Writing benchmark report..."
+	BENCHMARK_JULIA="$(JULIA)" \
+	BENCHMARK_JULIA_VERSION="$$($(JULIA) --version)" \
 	$(PYTHON) "./scripts/write_benchmark_report.py"
 
 plot: venv

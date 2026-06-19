@@ -54,6 +54,11 @@ QUBOTools bumps. In the current TSP run, backend extraction is 27.344 s of
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
 
+The environment table below describes this diagnostic WSL2 run only. A future
+authoritative archived baseline should be produced from the documented CI
+matrix or should record its exact environment before being compared with the
+archived paper baseline.
+
 ## How to reproduce the results
 
 ## Environment
@@ -61,7 +66,7 @@ are recorded in [`data/report.json`](./data/report.json).
 | Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
 | :----: | :----------------------------: |
 | Python | CPython 3.12.12                |
-| Julia  | julia 1.12.6                   |
+| Julia  | julia version 1.12.6           |
 
 ## Packages
 

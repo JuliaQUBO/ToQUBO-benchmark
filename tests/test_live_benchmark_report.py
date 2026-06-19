@@ -1,12 +1,24 @@
 import csv
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
+import subprocess
+import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT = ROOT / "data" / "report.json"
+REPORT_SCRIPT = ROOT / "scripts" / "write_benchmark_report.py"
+
+
+def load_report_script():
+    spec = importlib.util.spec_from_file_location("write_benchmark_report", REPORT_SCRIPT)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 class LiveBenchmarkReportTests(unittest.TestCase):
@@ -55,6 +67,64 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(extraction["status"], "internal-backend-access")
         self.assertIn("ToQUBO.qubo", extraction["public_api_check"])
         self.assertGreater(extraction["largest_tsp_convert_share"], 0.9)
+
+    def test_julia_runtime_uses_report_environment(self):
+        report_script = load_report_script()
+
+        with mock.patch.dict(
+            report_script.os.environ,
+            {
+                "BENCHMARK_JULIA": "/opt/julia/bin/julia",
+                "BENCHMARK_JULIA_VERSION": "julia version 9.9.9",
+            },
+            clear=False,
+        ):
+            runtime = report_script.julia_runtime()
+
+        self.assertEqual(runtime["executable"], "/opt/julia/bin/julia")
+        self.assertEqual(runtime["version"], "julia version 9.9.9")
+
+    def test_julia_runtime_queries_executable_when_env_version_is_absent(self):
+        report_script = load_report_script()
+        completed = subprocess.CompletedProcess(
+            ["/opt/julia/bin/julia", "--version"],
+            0,
+            stdout="julia version 8.8.8\n",
+            stderr="",
+        )
+
+        with mock.patch.dict(
+            report_script.os.environ,
+            {"BENCHMARK_JULIA": "/opt/julia/bin/julia"},
+            clear=True,
+        ), mock.patch.object(report_script.subprocess, "run", return_value=completed) as run:
+            runtime = report_script.julia_runtime()
+
+        run.assert_called_once_with(
+            ["/opt/julia/bin/julia", "--version"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        self.assertEqual(runtime["version"], "julia version 8.8.8")
+
+    def test_toqubo_extraction_summary_handles_missing_phase_split(self):
+        report_script = load_report_script()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "results.tsp.csv"
+            path.write_text(
+                "nvar,time,jump_time,toqubo_time\n"
+                "25,1.0,0.2,0.8\n"
+                "100,2.0,0.3,1.7\n",
+                encoding="utf-8",
+            )
+
+            extraction = report_script.toqubo_extraction_summary(path)
+
+        self.assertEqual(extraction["status"], "phase-split-unavailable")
+        self.assertEqual(extraction["largest_tsp_nvar"], 100)
+        self.assertEqual(extraction["largest_tsp_toqubo_time"], 1.7)
 
 
 if __name__ == "__main__":
