@@ -1,6 +1,6 @@
 {
-  "id": "07b9a071-7080-44d8-940a-4a92600b6a19",
-  "time": "2026-06-11T16:14:17.764872+00:00",
+  "id": "c53214be-b583-40be-8bd0-bc66e4d8b2f3",
+  "time": "2026-06-19T16:05:35+00:00",
   "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
   "python": "CPython version 3.12.12",
   "julia": "julia version 1.12.6",
@@ -171,7 +171,8 @@
     "l2_cache_associativity": 7
   },
   "packages": {
-    "ToQUBO.jl": "0.4.0",
+    "ToQUBO.jl": "0.4.1",
+    "QUBOTools.jl": "0.13.1",
     "PyQUBO": "1.5.0",
     "OpenQAOA": "excluded: openqaoa 0.2.6 does not install on Python 3.12",
     "qubovert": "1.2.5",

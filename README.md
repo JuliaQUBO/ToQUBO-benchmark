@@ -46,7 +46,8 @@ archive directory such as `archive/modern-v1` instead of overwriting
 
 | Package             | Version |
 | :-----------------: | :-----: |
-| ToQUBO.jl           | v0.4.0  |
+| ToQUBO.jl           | v0.4.1  |
+| QUBOTools.jl        | v0.13.1 |
 | PyQUBO              | v1.5.0  |
 | OpenQAOA            | excluded on Python 3.12 |
 | qubovert            | v1.2.5  |
