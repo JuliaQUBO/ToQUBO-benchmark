@@ -5,6 +5,12 @@ function tsp_data(n::Integer)
     return Float64[abs(i - j) for i = 1:n, j = 1:n]
 end
 
+function extract_qubo_backend(model)
+    # ToQUBO v0.4.1 no longer exposes the old ToQUBO.qubo(model, Dict) path.
+    # This reaches through JuMP/ToQUBO internals, so re-check it on ToQUBO bumps.
+    return ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
+end
+
 function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
     if skip_gc
         GC.gc()
@@ -28,7 +34,7 @@ function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed qubo_model = ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
+        t₂ = @timed qubo_model = extract_qubo_backend(model)
     end
 
     if skip_gc
@@ -90,7 +96,7 @@ function npp(n::Int, s::Vector{Int}; skip_gc::Bool=false)
         t₁ = @timed optimize!(model)
 
         # Convert to QUBO
-        t₂ = @timed qubo_model = ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
+        t₂ = @timed qubo_model = extract_qubo_backend(model)
     end
 
     if skip_gc
