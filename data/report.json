@@ -1,102 +1,102 @@
 {
   "environment": {
-    "cpu": "Intel(R) Xeon(R) w5-2565X",
+    "cpu": "AMD EPYC 7763 64-Core Processor",
     "julia": "julia version 1.12.6",
     "julia_executable": "julia",
     "julia_manifest": "1.12.6",
-    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
+    "julia_manifest_path": "/home/runner/work/ToQUBO-benchmark/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
     "machine": "x86_64",
-    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
-    "python": "3.13.5",
-    "python_executable": "/home/bernalde/miniconda3/bin/python3"
+    "os": "Linux-6.8.0-1059-azure-x86_64-with-glibc2.35",
+    "python": "3.12.13",
+    "python_executable": "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python3"
   },
   "files": [
     {
       "max_nvar": 1000,
-      "max_time": 0.773305726,
+      "max_time": 0.450459659,
       "path": "benchmark/ToQUBO/results.npp.csv",
       "rows": 50,
-      "sha256": "8615a2def02cc8486ae4574e34f64c2b37f0b954a920a1975aea824b0d3307b0"
+      "sha256": "c1f68ea05e7c4964b6f9ddabfe2666cd0884888eb8960eb4b523f910e4679715"
     },
     {
       "max_nvar": 10000,
-      "max_time": 2.209976133,
+      "max_time": 1.973833604,
       "path": "benchmark/ToQUBO/results.tsp.csv",
       "rows": 20,
-      "sha256": "fb3e8de83aaa5246a5b6bf5aac38faba16f0e4fd5cdc849ed18091d2335cd25c"
+      "sha256": "452b7fc40ee888bee556c3376f5c681e47e0b689b212e65ebe65e4d0056951e9"
     },
     {
       "max_nvar": 1000,
-      "max_time": 0.14626216888427734,
+      "max_time": 0.10683751106262207,
       "path": "benchmark/amplify/results.npp.csv",
       "rows": 50,
-      "sha256": "2d451e9fdabcf375a69cb094f1df01c23f039098087902f28ccf58304822ba8b"
+      "sha256": "633460f637c741387df80ef0b1408f4a8fbe4ac727fcde3e6d7b66f6190e7daf"
     },
     {
       "max_nvar": 10000,
-      "max_time": 2.466895341873169,
+      "max_time": 5.06882119178772,
       "path": "benchmark/amplify/results.tsp.csv",
       "rows": 20,
-      "sha256": "80685ee8d3b143e3140332a5741dce7ab772a03d2b8b89bf90785bccfd2fb39a"
+      "sha256": "40db626332ac073882614ee44f4bd1c3c6f0ea6441224108fd827f665145309d"
     },
     {
-      "max_nvar": 1000,
-      "max_time": 2.2192113399505615,
+      "max_nvar": 860,
+      "max_time": 5.167703866958618,
       "path": "benchmark/dwave/results.npp.csv",
-      "rows": 50,
-      "sha256": "6a48c34273cdf05c0c58cdf0412b7639207fecf2726227d7cd63be29c349e003"
+      "rows": 43,
+      "sha256": "ddc1e40e991dd149ad89be203991975e32c145939a79c125e997d631478928a4"
     },
     {
-      "max_nvar": 3600,
-      "max_time": 129.83099246025085,
+      "max_nvar": 4225,
+      "max_time": 144.1703999042511,
       "path": "benchmark/dwave/results.tsp.csv",
-      "rows": 12,
-      "sha256": "e4a62da97fb9ad2709dc7f2e472aea0ebc4518beceaa38298e8c930a0c978ad3"
+      "rows": 13,
+      "sha256": "ab19e1241c9f5418b05eada4fe199d9e36b2cc91f309fa326401602d5a99398e"
     },
     {
       "max_nvar": 1000,
-      "max_time": 0.9405150413513184,
+      "max_time": 0.7848427295684814,
       "path": "benchmark/pyqubo/results.npp.csv",
       "rows": 50,
-      "sha256": "e40a69d61c76a26536bec5f6edb74a319fd2d16ad232eb2d1c8bae6f074cbf70"
+      "sha256": "a4db1a17dd53dbbc56492b95b3b229d15e0844a61824009038794583f7aaee92"
     },
     {
       "max_nvar": 10000,
-      "max_time": 9.483399152755737,
+      "max_time": 12.611128330230713,
       "path": "benchmark/pyqubo/results.tsp.csv",
       "rows": 20,
-      "sha256": "b5ff351107090e3b90ac34d89712dea8bb9b766bb39db3b5d00c507bbeb28c74"
+      "sha256": "2eb0565c3f6987abf4c68e90445aa56ab013d031aa1a1e1f3c15e85736ab83f1"
     },
     {
-      "max_nvar": 660,
-      "max_time": 5.185392141342163,
+      "max_nvar": 420,
+      "max_time": 5.221130132675171,
       "path": "benchmark/qiskit/results.npp.csv",
-      "rows": 33,
-      "sha256": "c520a89e0afe738ca58e6969f102119c7928b597600214f26ab888af1fbe99a6"
+      "rows": 21,
+      "sha256": "f996c5b65eb9f1d22baec26787ec34aff52f3314763437bc413e3aee04b86740"
     },
     {
       "max_nvar": 2500,
-      "max_time": 115.915931224823,
+      "max_time": 115.35095548629761,
       "path": "benchmark/qiskit/results.tsp.csv",
       "rows": 10,
-      "sha256": "6d6b613a6b5d7bfc83da56d6947a081daa64996de0dd7df0cd2cb9f85eaf5417"
+      "sha256": "cfeda582a396b1d70a8dddcd320b7b04f38eaa1da93ca6190947d4df79b048bf"
     },
     {
-      "max_nvar": 960,
-      "max_time": 5.2316577434539795,
+      "max_nvar": 580,
+      "max_time": 5.182799339294434,
       "path": "benchmark/qubovert/results.npp.csv",
-      "rows": 48,
-      "sha256": "a8908ae7fc16af7b56214a99c495f5e6bd52854842f099aa45b4c8d9551f70d7"
+      "rows": 29,
+      "sha256": "13fbf1350b34164e13e165670458f535a070111dae475353e38f29f30084978c"
     },
     {
       "max_nvar": 10000,
-      "max_time": 38.833096981048584,
+      "max_time": 103.74164199829102,
       "path": "benchmark/qubovert/results.tsp.csv",
       "rows": 20,
-      "sha256": "1d2349929bdcc6648f61973ece667041a6183c3524b8bffdd829d8566cd5d4a0"
+      "sha256": "096d90191a5628873c9927c5ac5ec55959b9f9e9d6ea6653bdcddd400c131e06"
     }
   ],
-  "generated_at": "2026-06-23T20:15:31+00:00",
+  "generated_at": "2026-06-23T20:49:04+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
@@ -121,28 +121,26 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "released-qubo-stack-2026-06-23",
+    "id": "latest-stack-2026-06-19-rerun",
     "openqaoa": {
       "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the Python 3.12 runtime used here.",
       "status": "excluded"
     },
     "refs_issue": 12,
-    "status": "released-qubo-stack-rerun",
+    "status": "coherent-diagnostic-rerun",
     "supersedes": "mixed-date latest-stack experiment from PR #11",
     "toqubo_dependencies": {
-      "note": "Resolved from the General registry with Julia 1.12.6 after QUBO.jl ecosystem releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
-      "qubotools": "QUBOTools v0.14.4",
-      "status": "registered-release",
-      "toqubo": "ToQUBO v0.5.0"
+      "note": "Julia package sources come from benchmark/ToQUBO/Manifest.toml.",
+      "status": "registered-manifest"
     }
   },
   "schema_version": 1,
   "toqubo_extraction": {
     "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
-    "largest_tsp_convert_share": 0.04057396442480042,
-    "largest_tsp_convert_time": 0.089667493,
+    "largest_tsp_convert_share": 0.03271023194111149,
+    "largest_tsp_convert_time": 0.064564555,
     "largest_tsp_nvar": 10000,
-    "largest_tsp_total_time": 2.209976133,
+    "largest_tsp_total_time": 1.973833604,
     "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
     "status": "public-backend-api"
   }
