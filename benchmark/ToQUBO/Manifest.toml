@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "b3fa503b77023c23868eea24841fb3088a718cdf"
+project_hash = "d6d65f9868c600de59597a3c806dddbd763b0c71"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -512,9 +512,9 @@ version = "0.2.6"
 
 [[deps.QUBOTools]]
 deps = ["Dates", "GeometryBasics", "Graphs", "HDF5", "JSON", "JSONSchema", "LinearAlgebra", "NetworkLayout", "Printf", "PseudoBooleanOptimization", "Random", "RecipesBase", "SparseArrays", "Statistics", "TOML"]
-git-tree-sha1 = "70876aacf91b8a224ecf86eb460c087507c7f084"
+git-tree-sha1 = "ae3a2b939e44a161457d86ead31b59ec4870d92a"
 uuid = "60eb5b62-0a39-4ddc-84c5-97d2adff9319"
-version = "0.13.1"
+version = "0.14.4"
 weakdeps = ["MathOptInterface"]
 
     [deps.QUBOTools.extensions]
@@ -657,9 +657,9 @@ version = "1.11.0"
 
 [[deps.ToQUBO]]
 deps = ["MathOptInterface", "PseudoBooleanOptimization", "QUBOTools", "Random", "TOML"]
-git-tree-sha1 = "4663b1392b10717a9a42adcdce516bfd9c03ec39"
+git-tree-sha1 = "c583fbec659423dbef50f74f5c523693b34b0516"
 uuid = "9a412ddf-83fa-43b6-9748-7843c851aa65"
-version = "0.4.1"
+version = "0.5.0"
 weakdeps = ["JuMP"]
 
     [deps.ToQUBO.extensions]

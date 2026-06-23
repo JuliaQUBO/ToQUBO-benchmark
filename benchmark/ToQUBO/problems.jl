@@ -6,9 +6,7 @@ function tsp_data(n::Integer)
 end
 
 function extract_qubo_backend(model)
-    # ToQUBO v0.4.1 no longer exposes the old ToQUBO.qubo(model, Dict) path.
-    # This reaches through JuMP/ToQUBO internals, so re-check it on ToQUBO bumps.
-    return ToQUBO.QUBOTools.backend(backend(model).optimizer.model.optimizer)
+    return ToQUBO.QUBOTools.backend(model)
 end
 
 function tsp(n::Int, D::Matrix{Float64}; skip_gc::Bool=false)

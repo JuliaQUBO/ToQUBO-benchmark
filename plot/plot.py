@@ -76,14 +76,18 @@ def has_latex():
     if shutil.which("latex") is None or shutil.which("kpsewhich") is None:
         return False
 
-    result = subprocess.run(
-        ["kpsewhich", "type1cm.sty"],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
+    for package in ("type1cm.sty", "type1ec.sty"):
+        result = subprocess.run(
+            ["kpsewhich", package],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
 
-    return result.returncode == 0
+        if result.returncode != 0:
+            return False
+
+    return True
 
 def get_lang():
     if "pt" in sys.argv:

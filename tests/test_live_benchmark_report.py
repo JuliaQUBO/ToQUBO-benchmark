@@ -30,10 +30,14 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(self.report["schema_version"], 1)
         self.assertEqual(
             self.report["result_set"]["status"],
-            "coherent-diagnostic-rerun",
+            "released-qubo-stack-rerun",
         )
         self.assertEqual(self.report["result_set"]["refs_issue"], 12)
         self.assertIsNone(self.report["result_set"]["closes_issue"])
+        self.assertEqual(
+            self.report["result_set"]["toqubo_dependencies"]["status"],
+            "registered-release",
+        )
 
     def test_report_records_expected_package_versions(self):
         python_packages = self.report["packages"]["python"]
@@ -42,8 +46,8 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(python_packages["qiskit"], "2.4.1")
         self.assertEqual(python_packages["qiskit-optimization"], "0.7.0")
         self.assertIsNone(python_packages["openqaoa"])
-        self.assertEqual(julia_packages["ToQUBO"], "0.4.1")
-        self.assertEqual(julia_packages["QUBOTools"], "0.13.1")
+        self.assertEqual(julia_packages["ToQUBO"], "0.5.0")
+        self.assertEqual(julia_packages["QUBOTools"], "0.14.4")
 
     def test_report_file_hashes_match_live_csvs(self):
         files = self.report["files"]
@@ -64,9 +68,9 @@ class LiveBenchmarkReportTests(unittest.TestCase):
     def test_toqubo_extraction_caveat_is_recorded(self):
         extraction = self.report["toqubo_extraction"]
 
-        self.assertEqual(extraction["status"], "internal-backend-access")
-        self.assertIn("ToQUBO.qubo", extraction["public_api_check"])
-        self.assertGreater(extraction["largest_tsp_convert_share"], 0.9)
+        self.assertEqual(extraction["status"], "public-backend-api")
+        self.assertIn("QUBOTools.backend(model)", extraction["public_api_check"])
+        self.assertLess(extraction["largest_tsp_convert_share"], 0.1)
 
     def test_julia_runtime_uses_report_environment(self):
         report_script = load_report_script()

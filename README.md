@@ -35,21 +35,24 @@ archive directory such as `archive/modern-v1` instead of overwriting
 
 ## Current live result set
 
-The top-level CSV files currently contain `latest-stack-2026-06-19-rerun`, a
-coherent diagnostic rerun of the live benchmark packages. This replaces the
-mixed-date latest-stack experiment from PR #11, but it is not archived as a
-paper-style fixed reference point.
+The top-level CSV files currently contain
+`released-qubo-stack-2026-06-23`, a diagnostic rerun of the ToQUBO results after
+the QUBO.jl ecosystem releases were available from the Julia General registry.
+The other live package CSVs remain from `latest-stack-2026-06-19-rerun`. This
+replaces the mixed-date latest-stack experiment from PR #11, but it is not
+archived as a paper-style fixed reference point.
 
 OpenQAOA is still excluded from the live run because `openqaoa==0.2.6` does not
 resolve on Python 3.12. The historical OpenQAOA rows remain available under
 `archive/paper-v1`.
 
-The ToQUBO.jl benchmark still uses `extract_qubo_backend` in
-`benchmark/ToQUBO/problems.jl` to reach the QUBOTools backend through
-JuMP/ToQUBO optimizer internals. ToQUBO v0.4.1 does not expose the old
-`ToQUBO.qubo` helper, so this path should be rechecked on future ToQUBO or
-QUBOTools bumps. In the current TSP run, backend extraction is 27.344 s of
-29.189 s at 10,000 variables.
+The ToQUBO.jl benchmark uses `extract_qubo_backend` in
+`benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
+path added for ToQUBO-compiled JuMP models. This run uses registered releases:
+ToQUBO.jl v0.5.0 and QUBOTools.jl v0.14.4. In the current TSP run, backend
+extraction is 0.090 s of 2.210 s at 10,000 variables, so extraction is no
+longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.441 s,
+including 0.014 s of backend extraction.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
@@ -65,15 +68,15 @@ archived paper baseline.
 
 | Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
 | :----: | :----------------------------: |
-| Python | CPython 3.12.12                |
+| Python | CPython 3.13.5                 |
 | Julia  | julia version 1.12.6           |
 
 ## Packages
 
 | Package             | Version |
 | :-----------------: | :-----: |
-| ToQUBO.jl           | v0.4.1  |
-| QUBOTools.jl        | v0.13.1 |
+| ToQUBO.jl           | v0.5.0  |
+| QUBOTools.jl        | v0.14.4 |
 | PyQUBO              | v1.5.0  |
 | OpenQAOA            | excluded on Python 3.12 |
 | qubovert            | v1.2.5  |

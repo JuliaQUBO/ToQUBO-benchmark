@@ -31,6 +31,15 @@ PYTHON_PACKAGES = [
     "scipy",
 ]
 
+PYTHON_REQUIREMENT_FILES = [
+    BENCHMARK / "amplify" / "requirements.txt",
+    BENCHMARK / "dwave" / "requirements.txt",
+    BENCHMARK / "pyqubo" / "requirements.txt",
+    BENCHMARK / "qiskit" / "requirements.txt",
+    BENCHMARK / "qubovert" / "requirements.txt",
+    ROOT / "plot" / "requirements.txt",
+]
+
 JULIA_PACKAGES = [
     "CSV",
     "JuMP",
@@ -39,7 +48,30 @@ JULIA_PACKAGES = [
 ]
 
 
+def pinned_requirement_version(name):
+    normalized_name = name.lower()
+
+    for path in PYTHON_REQUIREMENT_FILES:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            requirement = line.strip()
+
+            if not requirement or requirement.startswith("#") or ";" in requirement:
+                continue
+
+            package, separator, version = requirement.partition("==")
+
+            if separator and package.lower() == normalized_name:
+                return version
+
+    return None
+
+
 def package_version(name):
+    pinned_version = pinned_requirement_version(name)
+
+    if pinned_version is not None:
+        return pinned_version
+
     try:
         return importlib.metadata.version(name)
     except importlib.metadata.PackageNotFoundError:
@@ -47,7 +79,12 @@ def package_version(name):
 
 
 def read_julia_manifest():
-    manifest_path = BENCHMARK / "ToQUBO" / "Manifest.toml"
+    manifest_path = Path(
+        os.environ.get(
+            "BENCHMARK_TOQUBO_MANIFEST",
+            BENCHMARK / "ToQUBO" / "Manifest.toml",
+        )
+    )
     manifest = tomllib.loads(manifest_path.read_text(encoding="utf-8"))
     deps = manifest.get("deps", {})
 
@@ -62,6 +99,7 @@ def read_julia_manifest():
         packages[name] = version
 
     return {
+        "path": str(manifest_path),
         "julia": manifest.get("julia_version"),
         "packages": packages,
     }
@@ -136,8 +174,8 @@ def toqubo_extraction_summary(path=None):
     summary = {
         "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
         "public_api_check": (
-            "ToQUBO v0.4.1 does not define ToQUBO.qubo; the benchmark still "
-            "reaches the QUBOTools backend through JuMP/ToQUBO optimizer internals."
+            "The benchmark uses the supported QUBOTools.backend(model) path "
+            "added for ToQUBO-compiled JuMP models."
         ),
         "largest_tsp_nvar": int(largest["nvar"]),
         "largest_tsp_total_time": total_time,
@@ -147,7 +185,7 @@ def toqubo_extraction_summary(path=None):
         convert_time = float(largest["convert_time"])
         summary.update(
             {
-                "status": "internal-backend-access",
+                "status": "public-backend-api",
                 "largest_tsp_convert_time": convert_time,
                 "largest_tsp_convert_share": convert_time / total_time,
             }
@@ -171,6 +209,25 @@ def toqubo_extraction_summary(path=None):
     return summary
 
 
+def toqubo_dependency_context():
+    values = {
+        "status": os.environ.get("BENCHMARK_TOQUBO_DEPENDENCY_STATUS"),
+        "toqubo": os.environ.get("BENCHMARK_TOQUBO_SOURCE"),
+        "qubotools": os.environ.get("BENCHMARK_QUBOTOOLS_SOURCE"),
+        "note": os.environ.get("BENCHMARK_TOQUBO_DEPENDENCY_NOTE"),
+    }
+
+    context = {key: value for key, value in values.items() if value}
+
+    if context:
+        return context
+
+    return {
+        "status": "registered-manifest",
+        "note": "Julia package sources come from benchmark/ToQUBO/Manifest.toml.",
+    }
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     julia_manifest = read_julia_manifest()
@@ -192,6 +249,7 @@ def main():
                     "it does not resolve on the Python 3.12 runtime used here."
                 ),
             },
+            "toqubo_dependencies": toqubo_dependency_context(),
         },
         "environment": {
             "os": platform.platform(),
@@ -202,6 +260,7 @@ def main():
             "julia": julia["version"],
             "julia_executable": julia["executable"],
             "julia_manifest": julia_manifest["julia"],
+            "julia_manifest_path": julia_manifest["path"],
         },
         "packages": {
             "python": {name: package_version(name) for name in PYTHON_PACKAGES},

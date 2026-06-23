@@ -2,27 +2,28 @@
   "environment": {
     "cpu": "Intel(R) Xeon(R) w5-2565X",
     "julia": "julia version 1.12.6",
-    "julia_executable": "/home/bernalde/.julia/juliaup/julia-1.12.6+0.x64.linux.gnu/bin/julia",
+    "julia_executable": "julia",
     "julia_manifest": "1.12.6",
+    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
     "machine": "x86_64",
     "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
-    "python": "3.12.12",
-    "python_executable": "/tmp/toqubo-benchmark-latest-venv/bin/python"
+    "python": "3.13.5",
+    "python_executable": "/home/bernalde/miniconda3/bin/python3"
   },
   "files": [
     {
       "max_nvar": 1000,
-      "max_time": 0.453196772,
+      "max_time": 0.773305726,
       "path": "benchmark/ToQUBO/results.npp.csv",
       "rows": 50,
-      "sha256": "0b63b9487a9e0a9f30d36baccc55b1bf0563c0735ebc9d82f50004ec7735959c"
+      "sha256": "8615a2def02cc8486ae4574e34f64c2b37f0b954a920a1975aea824b0d3307b0"
     },
     {
       "max_nvar": 10000,
-      "max_time": 29.188742494,
+      "max_time": 2.209976133,
       "path": "benchmark/ToQUBO/results.tsp.csv",
       "rows": 20,
-      "sha256": "e9aab8292efa04d8af4953d08ff64e2f09ffd5c6cf07e2b8c346f099742e48e0"
+      "sha256": "fb3e8de83aaa5246a5b6bf5aac38faba16f0e4fd5cdc849ed18091d2335cd25c"
     },
     {
       "max_nvar": 1000,
@@ -95,13 +96,13 @@
       "sha256": "1d2349929bdcc6648f61973ece667041a6183c3524b8bffdd829d8566cd5d4a0"
     }
   ],
-  "generated_at": "2026-06-19T18:54:36+00:00",
+  "generated_at": "2026-06-23T20:15:31+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
       "JuMP": "1.30.1",
-      "QUBOTools": "0.13.1",
-      "ToQUBO": "0.4.1"
+      "QUBOTools": "0.14.4",
+      "ToQUBO": "0.5.0"
     },
     "python": {
       "amplify": "1.6.1",
@@ -120,23 +121,29 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "latest-stack-2026-06-19-rerun",
+    "id": "released-qubo-stack-2026-06-23",
     "openqaoa": {
       "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the Python 3.12 runtime used here.",
       "status": "excluded"
     },
     "refs_issue": 12,
-    "status": "coherent-diagnostic-rerun",
-    "supersedes": "mixed-date latest-stack experiment from PR #11"
+    "status": "released-qubo-stack-rerun",
+    "supersedes": "mixed-date latest-stack experiment from PR #11",
+    "toqubo_dependencies": {
+      "note": "Resolved from the General registry with Julia 1.12.6 after QUBO.jl ecosystem releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
+      "qubotools": "QUBOTools v0.14.4",
+      "status": "registered-release",
+      "toqubo": "ToQUBO v0.5.0"
+    }
   },
   "schema_version": 1,
   "toqubo_extraction": {
     "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
-    "largest_tsp_convert_share": 0.936808211748788,
-    "largest_tsp_convert_time": 27.344253659,
+    "largest_tsp_convert_share": 0.04057396442480042,
+    "largest_tsp_convert_time": 0.089667493,
     "largest_tsp_nvar": 10000,
-    "largest_tsp_total_time": 29.188742494,
-    "public_api_check": "ToQUBO v0.4.1 does not define ToQUBO.qubo; the benchmark still reaches the QUBOTools backend through JuMP/ToQUBO optimizer internals.",
-    "status": "internal-backend-access"
+    "largest_tsp_total_time": 2.209976133,
+    "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
+    "status": "public-backend-api"
   }
 }
