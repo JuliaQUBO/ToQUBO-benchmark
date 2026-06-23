@@ -121,17 +121,19 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "latest-stack-2026-06-19-rerun",
+    "id": "released-qubo-stack-2026-06-23",
     "openqaoa": {
       "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the Python 3.12 runtime used here.",
       "status": "excluded"
     },
     "refs_issue": 12,
-    "status": "coherent-diagnostic-rerun",
+    "status": "released-qubo-stack-rerun",
     "supersedes": "mixed-date latest-stack experiment from PR #11",
     "toqubo_dependencies": {
-      "note": "Julia package sources come from benchmark/ToQUBO/Manifest.toml.",
-      "status": "registered-manifest"
+      "note": "Resolved from the General registry with Julia 1.12.6 after QUBO.jl ecosystem releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
+      "qubotools": "QUBOTools v0.14.4",
+      "status": "registered-release",
+      "toqubo": "ToQUBO v0.5.0"
     }
   },
   "schema_version": 1,

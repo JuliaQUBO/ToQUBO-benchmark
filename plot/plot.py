@@ -98,6 +98,10 @@ def get_lang():
 def is_simple():
     return "simple" in sys.argv
 
+def variable_count_label(lang):
+    label = "#variables" if lang == "en" else "#variaveis"
+    return label.replace("#", r"\#") if plt.rcParams.get("text.usetex") else label
+
 if has_latex():
     plt.rcParams.update({
         "text.usetex" : True
@@ -188,10 +192,10 @@ def plot_benchmark(key: str, ax):
     ax.set_xlim(xl, xu)
 
     if lang == "en":
-        ax.set_xlabel("#variables")
+        ax.set_xlabel(variable_count_label(lang))
         ax.set_ylabel("Building Time (sec)")
     elif lang == "pt":
-        ax.set_xlabel("#variaveis")
+        ax.set_xlabel(variable_count_label(lang))
         ax.set_ylabel("Tempo de Montagem (seg)")
     ax.grid(True)
 
@@ -220,7 +224,7 @@ def plot_toqubo(key: str, ax):
         ax.set_xscale('symlog')
         ax.set_yscale('symlog')
 
-    ax.set_xlabel("#variables")
+    ax.set_xlabel(variable_count_label("en"))
     ax.set_ylabel("Running Time (sec)")
     ax.grid(True)
 

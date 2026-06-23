@@ -140,6 +140,16 @@ class PlotToQUBOTests(unittest.TestCase):
         self.assertIsNone(ax.yscale)
         self.assertEqual(ax.legend_calls, 1)
 
+    def test_variable_count_label_escapes_latex_hash(self):
+        self.plot_module.plt.rcParams["text.usetex"] = True
+
+        self.assertEqual(self.plot_module.variable_count_label("en"), r"\#variables")
+        self.assertEqual(self.plot_module.variable_count_label("pt"), r"\#variaveis")
+
+        self.plot_module.plt.rcParams["text.usetex"] = False
+
+        self.assertEqual(self.plot_module.variable_count_label("en"), "#variables")
+
 
 if __name__ == "__main__":
     unittest.main()
