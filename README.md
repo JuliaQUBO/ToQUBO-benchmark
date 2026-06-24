@@ -36,8 +36,9 @@ archive directory such as `archive/modern-v1` instead of overwriting
 ## Current live result set
 
 The top-level CSV files currently contain
-`released-qubo-stack-2026-06-23`, a diagnostic rerun of the ToQUBO results after
-the QUBO.jl ecosystem releases were available from the Julia General registry.
+`toqubo-0.5.1-qubotools-0.15.1-2026-06-24`, a diagnostic rerun of the ToQUBO
+results after ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1 were available from the
+Julia General registry.
 The other live package CSVs remain from `latest-stack-2026-06-19-rerun`. This
 replaces the mixed-date latest-stack experiment from PR #11, but it is not
 archived as a paper-style fixed reference point.
@@ -49,10 +50,10 @@ resolve on Python 3.12. The historical OpenQAOA rows remain available under
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
-ToQUBO.jl v0.5.0 and QUBOTools.jl v0.14.4. In the current TSP run, backend
-extraction is 0.090 s of 2.210 s at 10,000 variables, so extraction is no
-longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.441 s,
-including 0.014 s of backend extraction.
+ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1. In the current TSP run, backend
+extraction is 0.113 s of 1.967 s at 10,000 variables, so extraction is no
+longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.308 s,
+including 0.002 s of backend extraction.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
@@ -75,8 +76,8 @@ archived paper baseline.
 
 | Package             | Version |
 | :-----------------: | :-----: |
-| ToQUBO.jl           | v0.5.0  |
-| QUBOTools.jl        | v0.14.4 |
+| ToQUBO.jl           | v0.5.1  |
+| QUBOTools.jl        | v0.15.1 |
 | PyQUBO              | v1.5.0  |
 | OpenQAOA            | excluded on Python 3.12 |
 | qubovert            | v1.2.5  |

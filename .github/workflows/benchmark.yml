@@ -32,12 +32,12 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install & Run Benchmarks
       env:
-        BENCHMARK_RESULT_SET_ID: released-qubo-stack-2026-06-23
-        BENCHMARK_RESULT_STATUS: released-qubo-stack-rerun
+        BENCHMARK_RESULT_SET_ID: toqubo-0.5.1-qubotools-0.15.1-2026-06-24
+        BENCHMARK_RESULT_STATUS: toqubo-0.5.1-rerun
         BENCHMARK_TOQUBO_DEPENDENCY_STATUS: registered-release
-        BENCHMARK_TOQUBO_SOURCE: ToQUBO v0.5.0
-        BENCHMARK_QUBOTOOLS_SOURCE: QUBOTools v0.14.4
-        BENCHMARK_TOQUBO_DEPENDENCY_NOTE: Resolved from the General registry with Julia 1.12.6 after QUBO.jl ecosystem releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.
+        BENCHMARK_TOQUBO_SOURCE: ToQUBO v0.5.1
+        BENCHMARK_QUBOTOOLS_SOURCE: QUBOTools v0.15.1
+        BENCHMARK_TOQUBO_DEPENDENCY_NOTE: Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.5.1 and QUBOTools v0.15.1 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.
       run: |
         make install
         make run

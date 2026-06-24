@@ -1,29 +1,29 @@
 {
   "environment": {
-    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "cpu": "Intel(R) Xeon(R) w5-2565X",
     "julia": "julia version 1.12.6",
-    "julia_executable": "julia",
+    "julia_executable": "julia +1.12",
     "julia_manifest": "1.12.6",
-    "julia_manifest_path": "/home/runner/work/ToQUBO-benchmark/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
+    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
     "machine": "x86_64",
-    "os": "Linux-6.8.0-1059-azure-x86_64-with-glibc2.35",
-    "python": "3.12.13",
-    "python_executable": "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python3"
+    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.13.5",
+    "python_executable": "/home/bernalde/.local/bin/python3"
   },
   "files": [
     {
       "max_nvar": 1000,
-      "max_time": 0.450459659,
+      "max_time": 0.30938122,
       "path": "benchmark/ToQUBO/results.npp.csv",
       "rows": 50,
-      "sha256": "c1f68ea05e7c4964b6f9ddabfe2666cd0884888eb8960eb4b523f910e4679715"
+      "sha256": "8b484c0f31ecd56309eaea8e65aad88abdf23cb861b05dd00aaf40ee0827a0b2"
     },
     {
       "max_nvar": 10000,
-      "max_time": 1.973833604,
+      "max_time": 1.967072454,
       "path": "benchmark/ToQUBO/results.tsp.csv",
       "rows": 20,
-      "sha256": "452b7fc40ee888bee556c3376f5c681e47e0b689b212e65ebe65e4d0056951e9"
+      "sha256": "cd2b6f264aff38562fc1736c61f7f8f7407a8a55ac54ff571afbcd952ae70923"
     },
     {
       "max_nvar": 1000,
@@ -96,13 +96,13 @@
       "sha256": "096d90191a5628873c9927c5ac5ec55959b9f9e9d6ea6653bdcddd400c131e06"
     }
   ],
-  "generated_at": "2026-06-23T20:49:04+00:00",
+  "generated_at": "2026-06-24T22:44:19+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
       "JuMP": "1.30.1",
-      "QUBOTools": "0.14.4",
-      "ToQUBO": "0.5.0"
+      "QUBOTools": "0.15.1",
+      "ToQUBO": "0.5.1"
     },
     "python": {
       "amplify": "1.6.1",
@@ -121,28 +121,28 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "released-qubo-stack-2026-06-23",
+    "id": "toqubo-0.5.1-qubotools-0.15.1-2026-06-24",
     "openqaoa": {
       "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the Python 3.12 runtime used here.",
       "status": "excluded"
     },
     "refs_issue": 12,
-    "status": "released-qubo-stack-rerun",
+    "status": "toqubo-0.5.1-rerun",
     "supersedes": "mixed-date latest-stack experiment from PR #11",
     "toqubo_dependencies": {
-      "note": "Resolved from the General registry with Julia 1.12.6 after QUBO.jl ecosystem releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
-      "qubotools": "QUBOTools v0.14.4",
+      "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.5.1 and QUBOTools v0.15.1 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
+      "qubotools": "QUBOTools v0.15.1",
       "status": "registered-release",
-      "toqubo": "ToQUBO v0.5.0"
+      "toqubo": "ToQUBO v0.5.1"
     }
   },
   "schema_version": 1,
   "toqubo_extraction": {
     "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
-    "largest_tsp_convert_share": 0.03271023194111149,
-    "largest_tsp_convert_time": 0.064564555,
+    "largest_tsp_convert_share": 0.057561709925708714,
+    "largest_tsp_convert_time": 0.113228054,
     "largest_tsp_nvar": 10000,
-    "largest_tsp_total_time": 1.973833604,
+    "largest_tsp_total_time": 1.967072454,
     "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
     "status": "public-backend-api"
   }
