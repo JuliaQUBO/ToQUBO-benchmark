@@ -51,9 +51,9 @@ The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
 ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1. In the current TSP run, backend
-extraction is 0.113 s of 1.967 s at 10,000 variables, so extraction is no
-longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.308 s,
-including 0.002 s of backend extraction.
+extraction is 0.041 s of 1.601 s at 10,000 variables, so extraction is no
+longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.158 s, with
+backend extraction below the printed CI-log precision.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
@@ -67,10 +67,10 @@ archived paper baseline.
 
 ## Environment
 
-| Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
-| :----: | :----------------------------: |
-| Python | CPython 3.13.5                 |
-| Julia  | julia version 1.12.6           |
+| Linux  | GitHub Actions ubuntu-22.04 / x64 |
+| :----: | :-------------------------------: |
+| Python | CPython 3.12.13                  |
+| Julia  | julia version 1.12.6              |
 
 ## Packages
 
