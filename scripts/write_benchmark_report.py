@@ -246,7 +246,7 @@ def main():
                 "status": "excluded",
                 "reason": (
                     "openqaoa==0.2.6 remains behind a Python version marker because "
-                    "it does not resolve on the Python 3.12 runtime used here."
+                    "it does not resolve on the current Python runtime used here."
                 ),
             },
             "toqubo_dependencies": toqubo_dependency_context(),

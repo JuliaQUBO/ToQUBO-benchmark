@@ -1,14 +1,14 @@
 {
   "environment": {
-    "cpu": "GitHub Actions ubuntu-22.04 x64 runner; exact CPU not recovered from workflow log",
+    "cpu": "Intel(R) Xeon(R) w5-2565X",
     "julia": "julia version 1.12.6",
-    "julia_executable": "julia",
+    "julia_executable": "julia +1.12",
     "julia_manifest": "1.12.6",
-    "julia_manifest_path": "/home/runner/work/ToQUBO-benchmark/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
-    "machine": "x64",
-    "os": "ubuntu-22.04 GitHub Actions runner",
-    "python": "3.12.13",
-    "python_executable": "/opt/hostedtoolcache/Python/3.12.13/x64/bin/python3"
+    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
+    "machine": "x86_64",
+    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.13.5",
+    "python_executable": "/home/bernalde/.local/bin/python3"
   },
   "files": [
     {
@@ -68,18 +68,18 @@
       "sha256": "2eb0565c3f6987abf4c68e90445aa56ab013d031aa1a1e1f3c15e85736ab83f1"
     },
     {
-      "max_nvar": 420,
-      "max_time": 5.221130132675171,
+      "max_nvar": 660,
+      "max_time": 5.069546699523926,
       "path": "benchmark/qiskit/results.npp.csv",
-      "rows": 21,
-      "sha256": "f996c5b65eb9f1d22baec26787ec34aff52f3314763437bc413e3aee04b86740"
+      "rows": 33,
+      "sha256": "214cf3580d4128f33ffeb8041bbec41b676d7a0f60c696bfd9ae8eb71e32b1a3"
     },
     {
       "max_nvar": 2500,
-      "max_time": 115.35095548629761,
+      "max_time": 122.5331449508667,
       "path": "benchmark/qiskit/results.tsp.csv",
       "rows": 10,
-      "sha256": "cfeda582a396b1d70a8dddcd320b7b04f38eaa1da93ca6190947d4df79b048bf"
+      "sha256": "d7471b0a1a3e421657257d7fff190e966eb0ac19068bfa2b99b8c1874dccf238"
     },
     {
       "max_nvar": 580,
@@ -96,7 +96,7 @@
       "sha256": "096d90191a5628873c9927c5ac5ec55959b9f9e9d6ea6653bdcddd400c131e06"
     }
   ],
-  "generated_at": "2026-06-24T23:16:04+00:00",
+  "generated_at": "2026-06-25T13:09:47+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
@@ -109,10 +109,10 @@
       "dimod": "0.12.22",
       "docplex": "2.32.264",
       "matplotlib": "3.10.9",
-      "numpy": "2.4.6",
+      "numpy": "2.5.0",
       "openqaoa": null,
       "pyqubo": "1.5.0",
-      "qiskit": "2.4.1",
+      "qiskit": "2.4.2",
       "qiskit-optimization": "0.7.0",
       "qubovert": "1.2.5",
       "scienceplots": "2.2.1",
@@ -121,13 +121,13 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "toqubo-0.5.1-qubotools-0.15.1-2026-06-24",
+    "id": "qiskit-2.4.2-numpy-2.5.0-2026-06-25",
     "openqaoa": {
-      "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the Python 3.12 runtime used here.",
+      "reason": "openqaoa==0.2.6 remains behind a Python version marker because it does not resolve on the current Python runtime used here.",
       "status": "excluded"
     },
     "refs_issue": 12,
-    "status": "toqubo-0.5.1-rerun",
+    "status": "qiskit-2.4.2-rerun",
     "supersedes": "mixed-date latest-stack experiment from PR #11",
     "toqubo_dependencies": {
       "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.5.1 and QUBOTools v0.15.1 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly. ToQUBO timings were recovered from the CI log for workflow run 28134539140 because the Actions token could not push generated results to protected main.",

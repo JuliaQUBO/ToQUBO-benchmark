@@ -36,15 +36,17 @@ archive directory such as `archive/modern-v1` instead of overwriting
 ## Current live result set
 
 The top-level CSV files currently contain
-`toqubo-0.5.1-qubotools-0.15.1-2026-06-24`, a diagnostic rerun of the ToQUBO
-results after ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1 were available from the
-Julia General registry.
+`qiskit-2.4.2-numpy-2.5.0-2026-06-25`, a diagnostic refresh of the Qiskit
+results after updating Qiskit to v2.4.2 and the shared Python NumPy pin to
+v2.5.0. The ToQUBO result CSVs remain from the diagnostic rerun after ToQUBO.jl
+v0.5.1 and QUBOTools.jl v0.15.1 were available from the Julia General registry.
 The other live package CSVs remain from `latest-stack-2026-06-19-rerun`. This
-replaces the mixed-date latest-stack experiment from PR #11, but it is not
+extends the mixed-date latest-stack experiment from PR #11, but it is not
 archived as a paper-style fixed reference point.
 
 OpenQAOA is still excluded from the live run because `openqaoa==0.2.6` does not
-resolve on Python 3.12. The historical OpenQAOA rows remain available under
+resolve on the Python runtime used for the modern benchmark run. The historical
+OpenQAOA rows remain available under
 `archive/paper-v1`.
 
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
@@ -67,10 +69,10 @@ archived paper baseline.
 
 ## Environment
 
-| Linux  | GitHub Actions ubuntu-22.04 / x64 |
-| :----: | :-------------------------------: |
-| Python | CPython 3.12.13                  |
-| Julia  | julia version 1.12.6              |
+| Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
+| :----: | :----------------------------: |
+| Python | CPython 3.13.5                 |
+| Julia  | julia version 1.12.6           |
 
 ## Packages
 
@@ -79,17 +81,17 @@ archived paper baseline.
 | ToQUBO.jl           | v0.5.1  |
 | QUBOTools.jl        | v0.15.1 |
 | PyQUBO              | v1.5.0  |
-| OpenQAOA            | excluded on Python 3.12 |
+| OpenQAOA            | excluded on Python >=3.11 |
 | qubovert            | v1.2.5  |
-| Qiskit              | v2.4.1  |
+| Qiskit              | v2.4.2  |
 | qiskit-optimization | v0.7.0  |
 | docplex             | v2.32.264 |
 | amplify             | v1.6.1  |
 | dimod               | v0.12.22 |
 
 The latest OpenQAOA release found on PyPI was `0.2.6`, but it does not resolve
-for the Python 3.12 runtime used by the modern benchmark run. The historical
-OpenQAOA results remain available in `archive/paper-v1`.
+for the Python runtime used by the modern benchmark run. The historical OpenQAOA
+results remain available in `archive/paper-v1`.
 
 The live ToQUBO result CSVs also include `compiler_time` for the `optimize!`
 step and `convert_time` for QUBOTools backend extraction. The `toqubo_time`

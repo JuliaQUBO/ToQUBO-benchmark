@@ -1,4 +1,4 @@
-# Latest OpenQAOA currently excludes the Python 3.12 runtime used by
-# the modern benchmark run. Keep this target optional until OpenQAOA
-# publishes wheels for the current runtime.
+# Latest OpenQAOA currently excludes the Python runtime used by the modern
+# benchmark run. Keep this target optional until OpenQAOA publishes wheels
+# for the current runtime.
 openqaoa==0.2.6; python_version < "3.11"

@@ -30,7 +30,7 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(self.report["schema_version"], 1)
         self.assertEqual(
             self.report["result_set"]["status"],
-            "toqubo-0.5.1-rerun",
+            "qiskit-2.4.2-rerun",
         )
         self.assertEqual(self.report["result_set"]["refs_issue"], 12)
         self.assertIsNone(self.report["result_set"]["closes_issue"])
@@ -43,7 +43,8 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         python_packages = self.report["packages"]["python"]
         julia_packages = self.report["packages"]["julia"]
 
-        self.assertEqual(python_packages["qiskit"], "2.4.1")
+        self.assertEqual(python_packages["qiskit"], "2.4.2")
+        self.assertEqual(python_packages["numpy"], "2.5.0")
         self.assertEqual(python_packages["qiskit-optimization"], "0.7.0")
         self.assertIsNone(python_packages["openqaoa"])
         self.assertEqual(julia_packages["ToQUBO"], "0.5.1")
