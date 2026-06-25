@@ -102,6 +102,33 @@ def variable_count_label(lang):
     label = "#variables" if lang == "en" else "#variaveis"
     return label.replace("#", r"\#") if plt.rcParams.get("text.usetex") else label
 
+def _columns_match(table, left, right):
+    if left not in table or right not in table:
+        return False
+
+    return all(abs(a - b) <= 1e-12 for a, b in zip(table[left], table[right]))
+
+def plotted_time_statistic(table):
+    for statistic in ("min", "median", "mean"):
+        if _columns_match(table, "time", f"time_{statistic}"):
+            return statistic
+
+    return "single sample"
+
+def time_axis_label(base, tables):
+    statistics = {
+        plotted_time_statistic(table)
+        for table in tables
+        if table is not None
+    }
+
+    if len(statistics) == 1:
+        statistic = next(iter(statistics))
+    else:
+        statistic = "mixed statistics"
+
+    return f"{base} ({statistic})"
+
 if has_latex():
     plt.rcParams.update({
         "text.usetex" : True
@@ -193,10 +220,10 @@ def plot_benchmark(key: str, ax):
 
     if lang == "en":
         ax.set_xlabel(variable_count_label(lang))
-        ax.set_ylabel("Building Time (sec)")
+        ax.set_ylabel(time_axis_label("Building Time (sec)", data.values()))
     elif lang == "pt":
         ax.set_xlabel(variable_count_label(lang))
-        ax.set_ylabel("Tempo de Montagem (seg)")
+        ax.set_ylabel(time_axis_label("Tempo de Montagem (seg)", data.values()))
     ax.grid(True)
 
     return handles
@@ -225,7 +252,10 @@ def plot_toqubo(key: str, ax):
         ax.set_yscale('symlog')
 
     ax.set_xlabel(variable_count_label("en"))
-    ax.set_ylabel("Running Time (sec)")
+    ax.set_ylabel(time_axis_label(
+        "Running Time (sec)",
+        [toqubo_data, amplify_data],
+    ))
     ax.grid(True)
 
     handles, _ = ax.get_legend_handles_labels()

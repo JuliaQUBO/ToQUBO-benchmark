@@ -26,7 +26,7 @@ class ToQUBOResultTests(unittest.TestCase):
                     reader = csv.DictReader(csv_file)
                     rows = list(reader)
 
-                self.assertEqual(reader.fieldnames, expected_fields)
+                self.assertEqual(reader.fieldnames[: len(expected_fields)], expected_fields)
                 self.assertGreater(len(rows), 0)
 
                 for row in rows:
@@ -34,7 +34,17 @@ class ToQUBOResultTests(unittest.TestCase):
                     compiler_time = float(row["compiler_time"])
                     convert_time = float(row["convert_time"])
 
-                    self.assertAlmostEqual(toqubo_time, compiler_time + convert_time)
+                    if "sample_count" in reader.fieldnames:
+                        self.assertGreaterEqual(int(row["sample_count"]), 1)
+                        self.assertGreaterEqual(int(row["warmup_count"]), 0)
+                        self.assertIn("time_min", reader.fieldnames)
+                        self.assertIn("time_median", reader.fieldnames)
+                        self.assertAlmostEqual(
+                            float(row["toqubo_time_mean"]),
+                            float(row["compiler_time_mean"]) + float(row["convert_time_mean"]),
+                        )
+                    else:
+                        self.assertAlmostEqual(toqubo_time, compiler_time + convert_time)
 
 
 if __name__ == "__main__":

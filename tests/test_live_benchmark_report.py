@@ -27,7 +27,7 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         cls.report = json.loads(REPORT.read_text(encoding="utf-8"))
 
     def test_report_identifies_live_diagnostic_rerun(self):
-        self.assertEqual(self.report["schema_version"], 1)
+        self.assertEqual(self.report["schema_version"], 2)
         self.assertEqual(
             self.report["result_set"]["status"],
             "toqubo-0.6.0-qubotools-0.16.0-rerun",
@@ -64,6 +64,11 @@ class LiveBenchmarkReportTests(unittest.TestCase):
 
         for entry in files:
             with self.subTest(path=entry["path"]):
+                self.assertIn("time_statistic", entry)
+                self.assertIn("sample_count", entry)
+                self.assertIn("warmup_count", entry)
+                self.assertIn("phase_splits", entry)
+
                 path = ROOT / entry["path"]
                 self.assertTrue(path.is_file())
                 self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), entry["sha256"])
@@ -73,6 +78,30 @@ class LiveBenchmarkReportTests(unittest.TestCase):
 
                 self.assertEqual(len(rows), entry["rows"])
                 self.assertEqual(max(int(row["nvar"]) for row in rows), entry["max_nvar"])
+
+    def test_report_records_sampling_methodology(self):
+        methodology = self.report["benchmark_methodology"]
+
+        self.assertEqual(methodology["time_column"], "Summary statistic used by existing plots.")
+        self.assertEqual(methodology["time_statistic"], "single_sample")
+        self.assertEqual(methodology["sample_count"], 1)
+        self.assertEqual(methodology["warmup_count"], 0)
+        self.assertEqual(
+            methodology["raw_samples"],
+            "Not stored in the compact live CSV files.",
+        )
+
+    def test_report_records_phase_split_availability(self):
+        availability = self.report["phase_split_availability"]
+
+        toqubo_npp = availability["ToQUBO"]["npp"]
+        self.assertEqual(toqubo_npp["status"], "recorded")
+        self.assertIn("compiler_time", toqubo_npp["recorded_columns"])
+        self.assertIn("convert_time", toqubo_npp["recorded_columns"])
+
+        amplify_npp = availability["amplify"]["npp"]
+        self.assertEqual(amplify_npp["status"], "supported-not-recorded")
+        self.assertEqual(amplify_npp["supported_columns"], ["model_time", "convert_time"])
 
     def test_toqubo_extraction_caveat_is_recorded(self):
         extraction = self.report["toqubo_extraction"]
@@ -138,6 +167,26 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(extraction["status"], "phase-split-unavailable")
         self.assertEqual(extraction["largest_tsp_nvar"], 100)
         self.assertEqual(extraction["largest_tsp_toqubo_time"], 1.7)
+
+    def test_sampling_metadata_infers_min_summary(self):
+        report_script = load_report_script()
+
+        metadata = report_script.sampling_metadata(
+            [
+                {
+                    "time": "1.0",
+                    "time_min": "1.0",
+                    "time_median": "2.0",
+                    "sample_count": "3",
+                    "warmup_count": "1",
+                }
+            ],
+            ["time", "time_min", "time_median", "sample_count", "warmup_count"],
+        )
+
+        self.assertEqual(metadata["time_statistic"], "min")
+        self.assertEqual(metadata["sample_count"], 3)
+        self.assertEqual(metadata["warmup_count"], 1)
 
 
 if __name__ == "__main__":

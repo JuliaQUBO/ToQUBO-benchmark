@@ -52,6 +52,24 @@ JULIA_PACKAGES = [
     "ToQUBO",
 ]
 
+PHASE_SPLIT_COLUMNS = [
+    "jump_time",
+    "toqubo_time",
+    "model_time",
+    "compiler_time",
+    "convert_time",
+]
+
+PACKAGE_PHASE_SPLIT_SUPPORT = {
+    "ToQUBO": ["jump_time", "toqubo_time", "compiler_time", "convert_time"],
+    "amplify": ["model_time", "convert_time"],
+    "dwave": ["model_time", "compiler_time", "convert_time"],
+    "openqaoa": ["model_time", "compiler_time", "convert_time"],
+    "pyqubo": ["model_time", "compiler_time", "convert_time"],
+    "qiskit": ["model_time", "compiler_time", "convert_time"],
+    "qubovert": ["model_time", "convert_time"],
+}
+
 
 def pinned_requirement_version(name):
     normalized_name = name.lower()
@@ -138,13 +156,90 @@ def cpu_model():
     return platform.processor()
 
 
+def package_name(path):
+    return path.relative_to(BENCHMARK).parts[0]
+
+
+def problem_name(path):
+    parts = path.name.split(".")
+
+    if len(parts) >= 3 and parts[0] == "results":
+        return parts[1]
+
+    return path.stem
+
+
+def _float_equal(left, right):
+    return abs(float(left) - float(right)) <= 1e-12
+
+
+def _column_matches(rows, column, reference="time"):
+    if not rows:
+        return False
+
+    return all(_float_equal(row[reference], row[column]) for row in rows)
+
+
+def sampling_metadata(rows, fieldnames):
+    fieldnames = set(fieldnames or [])
+
+    if "sample_count" not in fieldnames:
+        return {
+            "time_statistic": "single_sample",
+            "sample_count": 1,
+            "warmup_count": 0,
+        }
+
+    sample_counts = sorted({int(float(row["sample_count"])) for row in rows})
+    warmup_counts = sorted({int(float(row.get("warmup_count", 0))) for row in rows})
+    statistic = "custom"
+
+    for name in ("min", "median", "mean"):
+        column = f"time_{name}"
+
+        if column in fieldnames and _column_matches(rows, column):
+            statistic = name
+            break
+
+    return {
+        "time_statistic": statistic,
+        "sample_count": sample_counts[0] if len(sample_counts) == 1 else sample_counts,
+        "warmup_count": warmup_counts[0] if len(warmup_counts) == 1 else warmup_counts,
+    }
+
+
+def phase_split_metadata(path, fieldnames):
+    package = package_name(path)
+    fieldnames = set(fieldnames or [])
+    recorded_columns = [
+        column for column in PHASE_SPLIT_COLUMNS
+        if column in fieldnames
+    ]
+    supported_columns = PACKAGE_PHASE_SPLIT_SUPPORT.get(package, [])
+
+    if recorded_columns:
+        status = "recorded"
+    elif supported_columns:
+        status = "supported-not-recorded"
+    else:
+        status = "not-available"
+
+    return {
+        "status": status,
+        "recorded_columns": recorded_columns,
+        "supported_columns": supported_columns,
+    }
+
+
 def csv_summary(path):
     with path.open(newline="", encoding="utf-8") as csv_file:
         reader = csv.DictReader(csv_file)
         rows = list(reader)
+        fieldnames = reader.fieldnames or []
 
     times = [float(row["time"]) for row in rows]
     nvars = [int(row["nvar"]) for row in rows]
+    sampling = sampling_metadata(rows, fieldnames)
 
     return {
         "path": str(path.relative_to(ROOT)),
@@ -152,6 +247,10 @@ def csv_summary(path):
         "rows": len(rows),
         "max_nvar": max(nvars),
         "max_time": max(times),
+        "time_statistic": sampling["time_statistic"],
+        "sample_count": sampling["sample_count"],
+        "warmup_count": sampling["warmup_count"],
+        "phase_splits": phase_split_metadata(path, fieldnames),
     }
 
 
@@ -160,6 +259,42 @@ def result_files():
     for path in sorted(BENCHMARK.glob("*/results.*.csv")):
         files.append(csv_summary(path))
     return files
+
+
+def _summary_value(values):
+    values = list(values)
+
+    if len(values) == 1:
+        return values[0]
+
+    return sorted(values, key=lambda value: json.dumps(value, sort_keys=True))
+
+
+def benchmark_methodology(files):
+    time_statistics = {entry["time_statistic"] for entry in files}
+    sample_counts = {json.dumps(entry["sample_count"], sort_keys=True) for entry in files}
+    warmup_counts = {json.dumps(entry["warmup_count"], sort_keys=True) for entry in files}
+
+    return {
+        "time_column": "Summary statistic used by existing plots.",
+        "time_statistic": _summary_value(time_statistics),
+        "sample_count": _summary_value(json.loads(value) for value in sample_counts),
+        "warmup_count": _summary_value(json.loads(value) for value in warmup_counts),
+        "raw_samples": "Not stored in the compact live CSV files.",
+    }
+
+
+def phase_split_availability(files):
+    availability = {}
+
+    for entry in files:
+        path = BENCHMARK / Path(entry["path"]).relative_to("benchmark")
+        package = package_name(path)
+        problem = problem_name(path)
+
+        availability.setdefault(package, {})[problem] = entry["phase_splits"]
+
+    return availability
 
 
 def toqubo_extraction_summary(path=None):
@@ -270,9 +405,10 @@ def main():
     DATA.mkdir(exist_ok=True)
     julia_manifest = read_julia_manifest()
     julia = julia_runtime()
+    files = result_files()
 
     report = {
-        "schema_version": 1,
+        "schema_version": 2,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "result_set": {
             "id": os.environ.get("BENCHMARK_RESULT_SET_ID", "latest-stack-2026-06-19-rerun"),
@@ -298,8 +434,10 @@ def main():
             "python": {name: package_version(name) for name in PYTHON_PACKAGES},
             "julia": julia_manifest["packages"],
         },
+        "benchmark_methodology": benchmark_methodology(files),
+        "phase_split_availability": phase_split_availability(files),
         "toqubo_extraction": toqubo_extraction_summary(),
-        "files": result_files(),
+        "files": files,
     }
 
     REPORT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

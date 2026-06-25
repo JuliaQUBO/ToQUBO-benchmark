@@ -54,6 +54,14 @@ backend extraction below the printed CI-log precision.
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
 
+The `time` column is the summary value used by the existing plots. Current
+checked-in live CSVs predate repeated sampling and are marked as
+`single_sample` in `data/report.json`; future benchmark runs can record repeated
+samples with `BENCHMARK_SAMPLES`, `BENCHMARK_WARMUPS`, and
+`BENCHMARK_TIME_STATISTIC`. The default plotted statistic for newly generated
+sampled CSVs is the minimum, and each sampled CSV also records min, median,
+mean, standard deviation, sample count, and warmup count.
+
 The environment table below describes this diagnostic WSL2 run only. A future
 authoritative archived baseline should be produced from the documented CI
 matrix or should record its exact environment before being compared with the
@@ -120,6 +128,9 @@ $ make install
 ...
 
 $ make run
+...
+
+$ BENCHMARK_SAMPLES=5 BENCHMARK_WARMUPS=1 BENCHMARK_TIME_STATISTIC=min make run
 ...
 
 $ make report
