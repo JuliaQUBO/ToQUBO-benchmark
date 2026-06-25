@@ -13,17 +13,17 @@
   "files": [
     {
       "max_nvar": 1000,
-      "max_time": 0.192221899,
+      "max_time": 0.194670679,
       "path": "benchmark/ToQUBO/results.npp.csv",
       "rows": 50,
-      "sha256": "65e951a5668e0f4a9a2b63e2a4cfcc5fc8424c9a94ee7edf1fd133e31cc0deee"
+      "sha256": "26df9aae248d066350d37397ac6e066d9de8370b709f3364d714fd1a19960e64"
     },
     {
       "max_nvar": 10000,
-      "max_time": 2.025989858,
+      "max_time": 1.868053046,
       "path": "benchmark/ToQUBO/results.tsp.csv",
       "rows": 20,
-      "sha256": "e77f900f911e7d46a7cf33de012aa1c88ec759af7b0d7497dd1fc896a69f6602"
+      "sha256": "c2864b932a33b589492fccaf13b33e7dabf7e7b5be6216b0f245780fd14015d7"
     },
     {
       "max_nvar": 1000,
@@ -110,13 +110,13 @@
       "sha256": "b594ab58d287ac80a7eee83b84771f03ac60e7fb50e40fd353d4acd6ed9e2641"
     }
   ],
-  "generated_at": "2026-06-25T14:09:11+00:00",
+  "generated_at": "2026-06-25T21:15:24+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
       "JuMP": "1.30.1",
-      "QUBOTools": "0.15.1",
-      "ToQUBO": "0.5.2"
+      "QUBOTools": "0.16.0",
+      "ToQUBO": "0.6.0"
     },
     "python": {
       "amplify": "1.6.1",
@@ -136,7 +136,7 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "toqubo-0.5.2-python-3.10-openqaoa-2026-06-25",
+    "id": "toqubo-0.6.0-qubotools-0.16.0-python-3.10-openqaoa-2026-06-25",
     "openqaoa": {
       "note": "OpenQAOA runs in an isolated Python 3.10 venv because openqaoa==0.2.6 depends on an old Qiskit plugin stack while the Qiskit benchmark uses qiskit==2.4.2.",
       "python": "Python 3.10.19",
@@ -145,22 +145,22 @@
       "version": "0.2.6"
     },
     "refs_issue": 12,
-    "status": "toqubo-0.5.2-rerun",
+    "status": "toqubo-0.6.0-qubotools-0.16.0-rerun",
     "supersedes": "mixed-date latest-stack experiment from PR #11",
     "toqubo_dependencies": {
-      "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.5.2 release; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
-      "qubotools": "QUBOTools v0.15.1",
+      "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.6.0 and QUBOTools v0.16.0 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
+      "qubotools": "QUBOTools v0.16.0",
       "status": "registered-release",
-      "toqubo": "ToQUBO v0.5.2"
+      "toqubo": "ToQUBO v0.6.0"
     }
   },
   "schema_version": 1,
   "toqubo_extraction": {
     "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
-    "largest_tsp_convert_share": 0.04819916082719107,
-    "largest_tsp_convert_time": 0.097651011,
+    "largest_tsp_convert_share": 0.05886248318025547,
+    "largest_tsp_convert_time": 0.109958241,
     "largest_tsp_nvar": 10000,
-    "largest_tsp_total_time": 2.025989858,
+    "largest_tsp_total_time": 1.868053046,
     "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
     "status": "public-backend-api"
   }
