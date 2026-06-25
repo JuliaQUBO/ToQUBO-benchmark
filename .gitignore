@@ -25,6 +25,7 @@ Manifest.toml
 !benchmark/ToQUBO/Manifest.toml
 
 __pycache__
+.venv*/
 sysimage.*
 Include
 Lib

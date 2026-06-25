@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - julia-version: '1.12.6'
-            python-version: '3.12'
+            python-version: '3.10'
             os: ubuntu-22.04
             arch: x64
     steps:
@@ -32,8 +32,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install & Run Benchmarks
       env:
-        BENCHMARK_RESULT_SET_ID: toqubo-0.5.1-qubotools-0.15.1-2026-06-24
-        BENCHMARK_RESULT_STATUS: toqubo-0.5.1-rerun
+        BENCHMARK_RESULT_SET_ID: python-3.10-openqaoa-0.2.6-2026-06-25
+        BENCHMARK_RESULT_STATUS: python-3.10-openqaoa-rerun
         BENCHMARK_TOQUBO_DEPENDENCY_STATUS: registered-release
         BENCHMARK_TOQUBO_SOURCE: ToQUBO v0.5.1
         BENCHMARK_QUBOTOOLS_SOURCE: QUBOTools v0.15.1

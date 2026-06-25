@@ -1,78 +1,93 @@
-JULIA  := julia
-PYTHON := python3
-PIP    := ~/.local/bin/pip
+JULIA  ?= julia
+PYTHON ?= python3
+VENV   ?= .venv
+VENV_PYTHON ?= $(VENV)/bin/python
+PIP    ?= $(VENV)/bin/pip
+OPENQAOA_VENV   ?= .venv-openqaoa
+OPENQAOA_PYTHON ?= $(OPENQAOA_VENV)/bin/python
+OPENQAOA_PIP    ?= $(OPENQAOA_VENV)/bin/pip
 SHELL  := /bin/bash
 PAPER_BASELINE := archive/paper-v1
 
-.PHONY: install run report plot plot-paper
+.PHONY: install run report plot plot-paper venv openqaoa-venv
 .NOTPARALLEL: run
 
 all: install run plot
 
 venv:
-	$(PYTHON) -m venv ~/.local --system-site-packages
+	$(PYTHON) -m venv "$(VENV)"
+	$(VENV_PYTHON) -m pip --version >/dev/null
 
-install: install-plot install-pyqubo install-qubovert install-qiskit install-amplify install-dwave install-toqubo
+openqaoa-venv:
+	$(PYTHON) -m venv "$(OPENQAOA_VENV)"
+	$(OPENQAOA_PYTHON) -m pip --version >/dev/null
+
+install: install-plot install-pyqubo install-qubovert install-qiskit install-openqaoa install-amplify install-dwave install-toqubo
 
 install-plot: venv
 	@echo "Installing Plot Tools..."
-	@sudo apt-get update
-	@sudo apt-get install -y texlive texlive-latex-extra cm-super dvipng
-	$(PIP) install --user -r "./plot/requirements.txt"
+	@if command -v latex >/dev/null 2>&1 && command -v dvipng >/dev/null 2>&1; then \
+		echo "TeX plot tools already installed."; \
+	else \
+		sudo apt-get update; \
+		sudo apt-get install -y texlive texlive-latex-extra cm-super dvipng; \
+	fi
+	$(PIP) install -r "./plot/requirements.txt"
 
 install-pyqubo: venv
 	@echo "Installing pyqubo..."
-	$(PIP) install --user -r "./benchmark/pyqubo/requirements.txt"
+	$(PIP) install -r "./benchmark/pyqubo/requirements.txt"
 
 install-qubovert: venv
 	@echo "Installing qubovert..."
-	$(PIP) install --user -r "./benchmark/qubovert/requirements.txt"
+	$(PIP) install -r "./benchmark/qubovert/requirements.txt"
 
 install-qiskit: venv
 	@echo "Installing qiskit..."
-	$(PIP) install --user -r "./benchmark/qiskit/requirements.txt"
+	$(PIP) install -r "./benchmark/qiskit/requirements.txt"
 
-install-openqaoa: venv
-	@echo "Installing openqaoa when supported by its Python version marker."
-	$(PIP) install --user -r "./benchmark/openqaoa/requirements.txt"
+install-openqaoa: openqaoa-venv
+	@echo "Installing openqaoa..."
+	$(OPENQAOA_PIP) install -r "./benchmark/openqaoa/requirements.txt"
 
 install-amplify: venv
 	@echo "Installing amplify..."
-	$(PIP) install --user -r "./benchmark/amplify/requirements.txt"
+	$(PIP) install -r "./benchmark/amplify/requirements.txt"
 
 install-dwave: venv
 	@echo "Installing dwave..."
-	$(PIP) install --user -r "./benchmark/dwave/requirements.txt"
+	$(PIP) install -r "./benchmark/dwave/requirements.txt"
 
 install-toqubo:
 	@echo "Installing ToQUBO.jl..."
 	$(JULIA) --proj=benchmark/ToQUBO -e 'import Pkg; Pkg.instantiate();'
 
-run: run-pyqubo run-qubovert run-qiskit run-amplify run-dwave run-toqubo
+run: run-pyqubo run-qubovert run-qiskit run-openqaoa run-amplify run-dwave run-toqubo
 	$(MAKE) report
 
 run-pyqubo: venv
 	@echo "Running pyqubo..."
-	$(PYTHON) -m benchmark.pyqubo
+	$(VENV_PYTHON) -m benchmark.pyqubo
 
 run-qubovert: venv
 	@echo "Running qubovert..."
-	$(PYTHON) -m benchmark.qubovert
+	$(VENV_PYTHON) -m benchmark.qubovert
 
 run-qiskit: venv
 	@echo "Running qiskit..."
-	$(PYTHON) -m benchmark.qiskit
+	$(VENV_PYTHON) -m benchmark.qiskit
 
-run-openqaoa: venv
-	@echo "Skipping openqaoa: latest PyPI release does not support this Python runtime."
+run-openqaoa: openqaoa-venv
+	@echo "Running openqaoa..."
+	MPLCONFIGDIR="$${MPLCONFIGDIR:-/tmp/matplotlib-toqubo-benchmark}" $(OPENQAOA_PYTHON) -m benchmark.openqaoa
 
 run-amplify: venv
 	@echo "Running amplify..."
-	$(PYTHON) -m benchmark.amplify
+	$(VENV_PYTHON) -m benchmark.amplify
 
 run-dwave: venv
 	@echo "Running dwave..."
-	$(PYTHON) -m benchmark.dwave
+	$(VENV_PYTHON) -m benchmark.dwave
 	
 run-toqubo: venv
 	@echo "Running ToQUBO.jl..."
@@ -82,15 +97,17 @@ report: venv
 	@echo "Writing benchmark report..."
 	BENCHMARK_JULIA="$(JULIA)" \
 	BENCHMARK_JULIA_VERSION="$$($(JULIA) --version)" \
-	$(PYTHON) "./scripts/write_benchmark_report.py"
+	BENCHMARK_OPENQAOA_PYTHON="$(OPENQAOA_PYTHON)" \
+	BENCHMARK_OPENQAOA_PYTHON_VERSION="$$($(OPENQAOA_PYTHON) --version 2>/dev/null || true)" \
+	$(VENV_PYTHON) "./scripts/write_benchmark_report.py"
 
 plot: venv
 	@echo "Drawing Plots..."
-	$(PYTHON) "./plot/plot.py"
+	$(VENV_PYTHON) "./plot/plot.py"
 
 plot-paper: venv
 	@echo "Drawing Paper Plots..."
-	$(PYTHON) "./plot/plot.py" --results-dir "$(PAPER_BASELINE)/benchmark" --output-dir "$(PAPER_BASELINE)/data"
+	$(VENV_PYTHON) "./plot/plot.py" --results-dir "$(PAPER_BASELINE)/benchmark" --output-dir "$(PAPER_BASELINE)/data"
 
 clean:
 	@rm -f ./benchmark/**/results*.csv

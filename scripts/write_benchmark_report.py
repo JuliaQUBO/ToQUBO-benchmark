@@ -6,7 +6,10 @@ import os
 import platform
 import subprocess
 import sys
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import tomli as tomllib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -23,6 +26,7 @@ PYTHON_PACKAGES = [
     "matplotlib",
     "numpy",
     "openqaoa",
+    "mitiq",
     "pyqubo",
     "qiskit",
     "qiskit-optimization",
@@ -34,6 +38,7 @@ PYTHON_PACKAGES = [
 PYTHON_REQUIREMENT_FILES = [
     BENCHMARK / "amplify" / "requirements.txt",
     BENCHMARK / "dwave" / "requirements.txt",
+    BENCHMARK / "openqaoa" / "requirements.txt",
     BENCHMARK / "pyqubo" / "requirements.txt",
     BENCHMARK / "qiskit" / "requirements.txt",
     BENCHMARK / "qubovert" / "requirements.txt",
@@ -228,6 +233,39 @@ def toqubo_dependency_context():
     }
 
 
+def openqaoa_context():
+    version = package_version("openqaoa")
+
+    if version:
+        context = {
+            "status": "included",
+            "version": version,
+            "note": (
+                "OpenQAOA runs in an isolated Python 3.10 venv because "
+                "openqaoa==0.2.6 depends on an old Qiskit plugin stack while "
+                "the Qiskit benchmark uses qiskit==2.4.2."
+            ),
+        }
+
+        runtime = os.environ.get("BENCHMARK_OPENQAOA_PYTHON")
+        runtime_version = os.environ.get("BENCHMARK_OPENQAOA_PYTHON_VERSION")
+
+        if runtime:
+            context["python_executable"] = runtime
+        if runtime_version:
+            context["python"] = runtime_version
+
+        return context
+
+    return {
+        "status": "excluded",
+        "reason": (
+            "openqaoa==0.2.6 remains behind a Python version marker because "
+            "it does not resolve on the current Python runtime used here."
+        ),
+    }
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     julia_manifest = read_julia_manifest()
@@ -242,13 +280,7 @@ def main():
             "supersedes": "mixed-date latest-stack experiment from PR #11",
             "closes_issue": None,
             "refs_issue": 12,
-            "openqaoa": {
-                "status": "excluded",
-                "reason": (
-                    "openqaoa==0.2.6 remains behind a Python version marker because "
-                    "it does not resolve on the current Python runtime used here."
-                ),
-            },
+            "openqaoa": openqaoa_context(),
             "toqubo_dependencies": toqubo_dependency_context(),
         },
         "environment": {

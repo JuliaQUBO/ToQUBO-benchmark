@@ -1,4 +1,5 @@
-# Latest OpenQAOA currently excludes the Python runtime used by the modern
-# benchmark run. Keep this target optional until OpenQAOA publishes wheels
-# for the current runtime.
-openqaoa==0.2.6; python_version < "3.11"
+# OpenQAOA 0.2.6 requires Python <3.11 and an old Qiskit plugin stack, so the
+# Makefile installs it in a separate Python 3.10 venv.
+openqaoa==0.2.6
+mitiq==0.47.0
+setuptools==80.10.2

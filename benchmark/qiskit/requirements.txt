@@ -1,4 +1,4 @@
 qiskit==2.4.2
 qiskit-optimization==0.7.0
 docplex==2.32.264
-numpy==2.5.0
+numpy==2.2.6

@@ -1,5 +1,6 @@
 matplotlib==3.10.9
-pandas==3.0.3
-numpy==2.5.0
-scipy==1.17.1
-scienceplots==2.2.1
+pandas==2.3.3
+numpy==2.2.6
+scipy==1.15.3
+scienceplots==2.2.2
+tomli==2.3.0

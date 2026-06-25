@@ -30,7 +30,7 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(self.report["schema_version"], 1)
         self.assertEqual(
             self.report["result_set"]["status"],
-            "qiskit-2.4.2-rerun",
+            "python-3.10-openqaoa-rerun",
         )
         self.assertEqual(self.report["result_set"]["refs_issue"], 12)
         self.assertIsNone(self.report["result_set"]["closes_issue"])
@@ -44,11 +44,19 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         julia_packages = self.report["packages"]["julia"]
 
         self.assertEqual(python_packages["qiskit"], "2.4.2")
-        self.assertEqual(python_packages["numpy"], "2.5.0")
+        self.assertEqual(python_packages["numpy"], "2.2.6")
         self.assertEqual(python_packages["qiskit-optimization"], "0.7.0")
-        self.assertIsNone(python_packages["openqaoa"])
+        self.assertEqual(python_packages["openqaoa"], "0.2.6")
+        self.assertEqual(python_packages["mitiq"], "0.47.0")
         self.assertEqual(julia_packages["ToQUBO"], "0.5.1")
         self.assertEqual(julia_packages["QUBOTools"], "0.15.1")
+
+    def test_report_records_openqaoa_as_included(self):
+        openqaoa = self.report["result_set"]["openqaoa"]
+
+        self.assertEqual(openqaoa["status"], "included")
+        self.assertEqual(openqaoa["version"], "0.2.6")
+        self.assertIn("isolated Python 3.10 venv", openqaoa["note"])
 
     def test_report_file_hashes_match_live_csvs(self):
         files = self.report["files"]

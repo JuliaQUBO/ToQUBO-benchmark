@@ -36,25 +36,18 @@ archive directory such as `archive/modern-v1` instead of overwriting
 ## Current live result set
 
 The top-level CSV files currently contain
-`qiskit-2.4.2-numpy-2.5.0-2026-06-25`, a diagnostic refresh of the Qiskit
-results after updating Qiskit to v2.4.2 and the shared Python NumPy pin to
-v2.5.0. The ToQUBO result CSVs remain from the diagnostic rerun after ToQUBO.jl
-v0.5.1 and QUBOTools.jl v0.15.1 were available from the Julia General registry.
-The other live package CSVs remain from `latest-stack-2026-06-19-rerun`. This
-extends the mixed-date latest-stack experiment from PR #11, but it is not
-archived as a paper-style fixed reference point.
-
-OpenQAOA is still excluded from the live run because `openqaoa==0.2.6` does not
-resolve on the Python runtime used for the modern benchmark run. The historical
-OpenQAOA rows remain available under
-`archive/paper-v1`.
+`python-3.10-openqaoa-0.2.6-2026-06-25`, a diagnostic rerun on Python 3.10 so
+the current OpenQAOA release can be included. OpenQAOA v0.2.6 is installed in an
+isolated Python 3.10 venv because its published metapackage depends on an old
+Qiskit plugin stack, while the Qiskit benchmark uses Qiskit v2.4.2. This run is
+not archived as a paper-style fixed reference point.
 
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
 ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1. In the current TSP run, backend
-extraction is 0.041 s of 1.601 s at 10,000 variables, so extraction is no
-longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.158 s, with
+extraction is 0.088 s of 1.898 s at 10,000 variables, so extraction is no
+longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.245 s, with
 backend extraction below the printed CI-log precision.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
@@ -71,7 +64,7 @@ archived paper baseline.
 
 | Linux  | Linux 6.6.114.1 WSL2 / x86_64 |
 | :----: | :----------------------------: |
-| Python | CPython 3.13.5                 |
+| Python | CPython 3.10.19                |
 | Julia  | julia version 1.12.6           |
 
 ## Packages
@@ -81,7 +74,8 @@ archived paper baseline.
 | ToQUBO.jl           | v0.5.1  |
 | QUBOTools.jl        | v0.15.1 |
 | PyQUBO              | v1.5.0  |
-| OpenQAOA            | excluded on Python >=3.11 |
+| OpenQAOA            | v0.2.6  |
+| Mitiq               | v0.47.0 |
 | qubovert            | v1.2.5  |
 | Qiskit              | v2.4.2  |
 | qiskit-optimization | v0.7.0  |
@@ -89,9 +83,9 @@ archived paper baseline.
 | amplify             | v1.6.1  |
 | dimod               | v0.12.22 |
 
-The latest OpenQAOA release found on PyPI was `0.2.6`, but it does not resolve
-for the Python runtime used by the modern benchmark run. The historical OpenQAOA
-results remain available in `archive/paper-v1`.
+The main Python benchmark venv uses NumPy v2.2.6, the latest NumPy line
+compatible with Python 3.10. The isolated OpenQAOA venv resolves OpenQAOA's
+own stack, including Qiskit v0.46.3, NumPy v1.26.4, and docplex v2.25.236.
 
 The live ToQUBO result CSVs also include `compiler_time` for the `optimize!`
 step and `convert_time` for QUBOTools backend extraction. The `toqubo_time`

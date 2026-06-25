@@ -1,7 +1,5 @@
 import time
 import numpy as np
-from docplex.mp.model import Model
-from openqaoa.problems.converters import FromDocplex2IsingModel
 from pathlib import Path
 
 
@@ -9,15 +7,17 @@ from .. import benchmark, tsp_info, npp_info
 
 __DIR__ = Path(__file__).parent
 
-def tsp(n: int, D: np.ndarray, lam: float = 5.0):
-    t0 = time.time()
+
+def build_tsp_model(n: int, D: np.ndarray):
+    from docplex.mp.model import Model
+
     model = Model(f"TSP({n})")
 
     var_matrix = [[model.binary_var(f"x({i},{j})") for j in range(n)] for i in range(n)]
 
     for i in range(n):
         model.add_constraint(sum(var_matrix[i][:])==1)
-    
+
     for j in range(n):
         model.add_constraint(sum(var_matrix[:][j])==1)
 
@@ -30,8 +30,33 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 
     distance = sum(distance)
 
+    model.minimize(distance)
+
+    return model
+
+
+def build_npp_model(n: int, s: np.ndarray):
+    from docplex.mp.model import Model
+
+    model = Model(f"NPP({n})")
+
+    x = [model.binary_var(f"x({i})") for i in range(n)]
+
+    H = sum((2*x[i]-1) * s[i] for i in range(n))**2
+
+    model.minimize(H)
+
+    return model
+
+
+def tsp(n: int, D: np.ndarray, lam: float = 5.0):
+    t0 = time.time()
+    model = build_tsp_model(n, D)
+
     # Compile Model
     t1 = time.time()
+
+    from openqaoa.problems.converters import FromDocplex2IsingModel
 
     ising = FromDocplex2IsingModel(model)
 
@@ -52,17 +77,12 @@ def tsp(n: int, D: np.ndarray, lam: float = 5.0):
 def npp(n: int, s: np.ndarray, lam: float = 5.0):
 
     t0 = time.time()
-    
-    model = Model(f"NPP({n})")
-
-    x = [model.binary_var(f"x({i})") for i in range(n)]
-
-    H = sum((2*x[i]-1) * s[i] for i in range(n))**2
-
-    model.minimize(H)
+    model = build_npp_model(n, s)
 
     # Compile Model
     t1 = time.time()
+
+    from openqaoa.problems.converters import FromDocplex2IsingModel
 
     qubo = FromDocplex2IsingModel(model)
 
