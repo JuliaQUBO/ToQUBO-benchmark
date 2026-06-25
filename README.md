@@ -61,6 +61,9 @@ samples with `BENCHMARK_SAMPLES`, `BENCHMARK_WARMUPS`, and
 `BENCHMARK_TIME_STATISTIC`. The default plotted statistic for newly generated
 sampled CSVs is the minimum, and each sampled CSV also records min, median,
 mean, standard deviation, sample count, and warmup count.
+The ToQUBO Julia runner always performs one small fixed JIT warmup before
+starting per-size samples; `BENCHMARK_WARMUPS` controls additional per-size
+warmups.
 
 The environment table below describes this diagnostic WSL2 run only. A future
 authoritative archived baseline should be produced from the documented CI

@@ -1,4 +1,5 @@
 import importlib.util
+import math
 from pathlib import Path
 import sys
 import tempfile
@@ -149,6 +150,21 @@ class PlotToQUBOTests(unittest.TestCase):
         self.plot_module.plt.rcParams["text.usetex"] = False
 
         self.assertEqual(self.plot_module.variable_count_label("en"), "#variables")
+
+    def test_read_csv_handles_blank_optional_metric_cells(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "results.npp.csv"
+            path.write_text(
+                "nvar,time,model_time\n"
+                "1,0.1,\n",
+                encoding="utf-8",
+            )
+
+            table = self.plot_module.read_csv(path)
+
+        self.assertEqual(table["nvar"], [1])
+        self.assertEqual(table["time"], [0.1])
+        self.assertTrue(math.isnan(table["model_time"][0]))
 
 
 if __name__ == "__main__":

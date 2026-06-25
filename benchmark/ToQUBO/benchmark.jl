@@ -89,6 +89,9 @@ function benchmark(;
 
     println("Problem: $(key)")
 
+    # Keep Julia time-to-first-solve out of the first measured size.
+    _ = run(3, data(3); skip_gc=true)
+
     for n in start:step:stop
         input_data = data(n)
 

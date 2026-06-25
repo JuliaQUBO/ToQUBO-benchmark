@@ -151,6 +151,8 @@ def read_csv(path):
             for (col, val) in zip(header, row):
                 if col == "nvar":
                     table[col].append(int(val))
+                elif val == "":
+                    table[col].append(float("nan"))
                 else:
                     table[col].append(float(val))
         return table 
