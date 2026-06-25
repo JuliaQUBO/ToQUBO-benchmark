@@ -401,6 +401,15 @@ def openqaoa_context():
     }
 
 
+def optional_int_env(name):
+    value = os.environ.get(name)
+
+    if value is None or value == "":
+        return None
+
+    return int(value)
+
+
 def main():
     DATA.mkdir(exist_ok=True)
     julia_manifest = read_julia_manifest()
@@ -413,9 +422,12 @@ def main():
         "result_set": {
             "id": os.environ.get("BENCHMARK_RESULT_SET_ID", "latest-stack-2026-06-19-rerun"),
             "status": os.environ.get("BENCHMARK_RESULT_STATUS", "coherent-diagnostic-rerun"),
-            "supersedes": "mixed-date latest-stack experiment from PR #11",
-            "closes_issue": None,
-            "refs_issue": 12,
+            "supersedes": os.environ.get(
+                "BENCHMARK_RESULT_SUPERSEDES",
+                "mixed-date latest-stack experiment from PR #11",
+            ),
+            "closes_issue": optional_int_env("BENCHMARK_CLOSES_ISSUE"),
+            "refs_issue": optional_int_env("BENCHMARK_REFS_ISSUE") or 12,
             "openqaoa": openqaoa_context(),
             "toqubo_dependencies": toqubo_dependency_context(),
         },

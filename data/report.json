@@ -1,10 +1,19 @@
 {
   "benchmark_methodology": {
     "raw_samples": "Not stored in the compact live CSV files.",
-    "sample_count": 1,
+    "sample_count": [
+      1,
+      5
+    ],
     "time_column": "Summary statistic used by existing plots.",
-    "time_statistic": "single_sample",
-    "warmup_count": 0
+    "time_statistic": [
+      "min",
+      "single_sample"
+    ],
+    "warmup_count": [
+      0,
+      1
+    ]
   },
   "environment": {
     "cpu": "Intel(R) Xeon(R) w5-2565X",
@@ -20,7 +29,7 @@
   "files": [
     {
       "max_nvar": 1000,
-      "max_time": 0.194670679,
+      "max_time": 0.175519712,
       "path": "benchmark/ToQUBO/results.npp.csv",
       "phase_splits": {
         "recorded_columns": [
@@ -38,14 +47,14 @@
         ]
       },
       "rows": 50,
-      "sample_count": 1,
-      "sha256": "26df9aae248d066350d37397ac6e066d9de8370b709f3364d714fd1a19960e64",
-      "time_statistic": "single_sample",
-      "warmup_count": 0
+      "sample_count": 5,
+      "sha256": "5cf6b570d619ebdbda24fd020e4a9a627eda46c57b7c45a3d0f197cbf592305b",
+      "time_statistic": "min",
+      "warmup_count": 1
     },
     {
       "max_nvar": 10000,
-      "max_time": 1.868053046,
+      "max_time": 1.982676006,
       "path": "benchmark/ToQUBO/results.tsp.csv",
       "phase_splits": {
         "recorded_columns": [
@@ -63,46 +72,52 @@
         ]
       },
       "rows": 20,
-      "sample_count": 1,
-      "sha256": "c2864b932a33b589492fccaf13b33e7dabf7e7b5be6216b0f245780fd14015d7",
-      "time_statistic": "single_sample",
-      "warmup_count": 0
+      "sample_count": 5,
+      "sha256": "68d83e47a965f40f004933c861dc1ccd97ff5a4c062e4ddabf900c667cd19427",
+      "time_statistic": "min",
+      "warmup_count": 1
     },
     {
       "max_nvar": 1000,
-      "max_time": 0.16276121139526367,
+      "max_time": 0.1532888412475586,
       "path": "benchmark/amplify/results.npp.csv",
       "phase_splits": {
-        "recorded_columns": [],
-        "status": "supported-not-recorded",
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
         "supported_columns": [
           "model_time",
           "convert_time"
         ]
       },
       "rows": 50,
-      "sample_count": 1,
-      "sha256": "9559b0a00317f8d143f3109d84076d283c1b3de36a948fdff65df42e37bf1f2e",
-      "time_statistic": "single_sample",
-      "warmup_count": 0
+      "sample_count": 5,
+      "sha256": "dc36de234caed9333e7efb18d90353729426f5db2976f398ad05a7fcb1ff57cc",
+      "time_statistic": "min",
+      "warmup_count": 1
     },
     {
       "max_nvar": 10000,
-      "max_time": 2.5481629371643066,
+      "max_time": 2.439898729324341,
       "path": "benchmark/amplify/results.tsp.csv",
       "phase_splits": {
-        "recorded_columns": [],
-        "status": "supported-not-recorded",
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
         "supported_columns": [
           "model_time",
           "convert_time"
         ]
       },
       "rows": 20,
-      "sample_count": 1,
-      "sha256": "d1187bf53f0fdcbbc35d062c6a2d277b5a4b5fa2e8a13ffe35eac0d8354195fc",
-      "time_statistic": "single_sample",
-      "warmup_count": 0
+      "sample_count": 5,
+      "sha256": "220d383a8e4980c838239552b87fd081b3b013a202ac9659a18a54382389c7ea",
+      "time_statistic": "min",
+      "warmup_count": 1
     },
     {
       "max_nvar": 1000,
@@ -293,7 +308,7 @@
       "warmup_count": 0
     }
   ],
-  "generated_at": "2026-06-25T21:46:57+00:00",
+  "generated_at": "2026-06-25T23:48:51+00:00",
   "packages": {
     "julia": {
       "CSV": "0.10.16",
@@ -352,16 +367,22 @@
     },
     "amplify": {
       "npp": {
-        "recorded_columns": [],
-        "status": "supported-not-recorded",
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
         "supported_columns": [
           "model_time",
           "convert_time"
         ]
       },
       "tsp": {
-        "recorded_columns": [],
-        "status": "supported-not-recorded",
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
         "supported_columns": [
           "model_time",
           "convert_time"
@@ -469,7 +490,7 @@
   },
   "result_set": {
     "closes_issue": null,
-    "id": "toqubo-0.6.0-qubotools-0.16.0-python-3.10-openqaoa-2026-06-25",
+    "id": "toqubo-amplify-sampled-2026-06-25",
     "openqaoa": {
       "note": "OpenQAOA runs in an isolated Python 3.10 venv because openqaoa==0.2.6 depends on an old Qiskit plugin stack while the Qiskit benchmark uses qiskit==2.4.2.",
       "python": "Python 3.10.19",
@@ -477,9 +498,9 @@
       "status": "included",
       "version": "0.2.6"
     },
-    "refs_issue": 12,
-    "status": "toqubo-0.6.0-qubotools-0.16.0-rerun",
-    "supersedes": "mixed-date latest-stack experiment from PR #11",
+    "refs_issue": 14,
+    "status": "issue-14-toqubo-amplify-sampled-rerun",
+    "supersedes": "toqubo-0.6.0-qubotools-0.16.0-python-3.10-openqaoa-2026-06-25",
     "toqubo_dependencies": {
       "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.6.0 and QUBOTools v0.16.0 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
       "qubotools": "QUBOTools v0.16.0",
@@ -490,10 +511,10 @@
   "schema_version": 2,
   "toqubo_extraction": {
     "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
-    "largest_tsp_convert_share": 0.05886248318025547,
-    "largest_tsp_convert_time": 0.109958241,
+    "largest_tsp_convert_share": 0.04781692153084946,
+    "largest_tsp_convert_time": 0.094805463,
     "largest_tsp_nvar": 10000,
-    "largest_tsp_total_time": 1.868053046,
+    "largest_tsp_total_time": 1.982676006,
     "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
     "status": "public-backend-api"
   }

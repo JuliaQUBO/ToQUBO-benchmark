@@ -30,9 +30,13 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(self.report["schema_version"], 2)
         self.assertEqual(
             self.report["result_set"]["status"],
-            "toqubo-0.6.0-qubotools-0.16.0-rerun",
+            "issue-14-toqubo-amplify-sampled-rerun",
         )
-        self.assertEqual(self.report["result_set"]["refs_issue"], 12)
+        self.assertEqual(
+            self.report["result_set"]["id"],
+            "toqubo-amplify-sampled-2026-06-25",
+        )
+        self.assertEqual(self.report["result_set"]["refs_issue"], 14)
         self.assertIsNone(self.report["result_set"]["closes_issue"])
         self.assertEqual(
             self.report["result_set"]["toqubo_dependencies"]["status"],
@@ -83,9 +87,9 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         methodology = self.report["benchmark_methodology"]
 
         self.assertEqual(methodology["time_column"], "Summary statistic used by existing plots.")
-        self.assertEqual(methodology["time_statistic"], "single_sample")
-        self.assertEqual(methodology["sample_count"], 1)
-        self.assertEqual(methodology["warmup_count"], 0)
+        self.assertEqual(methodology["time_statistic"], ["min", "single_sample"])
+        self.assertEqual(methodology["sample_count"], [1, 5])
+        self.assertEqual(methodology["warmup_count"], [0, 1])
         self.assertEqual(
             methodology["raw_samples"],
             "Not stored in the compact live CSV files.",
@@ -100,8 +104,8 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertIn("convert_time", toqubo_npp["recorded_columns"])
 
         amplify_npp = availability["amplify"]["npp"]
-        self.assertEqual(amplify_npp["status"], "supported-not-recorded")
-        self.assertEqual(amplify_npp["supported_columns"], ["model_time", "convert_time"])
+        self.assertEqual(amplify_npp["status"], "recorded")
+        self.assertEqual(amplify_npp["recorded_columns"], ["model_time", "convert_time"])
 
     def test_toqubo_extraction_caveat_is_recorded(self):
         extraction = self.report["toqubo_extraction"]

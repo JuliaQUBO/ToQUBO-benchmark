@@ -257,7 +257,7 @@ def benchmark(
     fields = _fieldnames(rows)
 
     with csv_path.open("w", newline="") as fp:
-        writer = csv.DictWriter(fp, fieldnames=fields)
+        writer = csv.DictWriter(fp, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
 
         for row in rows:
