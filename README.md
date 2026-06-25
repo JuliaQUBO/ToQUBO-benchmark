@@ -36,18 +36,18 @@ archive directory such as `archive/modern-v1` instead of overwriting
 ## Current live result set
 
 The top-level CSV files currently contain
-`python-3.10-openqaoa-0.2.6-2026-06-25`, a diagnostic rerun on Python 3.10 so
-the current OpenQAOA release can be included. OpenQAOA v0.2.6 is installed in an
-isolated Python 3.10 venv because its published metapackage depends on an old
-Qiskit plugin stack, while the Qiskit benchmark uses Qiskit v2.4.2. This run is
-not archived as a paper-style fixed reference point.
+`toqubo-0.5.2-python-3.10-openqaoa-2026-06-25`, a diagnostic rerun after
+updating ToQUBO.jl to v0.5.2. OpenQAOA v0.2.6 is installed in an isolated
+Python 3.10 venv because its published metapackage depends on an old Qiskit
+plugin stack, while the Qiskit benchmark uses Qiskit v2.4.2. This run is not
+archived as a paper-style fixed reference point.
 
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
-ToQUBO.jl v0.5.1 and QUBOTools.jl v0.15.1. In the current TSP run, backend
-extraction is 0.088 s of 1.898 s at 10,000 variables, so extraction is no
-longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.245 s, with
+ToQUBO.jl v0.5.2 and QUBOTools.jl v0.15.1. In the current TSP run, backend
+extraction is 0.098 s of 2.026 s at 10,000 variables, so extraction is no
+longer the dense TSP bottleneck. The 1,000-variable NPP row is 0.182 s, with
 backend extraction below the printed CI-log precision.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
@@ -71,7 +71,7 @@ archived paper baseline.
 
 | Package             | Version |
 | :-----------------: | :-----: |
-| ToQUBO.jl           | v0.5.1  |
+| ToQUBO.jl           | v0.5.2  |
 | QUBOTools.jl        | v0.15.1 |
 | PyQUBO              | v1.5.0  |
 | OpenQAOA            | v0.2.6  |

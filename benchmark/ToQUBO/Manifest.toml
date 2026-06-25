@@ -656,10 +656,10 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 version = "1.11.0"
 
 [[deps.ToQUBO]]
-deps = ["MathOptInterface", "PseudoBooleanOptimization", "QUBOTools", "Random", "TOML"]
-git-tree-sha1 = "e377061f54c42893e54bf8521b308b87b6896bc1"
+deps = ["MathOptInterface", "PseudoBooleanOptimization", "QUBOTools", "Random", "SparseArrays", "TOML"]
+git-tree-sha1 = "53e209d573bf967f1695d7d40054622f3de6529d"
 uuid = "9a412ddf-83fa-43b6-9748-7843c851aa65"
-version = "0.5.1"
+version = "0.5.2"
 weakdeps = ["JuMP"]
 
     [deps.ToQUBO.extensions]
