@@ -51,7 +51,10 @@ benchmark uses Qiskit v2.4.2.
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
-ToQUBO.jl v0.6.0 and QUBOTools.jl v0.16.0.
+ToQUBO.jl v0.6.0 and QUBOTools.jl v0.16.0. At the largest sampled TSP point,
+backend extraction is 0.076 s of the 1.842 s minimum total time at 10,000
+variables. The 1,000-variable NPP row records minimum total times of 0.175 s for
+ToQUBO.jl and 0.137 s for Amplify.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
@@ -63,10 +66,9 @@ The ToQUBO Julia runner always performs one small fixed JIT warmup before
 starting per-size samples; `BENCHMARK_WARMUPS` controls additional per-size
 warmups.
 
-The environment table below describes this diagnostic WSL2 run only. A future
-authoritative archived baseline should be produced from the documented CI
-matrix or should record its exact environment before being compared with the
-archived paper baseline.
+The environment table below describes this WSL2 live rerun. A future archived
+baseline should be produced from the documented CI matrix or should record its
+exact environment before being compared with the archived paper baseline.
 
 ## How to reproduce the results
 
