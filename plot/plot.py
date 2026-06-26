@@ -1,10 +1,10 @@
 import csv
+import math
 import sys
 import subprocess
 import matplotlib.pyplot as plt
 import scienceplots
 import shutil
-import numpy as np
 from scipy.optimize import curve_fit
 from pathlib import Path
 
@@ -108,7 +108,132 @@ def _columns_match(table, left, right):
 
     return all(abs(a - b) <= 1e-12 for a, b in zip(table[left], table[right]))
 
+def as_finite_float(value):
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return None
+
+    if not math.isfinite(value):
+        return None
+
+    return value
+
+def has_numeric_column(table, column):
+    if table is None or column not in table:
+        return False
+
+    return any(as_finite_float(value) is not None for value in table[column])
+
+def numeric_values(table, column, cast=float):
+    return [cast(value) for value in table[column]]
+
+def finite_values(values):
+    return [value for value in values if as_finite_float(value) is not None]
+
+def max_sample_count(table):
+    if table is None or "sample_count" not in table:
+        return 1
+
+    counts = finite_values(float(value) for value in table["sample_count"])
+
+    if not counts:
+        return 1
+
+    return max(int(value) for value in counts)
+
+def plot_value_column(table, base_column):
+    mean_column = f"{base_column}_mean"
+
+    if has_numeric_column(table, mean_column):
+        return mean_column
+
+    return base_column
+
+def plot_values(table, base_column):
+    return numeric_values(table, plot_value_column(table, base_column))
+
+def minimum_values(table, base_column):
+    minimum_column = f"{base_column}_min"
+    value_column = plot_value_column(table, base_column)
+
+    if not has_numeric_column(table, minimum_column):
+        return None
+    if _columns_match(table, minimum_column, value_column):
+        return None
+
+    return numeric_values(table, minimum_column)
+
+T_CRITICAL_95 = {
+    1: 12.706,
+    2: 4.303,
+    3: 3.182,
+    4: 2.776,
+    5: 2.571,
+    6: 2.447,
+    7: 2.365,
+    8: 2.306,
+    9: 2.262,
+    10: 2.228,
+    11: 2.201,
+    12: 2.179,
+    13: 2.160,
+    14: 2.145,
+    15: 2.131,
+    16: 2.120,
+    17: 2.110,
+    18: 2.101,
+    19: 2.093,
+    20: 2.086,
+    21: 2.080,
+    22: 2.074,
+    23: 2.069,
+    24: 2.064,
+    25: 2.060,
+    26: 2.056,
+    27: 2.052,
+    28: 2.048,
+    29: 2.045,
+    30: 2.042,
+}
+
+def t_critical_95(sample_count):
+    degrees_of_freedom = max(int(sample_count) - 1, 1)
+
+    return T_CRITICAL_95.get(degrees_of_freedom, 1.96)
+
+def confidence_interval_95(table, base_column):
+    mean_column = f"{base_column}_mean"
+    std_column = f"{base_column}_std"
+
+    if plot_value_column(table, base_column) != mean_column:
+        return None
+    if "sample_count" not in table or not has_numeric_column(table, std_column):
+        return None
+    if max_sample_count(table) <= 1:
+        return None
+
+    intervals = []
+
+    for std_value, sample_count_value in zip(table[std_column], table["sample_count"]):
+        std_value = float(std_value)
+        sample_count_value = int(float(sample_count_value))
+
+        if sample_count_value <= 1 or not math.isfinite(std_value):
+            intervals.append(0.0)
+            continue
+
+        sample_std = std_value * math.sqrt(sample_count_value / (sample_count_value - 1))
+        intervals.append(
+            t_critical_95(sample_count_value) * sample_std / math.sqrt(sample_count_value)
+        )
+
+    return intervals
+
 def plotted_time_statistic(table):
+    if has_numeric_column(table, "time_mean") and max_sample_count(table) > 1:
+        return "mean"
+
     for statistic in ("min", "median", "mean"):
         if _columns_match(table, "time", f"time_{statistic}"):
             return statistic
@@ -116,10 +241,27 @@ def plotted_time_statistic(table):
     return "single sample"
 
 def time_axis_label(base, tables):
+    tables = [
+        table for table in tables
+        if table is not None
+    ]
+    uses_sampled_mean = any(
+        has_numeric_column(table, "time_mean") and max_sample_count(table) > 1
+        for table in tables
+    )
+    has_minimum = any(has_numeric_column(table, "time_min") for table in tables)
+
+    if uses_sampled_mean:
+        suffix = "mean with 95% CI"
+
+        if has_minimum:
+            suffix += "; dashed minimum"
+
+        return f"{base} ({suffix})"
+
     statistics = {
         plotted_time_statistic(table)
         for table in tables
-        if table is not None
     }
 
     if len(statistics) == 1:
@@ -128,6 +270,80 @@ def time_axis_label(base, tables):
         statistic = "mixed statistics"
 
     return f"{base} ({statistic})"
+
+def update_bounds(bounds, *series):
+    xl, yl, xu, yu = bounds
+
+    for x_values, y_values, yerr in series:
+        finite_x = finite_values(x_values)
+        finite_y = finite_values(y_values)
+
+        if not finite_x or not finite_y:
+            continue
+
+        xl = min(xl, min(finite_x))
+        xu = max(xu, max(finite_x))
+        yl = min(yl, min(finite_y))
+
+        if yerr is None:
+            yu = max(yu, max(finite_y))
+        else:
+            yu = max(yu, max(y + err for y, err in zip(y_values, yerr)))
+
+    return xl, yl, xu, yu
+
+def plot_metric_series(
+    ax,
+    table,
+    base_column,
+    *,
+    label,
+    marker,
+    color=None,
+    linestyle="-",
+    bounds=None,
+):
+    n_values = numeric_values(table, "nvar", int)
+    y_values = plot_values(table, base_column)
+    yerr = confidence_interval_95(table, base_column)
+    kwargs = {
+        "label": label,
+        "marker": marker,
+        "linestyle": linestyle,
+    }
+
+    if color is not None:
+        kwargs["color"] = color
+
+    if yerr is None:
+        handle = ax.plot(n_values, y_values, **kwargs)
+    else:
+        handle = ax.errorbar(n_values, y_values, yerr=yerr, capsize=2.5, **kwargs)
+
+    min_values = minimum_values(table, base_column)
+
+    if min_values is not None:
+        min_kwargs = {
+            "linestyle": "--",
+            "alpha": 0.45,
+            "linewidth": 0.9,
+        }
+
+        if color is not None:
+            min_kwargs["color"] = color
+
+        ax.plot(n_values, min_values, **min_kwargs)
+
+    if bounds is not None:
+        bounds = update_bounds(bounds, (n_values, y_values, yerr))
+
+        if min_values is not None:
+            bounds = update_bounds(bounds, (n_values, min_values, None))
+
+    if isinstance(handle, list):
+        handle = handle[0] if handle else None
+
+    return handle, bounds
 
 if has_latex():
     plt.rcParams.update({
@@ -202,20 +418,20 @@ def plot_benchmark(key: str, ax):
         label  = LABEL_REF.get(tag)
         line   = ":"
 
-        n = np.array(data[tag]["nvar"], dtype=int)
-        t = np.array(data[tag]["time"], dtype=float)
+        h, bounds = plot_metric_series(
+            ax,
+            data[tag],
+            "time",
+            label=label,
+            marker=marker,
+            color=color,
+            linestyle=line,
+            bounds=(xl, yl, xu, yu),
+        )
+        xl, yl, xu, yu = bounds
 
-        xl = min(xl, np.min(n))
-        yl = min(yl, np.min(t))
-        xu = max(xu, np.max(n))
-        yu = max(yu, np.max(t))
-
-        ax.plot(n, t, color=color, linestyle=line)
-        ax.scatter(n, t, color=color, marker=marker)
-
-        h, = ax.plot([], [], color=color, marker=marker, linestyle=line, label=label)
-
-        handles.append(h)
+        if h is not None:
+            handles.append(h)
 
     ax.set_ylim(yl, yu)
     ax.set_xlim(xl, xu)
@@ -237,17 +453,53 @@ def plot_toqubo(key: str, ax):
     if toqubo_data is not None:
         has_phase_split = "compiler_time" in toqubo_data and "convert_time" in toqubo_data
 
-        ax.plot(toqubo_data["nvar"], toqubo_data["time"], label="JuMP + ToQUBO", marker='*')
-        ax.plot(toqubo_data["nvar"], toqubo_data["jump_time"], label="JuMP", marker='D')
+        plot_metric_series(
+            ax,
+            toqubo_data,
+            "time",
+            label="JuMP + ToQUBO",
+            marker='*',
+        )
+        plot_metric_series(
+            ax,
+            toqubo_data,
+            "jump_time",
+            label="JuMP",
+            marker='D',
+        )
 
         if has_phase_split:
-            ax.plot(toqubo_data["nvar"], toqubo_data["compiler_time"], label="ToQUBO optimize!", marker='o')
-            ax.plot(toqubo_data["nvar"], toqubo_data["convert_time"], label="Backend extraction", marker='s')
+            plot_metric_series(
+                ax,
+                toqubo_data,
+                "compiler_time",
+                label="ToQUBO optimize!",
+                marker='o',
+            )
+            plot_metric_series(
+                ax,
+                toqubo_data,
+                "convert_time",
+                label="Backend extraction",
+                marker='s',
+            )
         else:
-            ax.plot(toqubo_data["nvar"], toqubo_data["toqubo_time"], label="ToQUBO", marker='D')
+            plot_metric_series(
+                ax,
+                toqubo_data,
+                "toqubo_time",
+                label="ToQUBO",
+                marker='D',
+            )
 
     if amplify_data is not None:
-        ax.plot(amplify_data["nvar"], amplify_data["time"], label="Amplify", marker='X')
+        plot_metric_series(
+            ax,
+            amplify_data,
+            "time",
+            label="Amplify",
+            marker='X',
+        )
 
     if key == "tsp":
         ax.set_xscale('symlog')

@@ -30,11 +30,11 @@ class LiveBenchmarkReportTests(unittest.TestCase):
         self.assertEqual(self.report["schema_version"], 2)
         self.assertEqual(
             self.report["result_set"]["status"],
-            "issue-14-toqubo-amplify-sampled-rerun",
+            "publication-10-sample-full-rerun",
         )
         self.assertEqual(
             self.report["result_set"]["id"],
-            "toqubo-amplify-sampled-2026-06-25",
+            "publication-10-sample-full-2026-06-25",
         )
         self.assertEqual(self.report["result_set"]["refs_issue"], 14)
         self.assertIsNone(self.report["result_set"]["closes_issue"])
@@ -86,10 +86,11 @@ class LiveBenchmarkReportTests(unittest.TestCase):
     def test_report_records_sampling_methodology(self):
         methodology = self.report["benchmark_methodology"]
 
-        self.assertEqual(methodology["time_column"], "Summary statistic used by existing plots.")
-        self.assertEqual(methodology["time_statistic"], ["min", "single_sample"])
-        self.assertEqual(methodology["sample_count"], [1, 5])
-        self.assertEqual(methodology["warmup_count"], [0, 1])
+        self.assertIn("BENCHMARK_TIME_STATISTIC", methodology["time_column"])
+        self.assertIn("95% confidence intervals", methodology["plotted_time"])
+        self.assertEqual(methodology["time_statistic"], "min")
+        self.assertEqual(methodology["sample_count"], 10)
+        self.assertEqual(methodology["warmup_count"], 1)
         self.assertEqual(
             methodology["raw_samples"],
             "Not stored in the compact live CSV files.",

@@ -31,15 +31,26 @@ class FakeLegend:
 class FakeAxis:
     def __init__(self):
         self.labels = []
+        self.errorbar_calls = []
+        self.plot_calls = []
         self.xscale = None
         self.yscale = None
+        self.ylabel = None
         self.legend_calls = 0
 
     def plot(self, *args, **kwargs):
+        self.plot_calls.append((args, kwargs))
         label = kwargs.get("label")
         if label is not None:
             self.labels.append(label)
         return []
+
+    def errorbar(self, *args, **kwargs):
+        self.errorbar_calls.append((args, kwargs))
+        label = kwargs.get("label")
+        if label is not None:
+            self.labels.append(label)
+        return object()
 
     def set_xscale(self, value):
         self.xscale = value
@@ -51,7 +62,7 @@ class FakeAxis:
         pass
 
     def set_ylabel(self, value):
-        pass
+        self.ylabel = value
 
     def grid(self, value):
         pass
@@ -78,7 +89,6 @@ def load_plot_module():
         "matplotlib": matplotlib,
         "matplotlib.pyplot": pyplot,
         "scienceplots": scienceplots,
-        "numpy": numpy,
         "scipy": scipy,
         "scipy.optimize": scipy_optimize,
     }
@@ -165,6 +175,48 @@ class PlotToQUBOTests(unittest.TestCase):
         self.assertEqual(table["nvar"], [1])
         self.assertEqual(table["time"], [0.1])
         self.assertTrue(math.isnan(table["model_time"][0]))
+
+    def test_sampled_plot_prefers_mean_with_confidence_interval_and_minimum(self):
+        table = {
+            "nvar": [10],
+            "time": [1.0],
+            "time_min": [1.0],
+            "time_mean": [1.3],
+            "time_std": [0.3],
+            "sample_count": [10.0],
+        }
+        ax = FakeAxis()
+
+        self.plot_module.plot_metric_series(
+            ax,
+            table,
+            "time",
+            label="solver",
+            marker="o",
+        )
+
+        self.assertEqual(len(ax.errorbar_calls), 1)
+        _, kwargs = ax.errorbar_calls[0]
+        self.assertEqual(kwargs["label"], "solver")
+        self.assertAlmostEqual(
+            kwargs["yerr"][0],
+            2.262 * (0.3 * math.sqrt(10 / 9)) / math.sqrt(10),
+        )
+        self.assertEqual(len(ax.plot_calls), 1)
+        self.assertEqual(ax.plot_calls[0][0][1], [1.0])
+
+    def test_time_axis_label_describes_sampled_mean_and_minimum(self):
+        table = {
+            "time": [1.0],
+            "time_min": [1.0],
+            "time_mean": [1.3],
+            "sample_count": [10.0],
+        }
+
+        self.assertEqual(
+            self.plot_module.time_axis_label("Building Time (sec)", [table]),
+            "Building Time (sec) (mean with 95% CI; dashed minimum)",
+        )
 
 
 if __name__ == "__main__":

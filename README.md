@@ -36,33 +36,29 @@ archive directory such as `archive/modern-v1` instead of overwriting
 ## Current live result set
 
 The top-level CSV files currently contain
-`toqubo-amplify-sampled-2026-06-25`, a repeated-sample refresh for ToQUBO.jl
-and Amplify after updating ToQUBO.jl to v0.6.0 and QUBOTools.jl to v0.16.0.
-Other package CSVs remain from the earlier
-`toqubo-0.6.0-qubotools-0.16.0-python-3.10-openqaoa-2026-06-25` diagnostic
-rerun. OpenQAOA v0.2.6 is installed in an isolated Python 3.10 venv because its
+`publication-10-sample-full-2026-06-25`, a publication-oriented repeated-sample
+refresh across all benchmarked packages after updating ToQUBO.jl to v0.6.0 and
+QUBOTools.jl to v0.16.0. Each row records ten measured samples after one
+per-size warmup. The `time` column stores the minimum sample for compatibility
+with earlier CSV consumers, while the checked-in plots show the sample mean with
+95% confidence intervals and a dashed minimum trace where sampled statistics are
+available.
+
+OpenQAOA v0.2.6 is installed in an isolated Python 3.10 venv because its
 published metapackage depends on an old Qiskit plugin stack, while the Qiskit
-benchmark uses Qiskit v2.4.2. This mixed live result set is not archived as a
-paper-style fixed reference point.
+benchmark uses Qiskit v2.4.2.
 
 The ToQUBO.jl benchmark uses `extract_qubo_backend` in
 `benchmark/ToQUBO/problems.jl` to call the public `QUBOTools.backend(model)`
 path added for ToQUBO-compiled JuMP models. This run uses registered releases:
-ToQUBO.jl v0.6.0 and QUBOTools.jl v0.16.0. In the current sampled TSP run,
-backend extraction is 0.095 s of 1.983 s at 10,000 variables, so extraction is
-no longer the dense TSP bottleneck. The 1,000-variable sampled NPP row is
-0.176 s for ToQUBO.jl and 0.153 s for Amplify.
+ToQUBO.jl v0.6.0 and QUBOTools.jl v0.16.0.
 
 The live run provenance, package versions, CSV row counts, and SHA-256 hashes
 are recorded in [`data/report.json`](./data/report.json).
 
-The `time` column is the summary value used by the existing plots. The sampled
-ToQUBO and Amplify CSVs use the minimum of five measured samples after one
-per-size warmup. Legacy CSVs for the other packages are marked as
-`single_sample` in `data/report.json`. Future benchmark runs can record
-repeated samples with `BENCHMARK_SAMPLES`, `BENCHMARK_WARMUPS`, and
-`BENCHMARK_TIME_STATISTIC`; each sampled CSV also records min, median, mean,
-standard deviation, sample count, and warmup count.
+Future benchmark runs can record repeated samples with `BENCHMARK_SAMPLES`,
+`BENCHMARK_WARMUPS`, and `BENCHMARK_TIME_STATISTIC`; each sampled CSV records
+min, median, mean, standard deviation, sample count, and warmup count.
 The ToQUBO Julia runner always performs one small fixed JIT warmup before
 starting per-size samples; `BENCHMARK_WARMUPS` controls additional per-size
 warmups.
@@ -123,6 +119,18 @@ $ cd ./ToQUBO-benchmark
 $ make
 ```
 
+The default `make run` path is intended for routine CI and uses one measured
+sample per problem size. To refresh the publication-style live data with ten
+measured samples for every solver:
+
+```shell
+$ make run-publication
+...
+
+$ make plot
+...
+```
+
 You can also do this separately
 
 ```shell
@@ -135,7 +143,7 @@ $ make install
 $ make run
 ...
 
-$ BENCHMARK_SAMPLES=5 BENCHMARK_WARMUPS=1 BENCHMARK_TIME_STATISTIC=min make run
+$ PUBLICATION_SAMPLES=10 PUBLICATION_WARMUPS=1 make run-publication
 ...
 
 $ make report

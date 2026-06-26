@@ -8,8 +8,11 @@ OPENQAOA_PYTHON ?= $(OPENQAOA_VENV)/bin/python
 OPENQAOA_PIP    ?= $(OPENQAOA_VENV)/bin/pip
 SHELL  := /bin/bash
 PAPER_BASELINE := archive/paper-v1
+PUBLICATION_SAMPLES ?= 10
+PUBLICATION_WARMUPS ?= 1
+PUBLICATION_TIME_STATISTIC ?= min
 
-.PHONY: install run report plot plot-paper venv openqaoa-venv
+.PHONY: install run run-publication run-publication-python run-publication-toqubo report plot plot-paper venv openqaoa-venv
 .NOTPARALLEL: run
 
 all: install run plot
@@ -64,6 +67,21 @@ install-toqubo:
 
 run: run-pyqubo run-qubovert run-qiskit run-openqaoa run-amplify run-dwave run-toqubo
 	$(MAKE) report
+
+run-publication:
+	BENCHMARK_SAMPLES="$(PUBLICATION_SAMPLES)" \
+	BENCHMARK_WARMUPS="$(PUBLICATION_WARMUPS)" \
+	BENCHMARK_TIME_STATISTIC="$(PUBLICATION_TIME_STATISTIC)" \
+	$(MAKE) run-publication-python run-publication-toqubo report
+
+run-publication-python: venv openqaoa-venv
+	@echo "Running Python publication benchmarks with isolated samples..."
+	$(VENV_PYTHON) "./scripts/run_python_benchmark_isolated.py" pyqubo qubovert qiskit amplify dwave
+	MPLCONFIGDIR="$${MPLCONFIGDIR:-/tmp/matplotlib-toqubo-benchmark}" $(OPENQAOA_PYTHON) "./scripts/run_python_benchmark_isolated.py" openqaoa
+
+run-publication-toqubo: venv
+	@echo "Running ToQUBO.jl publication benchmark..."
+	$(JULIA) --proj=benchmark/ToQUBO "./benchmark/ToQUBO/benchmark.jl" --run
 
 run-pyqubo: venv
 	@echo "Running pyqubo..."

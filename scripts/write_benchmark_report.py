@@ -276,7 +276,14 @@ def benchmark_methodology(files):
     warmup_counts = {json.dumps(entry["warmup_count"], sort_keys=True) for entry in files}
 
     return {
-        "time_column": "Summary statistic used by existing plots.",
+        "time_column": (
+            "Summary statistic selected by BENCHMARK_TIME_STATISTIC and kept "
+            "for CSV compatibility."
+        ),
+        "plotted_time": (
+            "Plots prefer *_mean with 95% confidence intervals when sampled "
+            "and overlay *_min where available."
+        ),
         "time_statistic": _summary_value(time_statistics),
         "sample_count": _summary_value(json.loads(value) for value in sample_counts),
         "warmup_count": _summary_value(json.loads(value) for value in warmup_counts),
