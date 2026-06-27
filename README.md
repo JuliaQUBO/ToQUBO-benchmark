@@ -18,11 +18,20 @@ To redraw the paper plots from the archived CSV files:
 $ make plot-paper
 ```
 
+## Archived publication refresh
+
+The modern publication-facing refresh is archived in
+[`archive/publication-10-sample-2026-06-25`](./archive/publication-10-sample-2026-06-25).
+This fixed baseline corresponds to `publication-10-sample-full-2026-06-25`:
+ten measured samples per problem size after one per-size warmup, with plots that
+show the mean and 95% confidence intervals plus a dashed minimum trace.
+The archived PNG and PDF plots are included and hash-checked.
+
 ## Updating dependencies and results
 
 Dependabot PRs should update dependency files only. They should not change
-`archive/paper-v1`; the `verify` workflow checks that the archived files still
-match their recorded hashes.
+`archive/paper-v1` or `archive/publication-10-sample-2026-06-25`; the `verify`
+workflow checks that archived files still match their recorded hashes.
 
 The top-level `benchmark/` and `data/` directories are the live benchmark
 outputs. After merging dependency updates, rerun the benchmark intentionally
@@ -30,8 +39,7 @@ with the `toqubo-benchmark` workflow dispatch or a commit containing `[run]`.
 The plot workflow will then redraw plots for the new live results.
 
 If a future run needs to be preserved as another fixed reference point, add a new
-archive directory such as `archive/modern-v1` instead of overwriting
-`archive/paper-v1`.
+archive directory instead of overwriting existing archives.
 
 ## Current live result set
 
@@ -43,6 +51,9 @@ per-size warmup. The `time` column stores the minimum sample for compatibility
 with earlier CSV consumers, while the checked-in plots show the sample mean with
 95% confidence intervals and a dashed minimum trace where sampled statistics are
 available.
+
+A fixed copy of this result set is stored in
+[`archive/publication-10-sample-2026-06-25`](./archive/publication-10-sample-2026-06-25).
 
 OpenQAOA v0.2.6 is installed in an isolated Python 3.10 venv because its
 published metapackage depends on an old Qiskit plugin stack, while the Qiskit

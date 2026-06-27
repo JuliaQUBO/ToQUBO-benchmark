@@ -1,0 +1,589 @@
+{
+  "benchmark_methodology": {
+    "plotted_time": "Plots prefer *_mean with 95% confidence intervals when sampled and overlay *_min where available.",
+    "raw_samples": "Not stored in the compact live CSV files.",
+    "sample_count": 10,
+    "time_column": "Summary statistic selected by BENCHMARK_TIME_STATISTIC and kept for CSV compatibility.",
+    "time_statistic": "min",
+    "warmup_count": 1
+  },
+  "environment": {
+    "cpu": "Intel(R) Xeon(R) w5-2565X",
+    "julia": "julia version 1.12.6",
+    "julia_executable": "julia +1.12",
+    "julia_manifest": "1.12.6",
+    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
+    "machine": "x86_64",
+    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.10.19",
+    "python_executable": "/home/bernalde/repos/ToQUBO-benchmark/.venv/bin/python"
+  },
+  "files": [
+    {
+      "max_nvar": 1000,
+      "max_time": 0.174821058,
+      "path": "benchmark/ToQUBO/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 50,
+      "sample_count": 10,
+      "sha256": "fe15d648d2d1d736e96663ca988a568b7b15b933146ec1e4bc1ad0ac8865381e",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 10000,
+      "max_time": 1.841688456,
+      "path": "benchmark/ToQUBO/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 20,
+      "sample_count": 10,
+      "sha256": "393a20981f1c31bf10a957ea58a50bc7fc43bd6331974820e8cd686a7ce49b04",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 1000,
+      "max_time": 0.1372358798980713,
+      "path": "benchmark/amplify/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "rows": 50,
+      "sample_count": 10,
+      "sha256": "b42bea3704a3c2c5fbf8725b6918dd80be099989564d6294ab0cf8de012e9923",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 10000,
+      "max_time": 2.443028450012207,
+      "path": "benchmark/amplify/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "rows": 20,
+      "sample_count": 10,
+      "sha256": "dc19f25ac2cc36cec82efdb7f1582553d94af436aa589da4e342171da9fc4f7a",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 1000,
+      "max_time": 1.9542837142944336,
+      "path": "benchmark/dwave/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 50,
+      "sample_count": 10,
+      "sha256": "27cdd3d513be84ec5a2f526e8bedecd396ea81600ba883e34fa4ed50524f31e9",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 3600,
+      "max_time": 127.77130508422852,
+      "path": "benchmark/dwave/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 12,
+      "sample_count": 10,
+      "sha256": "324fd03c023e7a75cea31eb4ea3c528d7bdb61b1d495993be6620ee0cc37d315",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 1000,
+      "max_time": 4.774142265319824,
+      "path": "benchmark/openqaoa/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 50,
+      "sample_count": 10,
+      "sha256": "879c2dd6bf5a3290ae1638a393dd22700d78ede569c8bfa78bf8bd77b74d7cdf",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 2500,
+      "max_time": 119.08640098571777,
+      "path": "benchmark/openqaoa/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 10,
+      "sample_count": 10,
+      "sha256": "bff57fe8ebe62d417b9dd2c519abdf51bcc0efceec23564f66b18ec90808413a",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 1000,
+      "max_time": 0.745802640914917,
+      "path": "benchmark/pyqubo/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 50,
+      "sample_count": 10,
+      "sha256": "86bdff6ea37e61c0db81d1dba00cd7646450ffde5f9dd35d655452f43c575829",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 10000,
+      "max_time": 9.016381025314331,
+      "path": "benchmark/pyqubo/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 20,
+      "sample_count": 10,
+      "sha256": "c32a0ae1447038bad0f9a66836a733160a3d5f1e953a508c1e3d6512db8eb1f4",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 540,
+      "max_time": 5.153758525848389,
+      "path": "benchmark/qiskit/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 27,
+      "sample_count": 10,
+      "sha256": "633363eead3bb996070bf46a1e4706dd6324c46c63d1e31224996da1e617f904",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 2500,
+      "max_time": 117.03058290481567,
+      "path": "benchmark/qiskit/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "rows": 10,
+      "sample_count": 10,
+      "sha256": "6f4316d9cbe5dbb05630f2e1dd1fe35682aa6012de588426b3205fa95e017e0b",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 840,
+      "max_time": 5.231320858001709,
+      "path": "benchmark/qubovert/results.npp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "rows": 42,
+      "sample_count": 10,
+      "sha256": "2ecc4de777c00c6f6d5b813de01e89047efb7cca0b255e8766946c4e67b71055",
+      "time_statistic": "min",
+      "warmup_count": 1
+    },
+    {
+      "max_nvar": 10000,
+      "max_time": 53.26268482208252,
+      "path": "benchmark/qubovert/results.tsp.csv",
+      "phase_splits": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "rows": 20,
+      "sample_count": 10,
+      "sha256": "0cc5a079cc534508177fef076140d1b7b32703a7784cda6cfff62b0a6e384cce",
+      "time_statistic": "min",
+      "warmup_count": 1
+    }
+  ],
+  "generated_at": "2026-06-26T06:32:04+00:00",
+  "packages": {
+    "julia": {
+      "CSV": "0.10.16",
+      "JuMP": "1.30.1",
+      "QUBOTools": "0.16.0",
+      "ToQUBO": "0.6.0"
+    },
+    "python": {
+      "amplify": "1.6.1",
+      "dimod": "0.12.22",
+      "docplex": "2.32.264",
+      "matplotlib": "3.10.9",
+      "mitiq": "0.47.0",
+      "numpy": "2.2.6",
+      "openqaoa": "0.2.6",
+      "pyqubo": "1.5.0",
+      "qiskit": "2.4.2",
+      "qiskit-optimization": "0.7.0",
+      "qubovert": "1.2.5",
+      "scienceplots": "2.2.2",
+      "scipy": "1.15.3"
+    }
+  },
+  "phase_split_availability": {
+    "ToQUBO": {
+      "npp": {
+        "recorded_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "jump_time",
+          "toqubo_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      }
+    },
+    "amplify": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      }
+    },
+    "dwave": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      }
+    },
+    "openqaoa": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      }
+    },
+    "pyqubo": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      }
+    },
+    "qiskit": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "compiler_time",
+          "convert_time"
+        ]
+      }
+    },
+    "qubovert": {
+      "npp": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      },
+      "tsp": {
+        "recorded_columns": [
+          "model_time",
+          "convert_time"
+        ],
+        "status": "recorded",
+        "supported_columns": [
+          "model_time",
+          "convert_time"
+        ]
+      }
+    }
+  },
+  "result_set": {
+    "closes_issue": null,
+    "id": "publication-10-sample-full-2026-06-25",
+    "openqaoa": {
+      "note": "OpenQAOA runs in an isolated Python 3.10 venv because openqaoa==0.2.6 depends on an old Qiskit plugin stack while the Qiskit benchmark uses qiskit==2.4.2.",
+      "python": "Python 3.10.19",
+      "python_executable": ".venv-openqaoa/bin/python",
+      "status": "included",
+      "version": "0.2.6"
+    },
+    "refs_issue": 14,
+    "status": "publication-10-sample-full-rerun",
+    "supersedes": "toqubo-amplify-sampled-2026-06-25",
+    "toqubo_dependencies": {
+      "note": "Resolved from the General registry with Julia 1.12.6 after the ToQUBO v0.6.0 and QUBOTools v0.16.0 releases; QUBO.jl v0.6.1 is released but this benchmark depends on ToQUBO/QUBOTools directly.",
+      "qubotools": "QUBOTools v0.16.0",
+      "status": "registered-release",
+      "toqubo": "ToQUBO v0.6.0"
+    }
+  },
+  "schema_version": 2,
+  "toqubo_extraction": {
+    "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
+    "largest_tsp_convert_share": 0.041517976480165336,
+    "largest_tsp_convert_time": 0.076463178,
+    "largest_tsp_nvar": 10000,
+    "largest_tsp_total_time": 1.841688456,
+    "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
+    "status": "public-backend-api"
+  }
+}

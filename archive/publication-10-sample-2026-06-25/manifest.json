@@ -1,0 +1,178 @@
+{
+  "baseline_id": "publication-10-sample-2026-06-25",
+  "description": "Archived publication-oriented 10-sample live benchmark refresh after ToQUBO.jl v0.6.0 and QUBOTools.jl v0.16.0.",
+  "paper": {
+    "title": "QUBO.jl benchmark results",
+    "arxiv": "2307.02577"
+  },
+  "source": {
+    "result_set_id": "publication-10-sample-full-2026-06-25",
+    "result_set_status": "publication-10-sample-full-rerun",
+    "results_commit": "1d1bf06145a2a0e0c9859713ccfb8a35458efc8f",
+    "documented_commit": "d773d7eb0f4331c38e8e44e671ae4c11f1a799e6",
+    "report_generated_at": "2026-06-26T06:32:04+00:00",
+    "refs_issue": 14,
+    "supersedes": "toqubo-amplify-sampled-2026-06-25"
+  },
+  "methodology": {
+    "plotted_time": "Plots prefer *_mean with 95% confidence intervals when sampled and overlay *_min where available.",
+    "raw_samples": "Not stored in the compact live CSV files.",
+    "sample_count": 10,
+    "time_column": "Summary statistic selected by BENCHMARK_TIME_STATISTIC and kept for CSV compatibility.",
+    "time_statistic": "min",
+    "warmup_count": 1
+  },
+  "environment": {
+    "cpu": "Intel(R) Xeon(R) w5-2565X",
+    "julia": "julia version 1.12.6",
+    "julia_executable": "julia +1.12",
+    "julia_manifest": "1.12.6",
+    "julia_manifest_path": "/home/bernalde/repos/ToQUBO-benchmark/benchmark/ToQUBO/Manifest.toml",
+    "machine": "x86_64",
+    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.10.19",
+    "python_executable": "/home/bernalde/repos/ToQUBO-benchmark/.venv/bin/python"
+  },
+  "packages": {
+    "julia": {
+      "CSV": "0.10.16",
+      "JuMP": "1.30.1",
+      "QUBOTools": "0.16.0",
+      "ToQUBO": "0.6.0"
+    },
+    "python": {
+      "amplify": "1.6.1",
+      "dimod": "0.12.22",
+      "docplex": "2.32.264",
+      "matplotlib": "3.10.9",
+      "mitiq": "0.47.0",
+      "numpy": "2.2.6",
+      "openqaoa": "0.2.6",
+      "pyqubo": "1.5.0",
+      "qiskit": "2.4.2",
+      "qiskit-optimization": "0.7.0",
+      "qubovert": "1.2.5",
+      "scienceplots": "2.2.2",
+      "scipy": "1.15.3"
+    }
+  },
+  "toqubo_extraction": {
+    "implementation": "benchmark/ToQUBO/problems.jl:extract_qubo_backend",
+    "largest_tsp_convert_share": 0.041517976480165336,
+    "largest_tsp_convert_time": 0.076463178,
+    "largest_tsp_nvar": 10000,
+    "largest_tsp_total_time": 1.841688456,
+    "public_api_check": "The benchmark uses the supported QUBOTools.backend(model) path added for ToQUBO-compiled JuMP models.",
+    "status": "public-backend-api"
+  },
+  "files": [
+    {
+      "path": "benchmark/ToQUBO/results.npp.csv",
+      "sha256": "fe15d648d2d1d736e96663ca988a568b7b15b933146ec1e4bc1ad0ac8865381e"
+    },
+    {
+      "path": "benchmark/ToQUBO/results.tsp.csv",
+      "sha256": "393a20981f1c31bf10a957ea58a50bc7fc43bd6331974820e8cd686a7ce49b04"
+    },
+    {
+      "path": "benchmark/amplify/results.npp.csv",
+      "sha256": "b42bea3704a3c2c5fbf8725b6918dd80be099989564d6294ab0cf8de012e9923"
+    },
+    {
+      "path": "benchmark/amplify/results.tsp.csv",
+      "sha256": "dc19f25ac2cc36cec82efdb7f1582553d94af436aa589da4e342171da9fc4f7a"
+    },
+    {
+      "path": "benchmark/dwave/results.npp.csv",
+      "sha256": "27cdd3d513be84ec5a2f526e8bedecd396ea81600ba883e34fa4ed50524f31e9"
+    },
+    {
+      "path": "benchmark/dwave/results.tsp.csv",
+      "sha256": "324fd03c023e7a75cea31eb4ea3c528d7bdb61b1d495993be6620ee0cc37d315"
+    },
+    {
+      "path": "benchmark/openqaoa/results.npp.csv",
+      "sha256": "879c2dd6bf5a3290ae1638a393dd22700d78ede569c8bfa78bf8bd77b74d7cdf"
+    },
+    {
+      "path": "benchmark/openqaoa/results.tsp.csv",
+      "sha256": "bff57fe8ebe62d417b9dd2c519abdf51bcc0efceec23564f66b18ec90808413a"
+    },
+    {
+      "path": "benchmark/pyqubo/results.npp.csv",
+      "sha256": "86bdff6ea37e61c0db81d1dba00cd7646450ffde5f9dd35d655452f43c575829"
+    },
+    {
+      "path": "benchmark/pyqubo/results.tsp.csv",
+      "sha256": "c32a0ae1447038bad0f9a66836a733160a3d5f1e953a508c1e3d6512db8eb1f4"
+    },
+    {
+      "path": "benchmark/qiskit/results.npp.csv",
+      "sha256": "633363eead3bb996070bf46a1e4706dd6324c46c63d1e31224996da1e617f904"
+    },
+    {
+      "path": "benchmark/qiskit/results.tsp.csv",
+      "sha256": "6f4316d9cbe5dbb05630f2e1dd1fe35682aa6012de588426b3205fa95e017e0b"
+    },
+    {
+      "path": "benchmark/qubovert/results.npp.csv",
+      "sha256": "2ecc4de777c00c6f6d5b813de01e89047efb7cca0b255e8766946c4e67b71055"
+    },
+    {
+      "path": "benchmark/qubovert/results.tsp.csv",
+      "sha256": "0cc5a079cc534508177fef076140d1b7b32703a7784cda6cfff62b0a6e384cce"
+    },
+    {
+      "path": "data/report.json",
+      "sha256": "1bad329c9450ce6eeb518f5466959a8b80c79d21b9df6a45fb01ec54b446794a"
+    },
+    {
+      "path": "data/results.npp.pdf",
+      "sha256": "6ca03e433eb878ced40fd41918df38219522a1799c07a96b7646caafcdc05330"
+    },
+    {
+      "path": "data/results.npp.png",
+      "sha256": "bb3ceee631bb0da4ec2f4c2f4ad4fcea68229adb7546a014376c1c891886028f"
+    },
+    {
+      "path": "data/results.pdf",
+      "sha256": "aa7b7f2a80957ddcbca17992913d4acb921a4be693823189cd0236bbb718a070"
+    },
+    {
+      "path": "data/results.png",
+      "sha256": "bbedbe083940e1454fdf932ef58126235eec9122f583bca383f65d3639f400b1"
+    },
+    {
+      "path": "data/results.toqubo.pdf",
+      "sha256": "fbbb9003e1dae1d9e319943c0be0947e0d5fdbf443012ef86e0f9d4e356da285"
+    },
+    {
+      "path": "data/results.toqubo.png",
+      "sha256": "141c4ca07b4a3eb1890e145494b10938508772def484fc06724ec2ba41e1a677"
+    },
+    {
+      "path": "data/results.tsp.pdf",
+      "sha256": "eb8f1b5a1ee3a3f7b21777810b0c181a722524837444ff0d4f8506d3b0474232"
+    },
+    {
+      "path": "data/results.tsp.png",
+      "sha256": "b49dfdf6a25a29550a91db79936ece369e6c149576e0ab115824fa2a3828a197"
+    },
+    {
+      "path": "data/toqubo.npp.pdf",
+      "sha256": "858f5b21ac8cdd795372a63c556725f8346e453d88730945ee1b8755133e2bde"
+    },
+    {
+      "path": "data/toqubo.npp.png",
+      "sha256": "3dc8a0456460f0b7bd53c8bb28ffe37845256516ab7ae338358bdaeadac57acd"
+    },
+    {
+      "path": "data/toqubo.tsp.pdf",
+      "sha256": "7da3889edaa1e6dee004fb3747d37835db005d95a740c4ff047b61a3622aca47"
+    },
+    {
+      "path": "data/toqubo.tsp.png",
+      "sha256": "7c9af0b470e706719711eb5ff2b1d511080955ccee5c0f4f00e5f64827bc6295"
+    }
+  ]
+}
