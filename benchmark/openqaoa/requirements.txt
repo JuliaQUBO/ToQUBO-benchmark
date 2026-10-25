@@ -2,4 +2,4 @@
 # Makefile installs it in a separate Python 3.10 venv.
 openqaoa==0.2.6
 mitiq==0.47.0
-setuptools==80.10.2
+setuptools==83.0.0
